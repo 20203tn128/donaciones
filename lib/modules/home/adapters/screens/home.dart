@@ -1,5 +1,6 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/widgets/navigation/botton-navigation-tab.dart';
+import 'package:donaciones/modules/home/widgets/home-container.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -19,48 +20,37 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> item = {
+      'title': 'iPhone 10',
+      'description': 'Nuevo iPhone 10 con pantalla tactil de retina',
+      'initialRating': 4.5,
+      'imageUri': 'assets/images/logo-gob-zapata.jpg'
+    };
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Lista de puntos de recogida'),
+      ),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(16),
           child: ListView(
             padding: const EdgeInsets.all(16),
-            children: <Widget>[
-              Container(
-                height: 50,
-                child: const Center(child: Text('Ricardo Cardenas')),
+            children: const <Widget>[
+              HomeContainer(
+                tittle: 'Liz',
+                description: 'description',
+                imageUri: 'assets/images/logo-gob-zapata.jpg',
               ),
-              Container(
-                height: 50,
-                child: const Center(child: Text('Luba Almazan')),
+              HomeContainer(
+                tittle: 'Liz',
+                description: 'description',
+                imageUri: 'assets/images/logo-gob-zapata.jpg',
               ),
-              Container(
-                height: 50,
-                child: const Center(child: Text('Miriam Guadalupe')),
-              ),
-              Container(
-                height: 50,
-                child: const Center(child: Text('Roy Salgado')),
-              ),
-              Container(
-                height: 50,
-                child: const Center(child: Text('Liz Espinosa')),
-              ),
-              Container(
-                height: 50,
-                child: const Center(child: Text('Rodrigo Ivan')),
-              ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  onPressed: () =>
-                      {Navigator.of(context).pushNamed('/home/userRegister')},
-                  child: const Text('Aagregar usuario'),
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size(300, 50),
-                      backgroundColor: ColorsApp.successColor),
-                ),
-              ),
+              HomeContainer(
+                tittle: 'Liz',
+                description: 'description',
+                imageUri: 'assets/images/logo-gob-zapata.jpg',
+              )
             ],
           ),
         ),
