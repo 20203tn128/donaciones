@@ -60,8 +60,8 @@ class Profile extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Text(
                         'Telefóno: ',
                         style: TextStyle(

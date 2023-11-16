@@ -1,5 +1,4 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
-import 'package:donaciones/modules/settigns/widgets/form-settings.dart';
 import 'package:flutter/material.dart';
 
 class Settigns extends StatelessWidget {

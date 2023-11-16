@@ -1,6 +1,7 @@
 import 'package:donaciones/config/navigation/home_stack.dart';
+import 'package:donaciones/config/navigation/settings_stack.dart';
 import 'package:donaciones/kernel/widgets/navigation/botton-navigation-tab.dart';
-import 'package:donaciones/modules/settigns/screens/settigns.dart';
+import 'package:donaciones/modules/profile/screens/profile.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatefulWidget {
@@ -23,7 +24,10 @@ class _MenuState extends State<Menu> {
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: const [HomeStack(), Settigns()],
+        children: const [
+          HomeStack(),
+          SettingsStack(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationTab(
           selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
