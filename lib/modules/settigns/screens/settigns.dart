@@ -12,7 +12,6 @@ class Settigns extends StatelessWidget {
         title: const Text('Configuración'),
         backgroundColor: ColorsApp.secondaryColor,
       ),
-      body: ,
     );
   }
 }
