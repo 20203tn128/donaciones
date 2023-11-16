@@ -1,5 +1,6 @@
-import 'package:donaciones/modules/settigns/screens/settigns.dart';
-import 'package:donaciones/modules/settigns/widgets/form-settings.dart';
+import 'package:donaciones/modules/profile/screens/profile.dart';
+import 'package:donaciones/modules/profile/widgets/password-form.dart';
+import 'package:donaciones/modules/profile/widgets/phone-form.dart';
 import 'package:flutter/material.dart';
 
 class SettingsStack extends StatelessWidget {
@@ -11,8 +12,9 @@ class SettingsStack extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/settings',
       routes: {
-        '/settings': (context) => Settigns(),
-        '/settings/form-settings': (context) => const FormSettings(),
+        '/settings': (context) => const Profile(),
+        '/settings/password-form': (context) => const PasswordForm(),
+        '/settings/phone-form': (context) => const PhoneForm(),
       },
     );
   }
