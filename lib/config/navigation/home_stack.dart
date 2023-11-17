@@ -1,6 +1,7 @@
 import 'package:donaciones/kernel/widgets/navigation/menu.dart';
 import 'package:donaciones/modules/home/adapters/screens/home.dart';
-import 'package:donaciones/modules/home/widgets/user-register.dart';
+import 'package:donaciones/modules/home/adapters/screens/recolection.dart';
+import 'package:donaciones/modules/home/widgets/coments-form.dart';
 import 'package:flutter/material.dart';
 
 class HomeStack extends StatelessWidget {
@@ -13,7 +14,8 @@ class HomeStack extends StatelessWidget {
         initialRoute: '/home',
         routes: {
           '/home': (context) => const Home(),
-          '/home/userRegister': (context) => const UserRegister(),
+          '/home/recolections': (context) => const Recolection(),
+          '/home/coments-form': (context) => const ComentsForm(),
         });
   }
 }

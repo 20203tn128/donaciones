@@ -21,10 +21,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> item = {
-      'title': 'iPhone 10',
-      'description': 'Nuevo iPhone 10 con pantalla tactil de retina',
-      'initialRating': 4.5,
-      'imageUri': 'assets/images/logo-gob-zapata.jpg'
+      'title': 'Recoleccion en Chedraui',
+      'date': '12 de Diciembre del 2023',
+      'hours': '09:00 AM',
+      'status': 'Pendiente'
     };
     return Scaffold(
       appBar: AppBar(
@@ -35,22 +35,12 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(16),
           child: ListView(
             padding: const EdgeInsets.all(16),
-            children: const <Widget>[
+            children: <Widget>[
               HomeContainer(
-                tittle: 'Liz',
-                description: 'description',
-                imageUri: 'assets/images/logo-gob-zapata.jpg',
-              ),
-              HomeContainer(
-                tittle: 'Liz',
-                description: 'description',
-                imageUri: 'assets/images/logo-gob-zapata.jpg',
-              ),
-              HomeContainer(
-                tittle: 'Liz',
-                description: 'description',
-                imageUri: 'assets/images/logo-gob-zapata.jpg',
-              )
+                  tittle: item['title'],
+                  date: item['date'],
+                  hours: item['hours'],
+                  status: item['status'])
             ],
           ),
         ),
