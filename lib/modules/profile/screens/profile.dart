@@ -68,21 +68,19 @@ class Profile extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Text('777-123-456'),
-                    ElevatedButton(
-                      onPressed: () =>
-                          {Navigator.of(context).pushNamed('/home')},
-                      child: const Text('Modificar telefono'),
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: Size(300, 50),
-                          backgroundColor: ColorsApp.successColor),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text('777-123-456'),
                     ),
                     IconButton(
                         onPressed: () => {
                               Navigator.of(context)
                                   .pushNamed('/settings/phone-form')
                             },
-                        icon: Icon(Icons.edit))
+                        icon: Icon(
+                          Icons.edit,
+                          color: ColorsApp.warningColor,
+                        ))
                   ],
                 )
               ],
