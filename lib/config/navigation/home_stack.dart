@@ -1,6 +1,7 @@
 import 'package:donaciones/kernel/widgets/navigation/menu.dart';
 import 'package:donaciones/modules/home/adapters/screens/home.dart';
 import 'package:donaciones/modules/home/adapters/screens/recolection.dart';
+import 'package:donaciones/modules/home/widgets/all-coments-form.dart';
 import 'package:donaciones/modules/home/widgets/coments-form.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class HomeStack extends StatelessWidget {
           '/home': (context) => const Home(),
           '/home/recolections': (context) => const Recolection(),
           '/home/coments-form': (context) => const ComentsForm(),
+          '/home/all-coments-form': (context) => const AllComentsForm(),
         });
   }
 }

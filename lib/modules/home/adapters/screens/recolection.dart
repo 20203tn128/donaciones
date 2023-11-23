@@ -1,4 +1,5 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/home/widgets/products-card.dart';
 import 'package:flutter/material.dart';
 
 class Recolection extends StatefulWidget {
@@ -9,19 +10,8 @@ class Recolection extends StatefulWidget {
 }
 
 class _RecolectionState extends State<Recolection> {
-  bool? isChecked = false;
   @override
   Widget build(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return ColorsApp.successColor;
-      }
-      return ColorsApp.secondaryColor;
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Detalles de la recolección'),
@@ -42,69 +32,49 @@ class _RecolectionState extends State<Recolection> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 5,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.food_bank,
-                        color: ColorsApp.warningColor,
-                      ),
-                    ),
-                    Container(
-                        child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text('Chiles',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorsApp.secondaryColor)),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text('Cantidad:',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorsApp.secondaryColor)),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('12 piezas')
-                          ],
-                        ),
-                      ],
-                    )),
-                    SizedBox(
-                      width: 110,
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Checkbox(
-                          tristate: true,
-                          checkColor: Colors.white,
-                          fillColor:
-                              MaterialStateProperty.resolveWith(getColor),
-                          value: isChecked,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked = value;
-                              print(value);
-                              if (isChecked == null) {
-                                Navigator.of(context)
-                                    .pushNamed('/home/coments-form');
-                              }
-                            });
-                          },
-                        )),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  ProductCard(),
+                  ProductCard(),
+                  ProductCard(),
+                  ProductCard(),
+                  ProductCard(),
+                  ProductCard()
+                ],
               ),
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    'Total:',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(
+                  '12',
+                  style: TextStyle(fontSize: 16, color: Colors.black45),
+                ),
+                SizedBox(
+                  width: 180,
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/home/all-coments-form');
+                    },
+                    child: const Text('Guardar'),
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: ColorsApp.successColor,
+                        side: const BorderSide(color: ColorsApp.successColor),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16))),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

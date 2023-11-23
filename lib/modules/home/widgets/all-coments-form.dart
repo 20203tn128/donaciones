@@ -1,22 +1,21 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class ComentsForm extends StatefulWidget {
-  const ComentsForm({super.key});
+class AllComentsForm extends StatefulWidget {
+  const AllComentsForm({super.key});
 
   @override
-  State<ComentsForm> createState() => _ComentsFormState();
+  State<AllComentsForm> createState() => _AllComentsFormState();
 }
 
-class _ComentsFormState extends State<ComentsForm> {
+class _AllComentsFormState extends State<AllComentsForm> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agregar Comentarios'),
+        title: Text('Comentarios Generales'),
         backgroundColor: ColorsApp.prmaryColor,
       ),
       body: SingleChildScrollView(

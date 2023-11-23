@@ -42,19 +42,17 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/menu');
-                },
-                child: const Text('Buscar...'),
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: ColorsApp.secondaryColor,
-                    side: const BorderSide(color: ColorsApp.secondaryColor),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16))),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Text("Buscar"),
+                  Expanded(child: TextField()),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.search),
+                  )
+                ],
               ),
             ),
             HomeContainer(
@@ -66,7 +64,28 @@ class _HomeState extends State<Home> {
                 tittle: item2['title'],
                 acronimous: item2['acronimous'],
                 quantity: item2['quantity'],
-                status: item2['status'])
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+
             // ListView(
             //   padding: const EdgeInsets.all(16),
             //   children: [

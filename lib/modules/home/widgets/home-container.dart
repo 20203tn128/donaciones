@@ -46,54 +46,52 @@ class HomeContainer extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      tittle,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: ColorsApp.secondaryColor),
-                    ),
+                  Text(
+                    tittle,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: ColorsApp.secondaryColor),
+                  ),
+                  SizedBox(
+                    width: 100,
+                  ),
+                  Text(
+                    status,
+                    style: TextStyle(fontSize: 12, color: Colors.black45),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    quantity,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Productos',
+                    style: TextStyle(
+                        fontSize: 12, color: ColorsApp.secondaryColor),
+                  ),
+                  SizedBox(width: 40),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/home/recolections');
+                    },
+                    child: const Text('validar Productos'),
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: ColorsApp.warningColor,
+                        side: const BorderSide(color: ColorsApp.warningColor),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16))),
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text(
-                      quantity,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Productos',
-                      style: TextStyle(
-                          fontSize: 12, color: ColorsApp.secondaryColor),
-                    ),
-                  ],
-                ),
-              ),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/home/recolections');
-              },
-              child: const Text('validar Productos'),
-              style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: ColorsApp.warningColor,
-                  side: const BorderSide(color: ColorsApp.warningColor),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16))),
-            ),
           ),
         ],
       ),
