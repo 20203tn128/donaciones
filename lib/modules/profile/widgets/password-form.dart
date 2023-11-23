@@ -2,14 +2,14 @@ import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/validations/validations-app.dart';
 import 'package:flutter/material.dart';
 
-class FormSettings extends StatefulWidget {
-  const FormSettings({super.key});
+class PasswordForm extends StatefulWidget {
+  const PasswordForm({super.key});
 
   @override
-  State<FormSettings> createState() => _FormSettingsState();
+  State<PasswordForm> createState() => _PasswordFormState();
 }
 
-class _FormSettingsState extends State<FormSettings> {
+class _PasswordFormState extends State<PasswordForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isButtonDesabled = true;
   final TextEditingController _password = TextEditingController(text: '');
@@ -17,7 +17,12 @@ class _FormSettingsState extends State<FormSettings> {
       TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Modificar contraseña'),
+        backgroundColor: ColorsApp.secondaryColor,
+        foregroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
           child: Column(
         children: [
@@ -78,7 +83,7 @@ class _FormSettingsState extends State<FormSettings> {
                             print('$_password $_passwordConfirm');
                             //var response = await dio.post<Response>('/api/v1/login', data: {'email': _email, 'password': _password});
                             print('$_password $_passwordConfirm');
-                            Navigator.of(context).pushNamed('/menu');
+                            Navigator.of(context).pushNamed('/settings');
                           },
                     child: const Text('Modificar contraseña'),
                     style: ElevatedButton.styleFrom(
