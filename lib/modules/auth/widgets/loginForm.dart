@@ -114,6 +114,8 @@ class _LoginFormextendsState extends State<LoginForm> {
                             child: const Text('Iniciar sesion'),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: Size(100, 50),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22)),
                                 backgroundColor: ColorsApp.successColor),
                           ),
                         ),
