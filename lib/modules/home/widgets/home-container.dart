@@ -4,90 +4,95 @@ import 'package:flutter/widgets.dart';
 
 class HomeContainer extends StatelessWidget {
   final String tittle;
-  final String date;
-  final String hours;
+  final String acronimous;
+  final String quantity;
   final String status;
 
   const HomeContainer(
       {super.key,
       required this.tittle,
-      required this.date,
-      required this.hours,
+      required this.acronimous,
+      required this.quantity,
       required this.status});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
+      child: Row(
         children: [
+          Column(
+            children: [
+              /* Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                      onPressed: () =>
+                          {Navigator.of(context).pushNamed('/home/recolections')},
+                      icon: const Icon(Icons.search))), */
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: ColorsApp.prmaryColor,
+                      foregroundColor: Colors.white,
+                      child: Text(acronimous),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      tittle,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: ColorsApp.secondaryColor),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text(
+                      quantity,
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Productos',
+                      style: TextStyle(
+                          fontSize: 12, color: ColorsApp.secondaryColor),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              tittle,
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: ColorsApp.successColor),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Fecha:',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Text(
-                  date,
-                  style: const TextStyle(
-                      fontSize: 12, color: ColorsApp.secondaryColor),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Hora:',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Text(
-                  hours,
-                  style: const TextStyle(
-                      fontSize: 12, color: ColorsApp.secondaryColor),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Status:',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Text(
-                  status,
-                  style: const TextStyle(
-                      fontSize: 12, color: ColorsApp.secondaryColor),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Align(
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                        onPressed: () => {
-                              Navigator.of(context)
-                                  .pushNamed('/home/recolections')
-                            },
-                        icon: const Icon(Icons.search)))
-              ],
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/home/recolections');
+              },
+              child: const Text('validar Productos'),
+              style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: ColorsApp.warningColor,
+                  side: const BorderSide(color: ColorsApp.warningColor),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16))),
             ),
           ),
         ],

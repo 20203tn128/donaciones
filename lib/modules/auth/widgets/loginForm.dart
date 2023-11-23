@@ -23,23 +23,21 @@ class _LoginFormextendsState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inicio de sesion'),
-        backgroundColor: ColorsApp.successColor,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 16),
-              child: Image.asset(
-                'assets/images/logo-gob-zapata.jpg',
-                width: 400,
-                height: 300,
-              ),
+    return Align(
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            child: Image.asset(
+              'assets/images/logo-gob-zapata.jpg',
+              width: 300,
+              height: 300,
             ),
-            Form(
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
               key: _formKey,
               onChanged: () => {
                 setState(() {
@@ -47,9 +45,9 @@ class _LoginFormextendsState extends State<LoginForm> {
                 })
               },
               child: Column(
-                children: <Container>[
-                  Container(
-                    margin: EdgeInsets.all(16),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       decoration: const InputDecoration(
                           labelText: 'Correo electrónico: *'),
@@ -66,8 +64,8 @@ class _LoginFormextendsState extends State<LoginForm> {
                       keyboardType: TextInputType.emailAddress,
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.all(16),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       decoration:
                           const InputDecoration(labelText: 'Contraseña: *'),
@@ -96,15 +94,15 @@ class _LoginFormextendsState extends State<LoginForm> {
                             },
                       child: const Text('Iniciar sesion'),
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(300, 50),
+                          minimumSize: Size(100, 50),
                           backgroundColor: ColorsApp.successColor),
                     ),
                   ),
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

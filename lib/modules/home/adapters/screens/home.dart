@@ -21,28 +21,59 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> item = {
-      'title': 'Recoleccion en Chedraui',
-      'date': '12 de Diciembre del 2023',
-      'hours': '09:00 AM',
+      'title': 'Chedraui',
+      'acronimous': 'CH',
+      'quantity': '12',
       'status': 'Pendiente'
     };
+    final Map<String, dynamic> item2 = {
+      'title': 'Walmart',
+      'acronimous': 'WL',
+      'quantity': '12',
+      'status': 'Pendiente'
+    };
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de puntos de recogida'),
+        title: const Text('Recolecciones'),
+        backgroundColor: ColorsApp.prmaryColor,
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: <Widget>[
-              HomeContainer(
-                  tittle: item['title'],
-                  date: item['date'],
-                  hours: item['hours'],
-                  status: item['status'])
-            ],
-          ),
+      body: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/menu');
+                },
+                child: const Text('Buscar...'),
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: ColorsApp.secondaryColor,
+                    side: const BorderSide(color: ColorsApp.secondaryColor),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16))),
+              ),
+            ),
+            HomeContainer(
+                tittle: item['title'],
+                acronimous: item['acronimous'],
+                quantity: item['quantity'],
+                status: item['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status'])
+            // ListView(
+            //   padding: const EdgeInsets.all(16),
+            //   children: [
+
+            //   ],
+            // )
+          ],
         ),
       ),
     );

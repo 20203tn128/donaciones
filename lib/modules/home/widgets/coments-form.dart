@@ -20,68 +20,102 @@ class _ComentsFormState extends State<ComentsForm> {
         backgroundColor: ColorsApp.secondaryColor,
       ),
       body: SingleChildScrollView(
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          elevation: 5,
           child: Column(
-        children: [
-          Form(
-            key: _formKey,
-            onChanged: () => {},
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(16),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Comentarios: *',
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 1, color: ColorsApp.secondaryColor))),
-                    maxLines: 4,
-                    keyboardType: TextInputType.multiline,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(16),
-                  alignment: Alignment.bottomRight,
-                  child: FloatingActionButton(
-                    onPressed: () =>
-                        {Navigator.of(context).pushNamed('/home/coments-form')},
-                    child: Icon(
-                      Icons.camera_alt,
+            children: [
+              const Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 5,
+                  color: Color.fromARGB(255, 245, 219, 126),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.warning_amber_outlined),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Text(
+                            'Realiza un comentario referente a la recolección',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(115, 43, 42, 42)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      ElevatedButton(
+              ),
+              Form(
+                key: _formKey,
+                onChanged: () => {},
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(8),
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Comentarios: *',
+                          labelStyle: TextStyle(),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 1, color: ColorsApp.secondaryColor)),
+                        ),
+                        maxLines: 4,
+                        keyboardType: TextInputType.multiline,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(8),
+                      alignment: Alignment.bottomRight,
+                      child: FloatingActionButton(
                         onPressed: () => {
                           Navigator.of(context).pushNamed('/home/coments-form')
                         },
-                        child: const Text('Cancelar'),
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size(300, 50),
-                            backgroundColor: ColorsApp.dangerColor),
+                        child: const Icon(
+                          Icons.camera_alt,
+                        ),
                       ),
-                      SizedBox(
-                        width: 8,
-                      ), 
-                      ElevatedButton(
-                        onPressed: () => {
-                          Navigator.of(context).pushNamed('/home/coments-form')
-                        },
-                        child: const Text('Guardar'),
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size(300, 50),
-                            backgroundColor: ColorsApp.successColor),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      child: Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => {
+                              Navigator.of(context)
+                                  .pushNamed('/home/coments-form')
+                            },
+                            child: const Text('Cancelar'),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size(150, 50),
+                                backgroundColor: ColorsApp.dangerColor),
+                          ),
+                          const Spacer(),
+                          ElevatedButton(
+                            onPressed: () => {
+                              Navigator.of(context)
+                                  .pushNamed('/home/coments-form')
+                            },
+                            child: const Text('Guardar'),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size(150, 50),
+                                backgroundColor: ColorsApp.successColor),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
-        ],
+              )
+            ],
+          ),
+        ),
       )),
     );
   }

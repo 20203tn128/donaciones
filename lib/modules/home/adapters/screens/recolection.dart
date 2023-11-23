@@ -1,15 +1,31 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
 
-class Recolection extends StatelessWidget {
+class Recolection extends StatefulWidget {
   const Recolection({super.key});
 
   @override
+  State<Recolection> createState() => _RecolectionState();
+}
+
+class _RecolectionState extends State<Recolection> {
+  bool? isChecked = false;
+  @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return ColorsApp.successColor;
+      }
+      return ColorsApp.secondaryColor;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recolección'),
-        backgroundColor: ColorsApp.secondaryColor,
+        title: Text('Detalles de la recolección'),
+        backgroundColor: ColorsApp.prmaryColor,
       ),
       body: Container(
         child: Column(
@@ -17,171 +33,79 @@ class Recolection extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                'Productos',
+                'Lista de productos',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: ColorsApp.prmaryColor),
+                    color: ColorsApp.secondaryColor),
               ),
             ),
             Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Table(
-                  border: TableBorder.all(
-                      color: ColorsApp.prmaryColor,
-                      borderRadius: BorderRadius.circular(2)),
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 5,
+                child: Row(
                   children: [
-                    TableRow(children: <Widget>[
-                      Container(
-                          child: const Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Producto',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: ColorsApp.secondaryColor)),
-                      )),
-                      Container(
-                          child: const Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Cantidad',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: ColorsApp.secondaryColor)),
-                      )),
-                      Container(
-                          child: const Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Acciones',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: ColorsApp.secondaryColor)),
-                      ))
-                    ]),
-                    TableRow(children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(child: Text('Latas de atún')),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.food_bank,
+                        color: ColorsApp.warningColor,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(child: const Text('12 piezas')),
-                      ),
-                      Container(
-                        child: Row(
+                    ),
+                    Container(
+                        child: Column(
+                      children: [
+                        Row(
                           children: [
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/recolections')
-                                    },
-                                icon: const Icon(Icons.cancel,
-                                    color: ColorsApp.dangerColor)),
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/recolections')
-                                    },
-                                icon: const Icon(Icons.check_circle,
-                                    color: ColorsApp.successColor))
+                            Text('Chiles',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorsApp.secondaryColor)),
                           ],
                         ),
-                      ),
-                    ]),
-                    TableRow(children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(child: Text('Latas de atún')),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(child: const Text('12 piezas')),
-                      ),
-                      Container(
-                        child: Row(
+                        Row(
                           children: [
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/recolections')
-                                    },
-                                icon: const Icon(Icons.cancel,
-                                    color: ColorsApp.dangerColor)),
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/recolections')
-                                    },
-                                icon: const Icon(Icons.check_circle,
-                                    color: ColorsApp.successColor))
+                            Text('Cantidad:',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorsApp.secondaryColor)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('12 piezas')
                           ],
                         ),
-                      ),
-                    ]),
-                    TableRow(children: <Widget>[
-                      Padding(
+                      ],
+                    )),
+                    SizedBox(
+                      width: 110,
+                    ),
+                    Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(child: Text('Latas de atún')),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(child: const Text('12 piezas')),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/recolections')
-                                    },
-                                icon: const Icon(Icons.cancel,
-                                    color: ColorsApp.dangerColor)),
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/recolections')
-                                    },
-                                icon: const Icon(Icons.check_circle,
-                                    color: ColorsApp.successColor))
-                          ],
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(child: Text('Latas de atún')),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(child: const Text('12 piezas')),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/coments-form')
-                                    },
-                                icon: const Icon(Icons.cancel,
-                                    color: ColorsApp.dangerColor)),
-                            IconButton(
-                                onPressed: () => {
-                                      Navigator.of(context)
-                                          .pushNamed('/home/recolections')
-                                    },
-                                icon: const Icon(Icons.check_circle,
-                                    color: ColorsApp.successColor))
-                          ],
-                        ),
-                      ),
-                    ]),
+                        child: Checkbox(
+                          tristate: true,
+                          checkColor: Colors.white,
+                          fillColor:
+                              MaterialStateProperty.resolveWith(getColor),
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value;
+                              print(value);
+                              if (isChecked == null) {
+                                Navigator.of(context)
+                                    .pushNamed('/home/coments-form');
+                              }
+                            });
+                          },
+                        )),
                   ],
-                ))
+                ),
+              ),
+            ),
           ],
         ),
       ),
