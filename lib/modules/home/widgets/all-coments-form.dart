@@ -87,7 +87,7 @@ class _AllComentsFormState extends State<AllComentsForm> {
                           ElevatedButton(
                             onPressed: () => {
                               Navigator.of(context)
-                                  .pushNamed('/home/recolections')
+                                  .pushNamed('/home/recolections_detail')
                             },
                             child: const Text('Cancelar'),
                             style: ElevatedButton.styleFrom(
@@ -98,7 +98,7 @@ class _AllComentsFormState extends State<AllComentsForm> {
                           ElevatedButton(
                             onPressed: () => {
                               Navigator.of(context)
-                                  .pushNamed('/home/coments-form')
+                                  .pushNamed('/home/recolections')
                             },
                             child: const Text('Guardar'),
                             style: ElevatedButton.styleFrom(

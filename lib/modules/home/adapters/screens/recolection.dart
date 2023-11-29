@@ -1,81 +1,97 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
-import 'package:donaciones/modules/home/widgets/products-card.dart';
+import 'package:donaciones/kernel/widgets/navigation/botton-navigation-tab.dart';
+import 'package:donaciones/modules/home/widgets/home-container.dart';
 import 'package:flutter/material.dart';
 
 class Recolection extends StatefulWidget {
   const Recolection({super.key});
 
   @override
-  State<Recolection> createState() => _RecolectionState();
+  State<Recolection> createState() => _HomeState();
 }
 
-class _RecolectionState extends State<Recolection> {
+class _HomeState extends State<Recolection> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> item = {
+      'title': 'Chedraui',
+      'acronimous': 'CH',
+      'quantity': '12',
+      'status': 'Pendiente'
+    };
+    final Map<String, dynamic> item2 = {
+      'title': 'Walmart',
+      'acronimous': 'WL',
+      'quantity': '12',
+      'status': 'Pendiente'
+    };
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalles de la recolección'),
+        title: const Text('Recolecciones'),
         backgroundColor: ColorsApp.prmaryColor,
       ),
       body: Container(
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Lista de productos',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: ColorsApp.secondaryColor),
-              ),
-            ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  ProductCard(),
-                  ProductCard(),
-                  ProductCard(),
-                  ProductCard(),
-                  ProductCard(),
-                  ProductCard()
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Text("Buscar"),
+                  Expanded(child: TextField()),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.search),
+                  )
                 ],
               ),
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    'Total:',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Text(
-                  '12',
-                  style: TextStyle(fontSize: 16, color: Colors.black45),
-                ),
-                SizedBox(
-                  width: 180,
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/home/all-coments-form');
-                    },
-                    child: const Text('Guardar'),
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: ColorsApp.successColor,
-                        side: const BorderSide(color: ColorsApp.successColor),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16))),
-                  ),
-                ),
-              ],
-            ),
+            HomeContainer(
+                tittle: item['title'],
+                acronimous: item['acronimous'],
+                quantity: item['quantity'],
+                status: item['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+
+            // ListView(
+            //   padding: const EdgeInsets.all(16),
+            //   children: [
+
+            //   ],
+            // )
           ],
         ),
       ),
