@@ -118,7 +118,7 @@ class Dashboard extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed('/menu');
                 },
-                child: const Text('Ir a mis recolecciones'),
+                child: const Text('Ir a mis repartos'),
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(300, 50),
                     shape: RoundedRectangleBorder(

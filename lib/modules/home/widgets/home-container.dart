@@ -79,7 +79,8 @@ class HomeContainer extends StatelessWidget {
                   SizedBox(width: 40),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/home/recolections');
+                      Navigator.of(context)
+                          .pushNamed('/home/recolections_detail');
                     },
                     child: const Text('validar Productos'),
                     style: OutlinedButton.styleFrom(
