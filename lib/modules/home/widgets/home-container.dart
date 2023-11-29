@@ -4,65 +4,95 @@ import 'package:flutter/widgets.dart';
 
 class HomeContainer extends StatelessWidget {
   final String tittle;
-  final String description;
-  final String imageUri;
+  final String acronimous;
+  final String quantity;
+  final String status;
 
   const HomeContainer(
       {super.key,
       required this.tittle,
-      required this.description,
-      required this.imageUri});
+      required this.acronimous,
+      required this.quantity,
+      required this.status});
 
   @override
   Widget build(BuildContext context) {
-    double widthImage = MediaQuery.of(context).size.width;
     return Card(
-      elevation: 5,
-      child: Column(
+      child: Row(
         children: [
-          Image.asset(
-            'assets/images/logo-gob-zapata.jpg',
-            width: widthImage,
-            height: 150,
-            fit: BoxFit.fitWidth,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 64,
-                  child: Text(
-                    tittle,
-                    style: const TextStyle(
-                        fontSize: 10, fontWeight: FontWeight.bold),
-                  ),
+          Column(
+            children: [
+              /* Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                      onPressed: () =>
+                          {Navigator.of(context).pushNamed('/home/recolections')},
+                      icon: const Icon(Icons.search))), */
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: ColorsApp.prmaryColor,
+                      foregroundColor: Colors.white,
+                      child: Text(acronimous),
+                    ),
+                  ],
                 ),
-                const Spacer(),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                description,
-                style: const TextStyle(color: Colors.black54, fontSize: 8),
               ),
-            ),
+            ],
           ),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
-              child: const Text('Ver Mas'),
-              style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: ColorsApp.successColor,
-                  side: const BorderSide(color: ColorsApp.successColor),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)))),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    tittle,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: ColorsApp.secondaryColor),
+                  ),
+                  SizedBox(
+                    width: 100,
+                  ),
+                  Text(
+                    status,
+                    style: TextStyle(fontSize: 12, color: Colors.black45),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    quantity,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Productos',
+                    style: TextStyle(
+                        fontSize: 12, color: ColorsApp.secondaryColor),
+                  ),
+                  SizedBox(width: 40),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/home/recolections');
+                    },
+                    child: const Text('validar Productos'),
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: ColorsApp.warningColor,
+                        side: const BorderSide(color: ColorsApp.warningColor),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16))),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );

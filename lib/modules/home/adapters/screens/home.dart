@@ -21,38 +21,78 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> item = {
-      'title': 'iPhone 10',
-      'description': 'Nuevo iPhone 10 con pantalla tactil de retina',
-      'initialRating': 4.5,
-      'imageUri': 'assets/images/logo-gob-zapata.jpg'
+      'title': 'Chedraui',
+      'acronimous': 'CH',
+      'quantity': '12',
+      'status': 'Pendiente'
     };
+    final Map<String, dynamic> item2 = {
+      'title': 'Walmart',
+      'acronimous': 'WL',
+      'quantity': '12',
+      'status': 'Pendiente'
+    };
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de puntos de recogida'),
+        title: const Text('Recolecciones'),
+        backgroundColor: ColorsApp.prmaryColor,
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: const <Widget>[
-              HomeContainer(
-                tittle: 'Liz',
-                description: 'description',
-                imageUri: 'assets/images/logo-gob-zapata.jpg',
+      body: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Text("Buscar"),
+                  Expanded(child: TextField()),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.search),
+                  )
+                ],
               ),
-              HomeContainer(
-                tittle: 'Liz',
-                description: 'description',
-                imageUri: 'assets/images/logo-gob-zapata.jpg',
-              ),
-              HomeContainer(
-                tittle: 'Liz',
-                description: 'description',
-                imageUri: 'assets/images/logo-gob-zapata.jpg',
-              )
-            ],
-          ),
+            ),
+            HomeContainer(
+                tittle: item['title'],
+                acronimous: item['acronimous'],
+                quantity: item['quantity'],
+                status: item['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+            HomeContainer(
+                tittle: item2['title'],
+                acronimous: item2['acronimous'],
+                quantity: item2['quantity'],
+                status: item2['status']),
+
+            // ListView(
+            //   padding: const EdgeInsets.all(16),
+            //   children: [
+
+            //   ],
+            // )
+          ],
         ),
       ),
     );

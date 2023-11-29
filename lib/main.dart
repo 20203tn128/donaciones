@@ -18,7 +18,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const Login(),
-        '/menu':(context)=> const Menu(),
+        '/menu': (context) => const Menu(),
       },
     );
   }
