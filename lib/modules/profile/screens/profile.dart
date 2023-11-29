@@ -344,17 +344,16 @@ class _ProfileState extends State<Profile> {
                                                         ? null
                                                         : () async {
                                                             print(
-                                                                '$_password $_passwordConfirm');
+                                                                '$_password,$_passwordConfirm');
                                                             //var response = await dio.post<Response>('/api/v1/login', data: {'email': _email, 'password': _password});
-
                                                             Navigator.of(
                                                                     context)
                                                                 .pushNamed(
                                                                     '/settings');
                                                           },
                                                     child: const Text(
-                                                        'Modificar contraseña'),
-                                                    style: OutlinedButton.styleFrom(
+                                                        'Confirmar contraseña'),
+                                                    style: ElevatedButton.styleFrom(
                                                         minimumSize:
                                                             Size(300, 50),
                                                         shape: RoundedRectangleBorder(
