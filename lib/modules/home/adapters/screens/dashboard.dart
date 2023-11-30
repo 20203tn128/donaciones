@@ -116,7 +116,7 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/menu');
+                  Navigator.of(context).pushNamed('/home/delivery');
                 },
                 child: const Text('Ir a mis repartos'),
                 style: ElevatedButton.styleFrom(

@@ -1,4 +1,6 @@
 import 'package:donaciones/kernel/widgets/navigation/menu.dart';
+import 'package:donaciones/modules/delivery/adapters/screens/delivery.dart';
+import 'package:donaciones/modules/delivery/adapters/screens/delivery_route.dart';
 import 'package:donaciones/modules/home/adapters/screens/dashboard.dart';
 import 'package:donaciones/modules/home/adapters/screens/recolection.dart';
 import 'package:donaciones/modules/home/adapters/screens/recolection_detail.dart';
@@ -20,6 +22,8 @@ class HomeStack extends StatelessWidget {
           '/home/recolections_detail': (context) => const RecolectionDetail(),
           '/home/coments-form': (context) => const ComentsForm(),
           '/home/all-coments-form': (context) => const AllComentsForm(),
+          '/home/delivery': (context) => const Delivery(),
+          '/home/delivery-route': (context) => const DeliveryRoute(),
         });
   }
 }
