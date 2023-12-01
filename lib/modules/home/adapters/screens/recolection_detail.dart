@@ -63,7 +63,7 @@ class _RecolectionState extends State<RecolectionDetail> {
                   alignment: Alignment.bottomLeft,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/home/all-coments-form');
+                      Navigator.pushNamed(context, '/home/all-coments-form');
                     },
                     child: const Text('Guardar'),
                     style: OutlinedButton.styleFrom(

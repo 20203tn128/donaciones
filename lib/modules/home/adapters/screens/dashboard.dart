@@ -102,7 +102,7 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/home/recolections');
+                  Navigator.pushNamed(context, '/home/recolections');
                 },
                 child: const Text('Ir a mis recolecciones'),
                 style: ElevatedButton.styleFrom(
@@ -116,7 +116,7 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/home/delivery');
+                  Navigator.pushNamed(context, '/home/delivery');
                 },
                 child: const Text('Ir a mis repartos'),
                 style: ElevatedButton.styleFrom(

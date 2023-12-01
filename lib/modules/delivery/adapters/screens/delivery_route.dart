@@ -11,13 +11,18 @@ class DeliveryRoute extends StatelessWidget {
       'number': '1',
       'title': 'Otilio Montaño',
       'acronimous': 'OM',
+      'name': 'Luis Perez',
+      'phone': '7771234567',
       'address': 'Calle Otilio Motaño # 234',
-      'references': 'Parque'
+      'references':
+          'Parque sdjgfkasgdfkgasdfhgashdfjsadvjvsdachjvwsaegflweqfguigsadjhfsahvdfasdjfyawegflywfhvsdfv,safd,absfdawyerfyauwrvfjhz'
     };
     final Map<String, dynamic> item2 = {
       'number': '2',
       'title': '3 De Mayo',
       'acronimous': '3M',
+      'name': 'Luis Perez',
+      'phone': '7771234567',
       'address': 'Calle Otilio Motaño # 234',
       'references': 'Parque'
     };
@@ -27,23 +32,29 @@ class DeliveryRoute extends StatelessWidget {
         title: Text('Ruta de entrega'),
         backgroundColor: ColorsApp.prmaryColor,
       ),
-      body: Column(
-        children: [
-          DeliveruRouteContainer(
-            acronimous: item['acronimous'],
-            tittle: item['title'],
-            adress: item['address'],
-            references: item['references'],
-            number: item['number'],
-          ),
-          DeliveruRouteContainer(
-            acronimous: item2['acronimous'],
-            tittle: item2['title'],
-            adress: item2['address'],
-            references: item2['references'],
-            number: item2['number'],
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            DeliveruRouteContainer(
+              acronimous: item['acronimous'],
+              tittle: item['title'],
+              adress: item['address'],
+              references: item['references'],
+              number: item['number'],
+              name: item['name'],
+              phone: item['phone'],
+            ),
+            DeliveruRouteContainer(
+              acronimous: item2['acronimous'],
+              tittle: item2['title'],
+              adress: item2['address'],
+              references: item2['references'],
+              number: item2['number'],
+              name: item['name'],
+              phone: item['phone'],
+            ),
+          ],
+        ),
       ),
     );
   }

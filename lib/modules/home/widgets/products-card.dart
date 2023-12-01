@@ -75,7 +75,7 @@ class _ProductCardState extends State<ProductCard> {
                     isChecked = value;
                     print(value);
                     if (isChecked == null) {
-                      Navigator.of(context).pushNamed('/home/coments-form');
+                      Navigator.pushNamed(context, '/home/coments-form');
                     }
                   });
                 },

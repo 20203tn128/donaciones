@@ -1,5 +1,4 @@
 import 'package:donaciones/config/navigation/home_stack.dart';
-import 'package:donaciones/config/navigation/settings_stack.dart';
 import 'package:donaciones/kernel/widgets/navigation/botton-navigation-tab.dart';
 import 'package:donaciones/modules/profile/screens/profile.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,6 @@ class _MenuState extends State<Menu> {
         index: _selectedIndex,
         children: const [
           HomeStack(),
-          SettingsStack(),
         ],
       ),
       bottomNavigationBar: BottomNavigationTab(
