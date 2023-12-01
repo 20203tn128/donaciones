@@ -15,10 +15,6 @@ class _ComentsFormState extends State<ComentsForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Agregar Comentarios'),
-        backgroundColor: ColorsApp.prmaryColor,
-      ),
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.only(top: 16, left: 8, right: 8),

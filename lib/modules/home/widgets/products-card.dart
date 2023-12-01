@@ -1,4 +1,5 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/home/widgets/coments-form.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
@@ -9,17 +10,20 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+  final _formKey = GlobalKey<FormState>();
   bool? isChecked = false;
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
+        MaterialState.selected,
+        MaterialState.hovered,
+        MaterialState.focused,
       };
       if (states.any(interactiveStates.contains)) {
         return ColorsApp.successColor;
       }
-      return ColorsApp.secondaryColor;
+      return Colors.black45;
     }
 
     return Card(
@@ -29,22 +33,17 @@ class _ProductCardState extends State<ProductCard> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(
-              Icons.food_bank,
-              color: ColorsApp.warningColor,
+              Icons.inventory_2_rounded,
+              color: Colors.black45,
             ),
           ),
-          Container(
-              child: Column(
+          Column(
             children: [
-              Row(
-                children: [
-                  Text('Chiles',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: ColorsApp.secondaryColor)),
-                ],
-              ),
+              Text('Chiles',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: ColorsApp.secondaryColor)),
               Row(
                 children: [
                   Text('Cantidad:',
@@ -53,33 +52,65 @@ class _ProductCardState extends State<ProductCard> {
                           fontWeight: FontWeight.bold,
                           color: ColorsApp.secondaryColor)),
                   SizedBox(
-                    width: 10,
+                    width: 6,
                   ),
-                  Text('12 piezas')
+                  Text('12'),
                 ],
-              ),
+              )
             ],
-          )),
-          SizedBox(
-            width: 110,
           ),
+          Spacer(),
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: Checkbox(
-                tristate: true,
+                tristate: false,
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
                 value: isChecked,
                 onChanged: (bool? value) {
                   setState(() {
                     isChecked = value;
-                    print(value);
-                    if (isChecked == null) {
-                      Navigator.of(context).pushNamed('/home/coments-form');
-                    }
                   });
                 },
               )),
+          IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 400,
+                      child: Center(
+                        child: ComentsForm(),
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.note_add_rounded,
+                color: Colors.black45,
+                semanticLabel: 'Agrega nota',
+              )),
+          IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 400,
+                      child: Center(
+                        child: ComentsForm(),
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.info_outline_rounded,
+                color: ColorsApp.prmaryColor,
+                semanticLabel: 'Detalles',
+              ))
         ],
       ),
     );
