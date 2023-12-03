@@ -4,6 +4,7 @@ import 'package:donaciones/modules/home/adapters/screens/recolection.dart';
 import 'package:donaciones/modules/home/adapters/screens/recolection_detail.dart';
 import 'package:donaciones/modules/home/widgets/all-coments-form.dart';
 import 'package:donaciones/modules/home/widgets/coments-form.dart';
+import 'package:donaciones/modules/home/widgets/products_detail.dart';
 import 'package:flutter/material.dart';
 
 class HomeStack extends StatelessWidget {

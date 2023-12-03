@@ -1,5 +1,6 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/home/widgets/coments-form.dart';
+import 'package:donaciones/modules/home/widgets/products_detail.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
@@ -100,7 +101,7 @@ class _ProductCardState extends State<ProductCard> {
                     return Container(
                       height: 400,
                       child: Center(
-                        child: ComentsForm(),
+                        child: ProductsDetail(),
                       ),
                     );
                   },
