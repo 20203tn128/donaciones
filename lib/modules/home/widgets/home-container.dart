@@ -204,7 +204,18 @@ class HomeContainer extends StatelessWidget {
                         fontSize: 12, color: ColorsApp.secondaryColor),
                   ),
                   SizedBox(width: 40),
-                  
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/home/recolections_detail');
+                    },
+                    child: const Text('validar Productos'),
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: ColorsApp.warningColor,
+                        side: const BorderSide(color: ColorsApp.warningColor),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16))),
+                  ),
                 ],
               ),
             ],

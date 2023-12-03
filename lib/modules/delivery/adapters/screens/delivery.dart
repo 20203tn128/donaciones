@@ -23,30 +23,32 @@ class Delivery extends StatelessWidget {
         title: Text('Repartos'),
         backgroundColor: ColorsApp.prmaryColor,
       ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        child: Column(children: [
-          Row(
-            children: [
-              Text("Buscar"),
-              Expanded(child: TextField()),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.search),
-              )
-            ],
-          ),
-          DeliveryContainer(
-            tittle: item['title'],
-            acronimous: item['acronimous'],
-            date: item['date'],
-          ),
-          DeliveryContainer(
-            tittle: item2['title'],
-            acronimous: item2['acronimous'],
-            date: item2['date'],
-          ),
-        ]),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Column(children: [
+            Row(
+              children: [
+                Text("Buscar"),
+                Expanded(child: TextField()),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.search),
+                )
+              ],
+            ),
+            DeliveryContainer(
+              tittle: item['title'],
+              acronimous: item['acronimous'],
+              date: item['date'],
+            ),
+            DeliveryContainer(
+              tittle: item2['title'],
+              acronimous: item2['acronimous'],
+              date: item2['date'],
+            ),
+          ]),
+        ),
       ),
     );
   }

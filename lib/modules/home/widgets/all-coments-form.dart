@@ -69,7 +69,7 @@ class _AllComentsFormState extends State<AllComentsForm> {
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
                         onPressed: () => {
-                          Navigator.of(context).pushNamed('/home/coments-form')
+                          Navigator.pushNamed(context, '/home/coments-form')
                         },
                         child: const Icon(
                           Icons.camera_alt,
@@ -82,8 +82,8 @@ class _AllComentsFormState extends State<AllComentsForm> {
                         children: [
                           ElevatedButton(
                             onPressed: () => {
-                              Navigator.of(context)
-                                  .pushNamed('/home/recolections_detail')
+                              Navigator.pushNamed(
+                                  context, '/home/recolections_detail')
                             },
                             child: const Text('Cancelar'),
                             style: ElevatedButton.styleFrom(
@@ -93,8 +93,7 @@ class _AllComentsFormState extends State<AllComentsForm> {
                           const Spacer(),
                           ElevatedButton(
                             onPressed: () => {
-                              Navigator.of(context)
-                                  .pushNamed('/home/recolections')
+                              Navigator.pushNamed(context, '/home/recolections')
                             },
                             child: const Text('Guardar'),
                             style: ElevatedButton.styleFrom(

@@ -109,7 +109,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                                     print('$_email $_password');
                                     //var response = await dio.post<Response>('/api/v1/login', data: {'email': _email, 'password': _password});
                                     print('$_email $_password');
-                                    Navigator.of(context).pushNamed('/menu');
+                                    Navigator.pushNamed(context, '/menu');
                                   },
                             child: const Text('Iniciar sesion'),
                             style: ElevatedButton.styleFrom(

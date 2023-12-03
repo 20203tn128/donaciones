@@ -150,13 +150,6 @@ class _ComentsFormState extends State<ComentsForm> {
                               );
                             },
                           )
-                          /* showModalBottomSheet(
-
-                            context: context,
-                            builder: (BuildContext context) {
-                              return 
-                            },
-                          ) */
                         },
                         child: const Icon(
                           Icons.camera_alt,
@@ -169,8 +162,8 @@ class _ComentsFormState extends State<ComentsForm> {
                         children: [
                           ElevatedButton(
                             onPressed: () => {
-                              Navigator.of(context)
-                                  .pushNamed('/home/recolections')
+                              Navigator.pushNamed(
+                                  context, '/home/recolections_detail')
                             },
                             child: const Text('Cancelar'),
                             style: ElevatedButton.styleFrom(
@@ -180,8 +173,8 @@ class _ComentsFormState extends State<ComentsForm> {
                           const Spacer(),
                           ElevatedButton(
                             onPressed: () => {
-                              Navigator.of(context)
-                                  .pushNamed('/home/coments-form')
+                              Navigator.pushNamed(
+                                  context, '/home/recolections_detail')
                             },
                             child: const Text('Guardar'),
                             style: ElevatedButton.styleFrom(
