@@ -14,10 +14,6 @@ class _AllComentsFormState extends State<AllComentsForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Comentarios Generales'),
-        backgroundColor: ColorsApp.prmaryColor,
-      ),
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
