@@ -1,4 +1,5 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/home/widgets/all-coments-form.dart';
 import 'package:donaciones/modules/home/widgets/products-card.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +64,17 @@ class _RecolectionState extends State<RecolectionDetail> {
                   alignment: Alignment.bottomLeft,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/home/all-coments-form');
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: 400,
+                            child: Center(
+                              child: AllComentsForm(),
+                            ),
+                          );
+                        },
+                      );
                     },
                     child: const Text('Guardar'),
                     style: OutlinedButton.styleFrom(

@@ -38,61 +38,63 @@ class _HomeState extends State<Recolection> {
         title: const Text('Recolecciones'),
         backgroundColor: ColorsApp.prmaryColor,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                children: <Widget>[
-                  Text("Buscar"),
-                  Expanded(child: TextField()),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.search),
-                  )
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Text("Buscar"),
+                    Expanded(child: TextField()),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.search),
+                    )
+                  ],
+                ),
               ),
-            ),
-            HomeContainer(
-                tittle: item['title'],
-                acronimous: item['acronimous'],
-                quantity: item['quantity'],
-                status: item['status']),
-            HomeContainer(
-                tittle: item2['title'],
-                acronimous: item2['acronimous'],
-                quantity: item2['quantity'],
-                status: item2['status']),
-            HomeContainer(
-                tittle: item2['title'],
-                acronimous: item2['acronimous'],
-                quantity: item2['quantity'],
-                status: item2['status']),
-            HomeContainer(
-                tittle: item2['title'],
-                acronimous: item2['acronimous'],
-                quantity: item2['quantity'],
-                status: item2['status']),
-            HomeContainer(
-                tittle: item2['title'],
-                acronimous: item2['acronimous'],
-                quantity: item2['quantity'],
-                status: item2['status']),
-            HomeContainer(
-                tittle: item2['title'],
-                acronimous: item2['acronimous'],
-                quantity: item2['quantity'],
-                status: item2['status']),
+              HomeContainer(
+                  tittle: item['title'],
+                  acronimous: item['acronimous'],
+                  quantity: item['quantity'],
+                  status: item['status']),
+              HomeContainer(
+                  tittle: item2['title'],
+                  acronimous: item2['acronimous'],
+                  quantity: item2['quantity'],
+                  status: item2['status']),
+              HomeContainer(
+                  tittle: item2['title'],
+                  acronimous: item2['acronimous'],
+                  quantity: item2['quantity'],
+                  status: item2['status']),
+              HomeContainer(
+                  tittle: item2['title'],
+                  acronimous: item2['acronimous'],
+                  quantity: item2['quantity'],
+                  status: item2['status']),
+              HomeContainer(
+                  tittle: item2['title'],
+                  acronimous: item2['acronimous'],
+                  quantity: item2['quantity'],
+                  status: item2['status']),
+              HomeContainer(
+                  tittle: item2['title'],
+                  acronimous: item2['acronimous'],
+                  quantity: item2['quantity'],
+                  status: item2['status']),
 
-            // ListView(
-            //   padding: const EdgeInsets.all(16),
-            //   children: [
+              // ListView(
+              //   padding: const EdgeInsets.all(16),
+              //   children: [
 
-            //   ],
-            // )
-          ],
+              //   ],
+              // )
+            ],
+          ),
         ),
       ),
     );
