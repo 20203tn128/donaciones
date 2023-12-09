@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:dio/dio.dart';
 
-final dio = Dio(BaseOptions(baseUrl: ''));
+final dio = Dio();
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -103,14 +103,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                         Container(
                           padding: const EdgeInsets.all(16),
                           child: ElevatedButton(
-                            onPressed: _isButtonDesabled
-                                ? null
-                                : () async {
-                                    print('$_email $_password');
-                                    //var response = await dio.post<Response>('/api/v1/login', data: {'email': _email, 'password': _password});
-                                    print('$_email $_password');
-                                    Navigator.pushNamed(context, '/menu');
-                                  },
+                            onPressed: _isButtonDesabled ? null : () async {},
                             child: const Text('Iniciar sesion'),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: Size(100, 50),
