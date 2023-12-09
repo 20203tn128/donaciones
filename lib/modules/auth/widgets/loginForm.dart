@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/validations/validations-app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:dio/dio.dart';
 
-final dio = Dio(BaseOptions(baseUrl: ''));
+final dio = Dio();
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -106,10 +104,21 @@ class _LoginFormextendsState extends State<LoginForm> {
                             onPressed: _isButtonDesabled
                                 ? null
                                 : () async {
-                                    print('$_email $_password');
-                                    //var response = await dio.post<Response>('/api/v1/login', data: {'email': _email, 'password': _password});
-                                    print('$_email $_password');
-                                    Navigator.pushNamed(context, '/menu');
+                                    try {
+                                      print('Entra al try');
+                                      var response = await dio.post<Response>(
+                                          'http://127.0.0.1:3000/login',
+                                          data: {
+                                            'email': _email.text,
+                                            'password': _password.text
+                                          });
+                                      print(response);
+                                      print('Esto debio de imprimir algo :v');
+                                      Navigator.pushNamed(context, '/menu');
+                                    } catch (e) {
+                                      print('Va directo al error');
+                                      print('Error: $e');
+                                    }
                                   },
                             child: const Text('Iniciar sesion'),
                             style: ElevatedButton.styleFrom(
