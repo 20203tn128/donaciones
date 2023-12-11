@@ -8,6 +8,7 @@ import 'package:donaciones/modules/home/adapters/screens/recolection_detail.dart
 import 'package:donaciones/modules/home/widgets/all-coments-form.dart';
 import 'package:donaciones/modules/home/widgets/coments-form.dart';
 import 'package:donaciones/modules/home/widgets/products_detail.dart';
+import 'package:donaciones/modules/profile/screens/profile.dart';
 import 'package:flutter/material.dart';
 
 class HomeStack extends StatelessWidget {
@@ -27,6 +28,7 @@ class HomeStack extends StatelessWidget {
           '/home/delivery': (context) => const Delivery(),
           '/home/delivery-route': (context) => const DeliveryRoute(),
           '/home/start-delivery': (context) => const StartDevlivery(),
+          '/home/profile': (context) => const Profile(),
         });
   }
 }

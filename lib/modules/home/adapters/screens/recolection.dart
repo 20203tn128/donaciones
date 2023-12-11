@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/widgets/navigation/botton-navigation-tab.dart';
 import 'package:donaciones/modules/home/widgets/home-container.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Recolection extends StatefulWidget {
   const Recolection({super.key});
@@ -18,21 +20,55 @@ class _HomeState extends State<Recolection> {
     });
   }
 
+  List<dynamic> items = [
+    // {
+    //   'title': 'Chedraui',
+    //   'acronimous': 'CH',
+    //   'quantity': '12',
+    //   'status': 'Pendiente'
+    // },
+    // {
+    //   'title': 'Walmart',
+    //   'acronimous': 'WL',
+    //   'quantity': '12',
+    //   'status': 'Pendiente'
+    // }
+  ];
+
+  final dio = Dio();
+  Future<void> init() async {
+    Response response;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = await prefs.getString('token')!;
+    response = await dio.get('http://192.168.75.139:3000/pickups',
+        queryParameters: {'page': 1, 'rowsPerPage': 1},
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    setState(() {
+      items = response.data['data']['pickups']
+          .map((e) => {
+                'title': e['name'],
+                'acronimous': e['name'].substring(0, 2).toUpperCase(),
+                'quantity': e['products'].length,
+                'status': e['status'],
+                'address': e['chain']['address'],
+                'personName': e['chain']['nameLinkPerson'],
+                'phones': e['chain']['phones'],
+                'chainsName': e['chain']['name'],
+              })
+          .toList();
+    });
+
+    print(response.data['data']['chains']);
+    print(response.data['data']['chains'].runtimeType);
+  }
+
+  @override
+  void initState() {
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> item = {
-      'title': 'Chedraui',
-      'acronimous': 'CH',
-      'quantity': '12',
-      'status': 'Pendiente'
-    };
-    final Map<String, dynamic> item2 = {
-      'title': 'Walmart',
-      'acronimous': 'WL',
-      'quantity': '12',
-      'status': 'Pendiente'
-    };
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Recolecciones'),
@@ -56,37 +92,19 @@ class _HomeState extends State<Recolection> {
                   ],
                 ),
               ),
-              HomeContainer(
-                  tittle: item['title'],
-                  acronimous: item['acronimous'],
-                  quantity: item['quantity'],
-                  status: item['status']),
-              HomeContainer(
-                  tittle: item2['title'],
-                  acronimous: item2['acronimous'],
-                  quantity: item2['quantity'],
-                  status: item2['status']),
-              HomeContainer(
-                  tittle: item2['title'],
-                  acronimous: item2['acronimous'],
-                  quantity: item2['quantity'],
-                  status: item2['status']),
-              HomeContainer(
-                  tittle: item2['title'],
-                  acronimous: item2['acronimous'],
-                  quantity: item2['quantity'],
-                  status: item2['status']),
-              HomeContainer(
-                  tittle: item2['title'],
-                  acronimous: item2['acronimous'],
-                  quantity: item2['quantity'],
-                  status: item2['status']),
-              HomeContainer(
-                  tittle: item2['title'],
-                  acronimous: item2['acronimous'],
-                  quantity: item2['quantity'],
-                  status: item2['status']),
-
+              Column(
+                  children: items
+                      .map((e) => HomeContainer(
+                            tittle: e['title'],
+                            acronimous: e['acronimous'],
+                            quantity: e['quantity'].toString(),
+                            status: e['status'],
+                            address: e['address'],
+                            personName: e['personName'],
+                            phones: e['phones'].whereType<String>().toList(),
+                            chainsName: e['chainsName'],
+                          ))
+                      .toList()),
               // ListView(
               //   padding: const EdgeInsets.all(16),
               //   children: [

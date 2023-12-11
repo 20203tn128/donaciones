@@ -1,19 +1,29 @@
+import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeContainer extends StatelessWidget {
   final String tittle;
   final String acronimous;
   final String quantity;
   final String status;
+  final String address;
+  final String personName;
+  final String chainsName;
+  final List<String> phones;
 
   const HomeContainer(
       {super.key,
       required this.tittle,
       required this.acronimous,
       required this.quantity,
-      required this.status});
+      required this.status,
+      required this.address,
+      required this.personName,
+      required this.phones,
+      required this.chainsName});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +36,15 @@ class HomeContainer extends StatelessWidget {
             ),
             title: Row(
               children: [
-                Text(
-                  tittle,
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: ColorsApp.secondaryColor),
+                SizedBox(
+                  width: 120,
+                  child: Text(
+                    tittle,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: ColorsApp.secondaryColor),
+                  ),
                 ),
                 Spacer(),
                 Text(
@@ -66,7 +79,7 @@ class HomeContainer extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Detalles de la Cadena',
+                            'Detalles de la cadena $chainsName',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -82,8 +95,7 @@ class HomeContainer extends StatelessWidget {
                             ),
                             SizedBox(
                                 width: 180,
-                                child: Text(
-                                    'Colonia Palo escrito entre 34 y 62 ',
+                                child: Text(address,
                                     style: TextStyle(
                                         fontSize: 12, color: Colors.black45))),
                           ],
@@ -95,7 +107,7 @@ class HomeContainer extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             ),
-                            Text('Luis Angel Estrada',
+                            Text(personName,
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black45))
                           ],
@@ -103,13 +115,17 @@ class HomeContainer extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Teléfono: ',
+                              'Teléfonos: ',
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             ),
-                            Text('7771456234',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.black45))
+                            Row(
+                              children: phones
+                                  .map((e) => Text(e,
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.black45)))
+                                  .toList(),
+                            )
                           ],
                         ),
                       ]),
@@ -119,7 +135,19 @@ class HomeContainer extends StatelessWidget {
                 Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        final dio = Dio();
+                        var response = await dio.get(
+                            'http://192.168.75.139:3000/pickups',
+                            queryParameters: {'page': 1, 'rowsPerPage': 1},
+                            options: Options(
+                                headers: {'Authorization': 'Bearer $token'}));
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.setString(
+                            'token', response.data['data']['token']);
+                        await prefs.setString(
+                            'id', response.data['data']['pickups']['id']);
                         Navigator.of(context)
                             .pushNamed('/home/recolections_detail');
                       },

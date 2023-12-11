@@ -25,6 +25,7 @@ class _MenuState extends State<Menu> {
         index: _selectedIndex,
         children: const [
           HomeStack(),
+          Profile(),
         ],
       ),
       bottomNavigationBar: BottomNavigationTab(

@@ -4,7 +4,9 @@ import 'package:donaciones/modules/home/widgets/products_detail.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
-  const ProductCard({super.key});
+  final String name;
+  final int quantity;
+  const ProductCard({super.key, required this.name, required this.quantity});
 
   @override
   State<ProductCard> createState() => _ProductCardState();

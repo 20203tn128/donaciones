@@ -1,8 +1,19 @@
+import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final dio = Dio();
+  int recolections = 3;
+  int delivery = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +47,7 @@ class Dashboard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '3',
+                              recolections.toString(),
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -74,7 +85,7 @@ class Dashboard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '1',
+                              delivery.toString(),
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,

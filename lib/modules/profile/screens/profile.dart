@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/validations/validations-app.dart';
 import 'package:donaciones/modules/profile/widgets/password-form.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({
@@ -21,6 +23,41 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _phone = TextEditingController(text: '');
   final _phoneFormKey = GlobalKey<FormState>();
   bool _isphoneDesabled = true;
+  String name = '';
+  String fullName = '';
+  String lastname = '';
+  String secondSurname = '';
+  String acronimus = '';
+  String phone = '';
+  String email = '';
+  String role = '';
+  final dio = Dio();
+
+  Future<void> init() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var id = await prefs.getString('id')!;
+    var token = await prefs.getString('token')!;
+    Response response = await dio.get('http://192.168.75.139:3000/users/$id',
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    setState(() {
+      name = response.data['data']['user']['name'];
+      lastname = response.data['data']['user']['lastname'];
+      secondSurname = response.data['data']['user']['secondSurname'] ?? '';
+      fullName = '$name $lastname $secondSurname';
+
+      acronimus = response.data['data']['user']['name'][0].toUpperCase() +
+          response.data['data']['user']['lastname'][0].toUpperCase();
+      role = response.data['data']['user']['role'];
+      phone = response.data['data']['user']['phone'];
+      email = response.data['data']['user']['email'];
+    });
+    print(response.data);
+  }
+
+  initState() {
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +71,14 @@ class _ProfileState extends State<Profile> {
             alignment: Alignment.topCenter,
             child: Column(
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
                       backgroundColor: ColorsApp.secondaryColor,
                       foregroundColor: Colors.white,
                       child: Text(
-                        'LC',
+                        acronimus,
                         style: TextStyle(fontSize: 60),
                       ),
                       maxRadius: 60,
@@ -51,7 +88,7 @@ class _ProfileState extends State<Profile> {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    'Liz Claudia Espinosa',
+                    fullName,
                     style: TextStyle(fontSize: 24),
                   ),
                 ),
@@ -76,7 +113,7 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 Row(
                                   children: [
-                                    const Text('liz25@gob.co'),
+                                    Text(email),
                                   ],
                                 ),
                                 const Text(
@@ -98,7 +135,7 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 Row(
                                   children: [
-                                    const Text('+ 777-123-456'),
+                                    Text(phone),
                                   ],
                                 ),
                                 const Text(
@@ -117,114 +154,158 @@ class _ProfileState extends State<Profile> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return SizedBox(
-                                            height: 250,
-                                            child: Center(
-                                              child: SingleChildScrollView(
-                                                  child: Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      'Modificar Teléfono',
-                                                      style: TextStyle(
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: ColorsApp
-                                                              .prmaryColor),
-                                                    ),
+                                            height: 450,
+                                            child: SingleChildScrollView(
+                                                child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
+                                                  child: Text(
+                                                    'Modificar Teléfono',
+                                                    style: TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: ColorsApp
+                                                            .prmaryColor),
                                                   ),
-                                                  Form(
-                                                    key: _phoneFormKey,
-                                                    onChanged: () => {
-                                                      setState(() {
-                                                        _isphoneDesabled =
-                                                            !_phoneFormKey
-                                                                .currentState!
-                                                                .validate();
-                                                      })
-                                                    },
-                                                    child: Column(
-                                                      children: <Container>[
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .all(16),
-                                                          child: TextFormField(
-                                                            decoration:
-                                                                const InputDecoration(
-                                                                    icon: Icon(
-                                                                      Icons
-                                                                          .phone,
-                                                                      color: ColorsApp
-                                                                          .secondaryColor,
-                                                                    ),
-                                                                    labelText:
-                                                                        'Teléfono: *'),
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .black45),
-                                                            validator: (value) {
-                                                              RegExp regex = RegExp(
-                                                                  ValidationsApp
-                                                                      .phone);
-                                                              if (value ==
-                                                                      null ||
-                                                                  value
-                                                                      .isEmpty) {
-                                                                return 'Campo obligatorio';
-                                                              } else if (!regex
-                                                                  .hasMatch(
-                                                                      value)) {
-                                                                return 'Introduce un número telefonico valido';
-                                                              }
-                                                              return null;
-                                                            },
-                                                            controller: _phone,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                          ),
+                                                ),
+                                                Form(
+                                                  key: _phoneFormKey,
+                                                  onChanged: () => {
+                                                    setState(() {
+                                                      _isphoneDesabled =
+                                                          !_phoneFormKey
+                                                              .currentState!
+                                                              .validate();
+                                                    })
+                                                  },
+                                                  child: Column(
+                                                    children: <Container>[
+                                                      Container(
+                                                        margin: const EdgeInsets
+                                                            .all(16),
+                                                        child: TextFormField(
+                                                          decoration:
+                                                              InputDecoration(
+                                                                  icon: Icon(
+                                                                    Icons.phone,
+                                                                    color: ColorsApp
+                                                                        .secondaryColor,
+                                                                  ),
+                                                                  labelText:
+                                                                      'Teléfono: *'),
+                                                          controller: _phone,
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              color: Colors
+                                                                  .black45),
+                                                          validator: (value) {
+                                                            RegExp regex = RegExp(
+                                                                ValidationsApp
+                                                                    .phone);
+                                                            if (value == null ||
+                                                                value.isEmpty) {
+                                                              return 'Campo obligatorio';
+                                                            } else if (!regex
+                                                                .hasMatch(
+                                                                    value)) {
+                                                              return 'Introduce un número telefonico valido';
+                                                            }
+                                                            return null;
+                                                          },
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
                                                         ),
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(16),
-                                                          child: ElevatedButton(
-                                                            onPressed:
-                                                                _isphoneDesabled
-                                                                    ? null
-                                                                    : () async {
-                                                                        print(
-                                                                            '$_phone');
-                                                                        //var response = await dio.post<Response>('/api/v1/login', data: {'email': _email, 'password': _password});
-                                                                        Navigator.of(context)
-                                                                            .pushNamed('/settings');
-                                                                      },
-                                                            child: const Text(
-                                                                'Guardar teléfono'),
-                                                            style: ElevatedButton.styleFrom(
-                                                                minimumSize:
-                                                                    Size(300,
-                                                                        50),
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            22)),
-                                                                backgroundColor:
-                                                                    ColorsApp
-                                                                        .successColor),
-                                                          ),
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16),
+                                                        child: ElevatedButton(
+                                                          onPressed:
+                                                              _isphoneDesabled
+                                                                  ? null
+                                                                  : () async {
+                                                                      final SharedPreferences
+                                                                          prefs =
+                                                                          await SharedPreferences
+                                                                              .getInstance();
+                                                                      var id = await prefs
+                                                                          .getString(
+                                                                              'id')!;
+                                                                      var token =
+                                                                          await prefs
+                                                                              .getString('token')!;
+                                                                      print(
+                                                                          '$_phone');
+                                                                      var response = await dio.put(
+                                                                          'http://192.168.75.139:3000/users/$id',
+                                                                          options:
+                                                                              Options(headers: {
+                                                                            'Authorization':
+                                                                                'Bearer $token'
+                                                                          }),
+                                                                          data: {
+                                                                            "name":
+                                                                                name,
+                                                                            "lastname":
+                                                                                lastname,
+                                                                            "secondSurname":
+                                                                                secondSurname,
+                                                                            "role":
+                                                                                role,
+                                                                            "phone":
+                                                                                _phone.text,
+                                                                          });
+                                                                      if (response
+                                                                              .data['statusCode'] ==
+                                                                          200) {
+                                                                        showDialog<
+                                                                            String>(
+                                                                          context:
+                                                                              context,
+                                                                          builder: (BuildContext context) =>
+                                                                              AlertDialog(
+                                                                            title:
+                                                                                const Text(
+                                                                              'Modificación exitosa',
+                                                                              style: TextStyle(color: ColorsApp.successColor),
+                                                                            ),
+                                                                            content:
+                                                                                const Text('¡Tu telefono se ha modificado de manera exitosa!'),
+                                                                            actions: <Widget>[
+                                                                              TextButton(
+                                                                                onPressed: () => Navigator.pushNamed(context, '/profile'),
+                                                                                child: const Text('Ok'),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                          child: const Text(
+                                                              'Guardar teléfono'),
+                                                          style: ElevatedButton.styleFrom(
+                                                              minimumSize:
+                                                                  Size(300, 50),
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              22)),
+                                                              backgroundColor:
+                                                                  ColorsApp
+                                                                      .successColor),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              )),
-                                            ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            )),
                                           );
                                         },
                                       )
@@ -243,135 +324,186 @@ class _ProfileState extends State<Profile> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                    height: 350,
-                                    child: Center(
-                                      child: SingleChildScrollView(
-                                          child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              'Modificar contraseña',
-                                              style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: ColorsApp.prmaryColor),
-                                            ),
+                                    height: 550,
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Modificar contraseña',
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: ColorsApp.prmaryColor),
                                           ),
-                                          Form(
-                                            key: _formKey,
-                                            onChanged: () => {
-                                              setState(() {
-                                                _isButtonDesabled = !_formKey
-                                                    .currentState!
-                                                    .validate();
-                                              })
-                                            },
-                                            child: Column(
-                                              children: <Container>[
-                                                Container(
-                                                  margin: EdgeInsets.all(16),
-                                                  child: TextFormField(
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            icon: Icon(
-                                                              Icons.key,
-                                                              color: ColorsApp
-                                                                  .secondaryColor,
-                                                            ),
-                                                            labelText:
-                                                                'Contraseña: *'),
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.black45),
-                                                    validator: (value) {
-                                                      RegExp regex = RegExp(
-                                                          ValidationsApp
-                                                              .password);
-                                                      if (value == null ||
-                                                          value.isEmpty) {
-                                                        return 'Campo obligatorio';
-                                                      } else if (!regex
-                                                          .hasMatch(value)) {
-                                                        return 'Introduce una contraseña valida';
-                                                      }
-                                                      return null;
-                                                    },
-                                                    controller: _password,
-                                                    keyboardType: TextInputType
-                                                        .visiblePassword,
-                                                  ),
+                                        ),
+                                        Form(
+                                          key: _formKey,
+                                          onChanged: () => {
+                                            setState(() {
+                                              _isButtonDesabled = !_formKey
+                                                  .currentState!
+                                                  .validate();
+                                            })
+                                          },
+                                          child: Column(
+                                            children: <Container>[
+                                              Container(
+                                                margin: EdgeInsets.all(16),
+                                                child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          icon: Icon(
+                                                            Icons.key,
+                                                            color: ColorsApp
+                                                                .secondaryColor,
+                                                          ),
+                                                          labelText:
+                                                              'Contraseña Actual: *'),
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.black45),
+                                                  validator: (value) {
+                                                    RegExp regex = RegExp(
+                                                        ValidationsApp
+                                                            .password);
+                                                    if (value == null ||
+                                                        value.isEmpty) {
+                                                      return 'Campo obligatorio';
+                                                    } else if (!regex
+                                                        .hasMatch(value)) {
+                                                      return 'Introduce una contraseña valida';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  controller: _password,
+                                                  keyboardType: TextInputType
+                                                      .visiblePassword,
                                                 ),
-                                                Container(
-                                                  margin: EdgeInsets.all(16),
-                                                  child: TextFormField(
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            icon: Icon(
-                                                              Icons.key,
-                                                              color: ColorsApp
-                                                                  .secondaryColor,
-                                                            ),
-                                                            labelText:
-                                                                ' Confirmar contraseña: *'),
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.black45),
-                                                    validator: (value) {
-                                                      RegExp regex = RegExp(
-                                                          ValidationsApp
-                                                              .password);
-                                                      if (value == null ||
-                                                          value.isEmpty) {
-                                                        return 'Campo obligatorio';
-                                                      } else if (!regex
-                                                          .hasMatch(value)) {
-                                                        return 'Tus contraseñas no conciden verifica los datos ingresados';
-                                                      }
-                                                      return null;
-                                                    },
-                                                    controller:
-                                                        _passwordConfirm,
-                                                    keyboardType: TextInputType
-                                                        .visiblePassword,
-                                                  ),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.all(16),
+                                                child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          icon: Icon(
+                                                            Icons.key,
+                                                            color: ColorsApp
+                                                                .secondaryColor,
+                                                          ),
+                                                          labelText:
+                                                              'Nueva contraseña: *'),
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.black45),
+                                                  validator: (value) {
+                                                    RegExp regex = RegExp(
+                                                        ValidationsApp
+                                                            .password);
+                                                    if (value == null ||
+                                                        value.isEmpty) {
+                                                      return 'Campo obligatorio';
+                                                    } else if (!regex
+                                                        .hasMatch(value)) {
+                                                      return 'Tus contraseñas no conciden verifica los datos ingresados';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  controller: _passwordConfirm,
+                                                  keyboardType: TextInputType
+                                                      .visiblePassword,
                                                 ),
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(16),
-                                                  child: ElevatedButton(
-                                                    onPressed: _isButtonDesabled
-                                                        ? null
-                                                        : () async {
-                                                            print(
-                                                                '$_password,$_passwordConfirm');
-                                                            //var response = await dio.post<Response>('/api/v1/login', data: {'email': _email, 'password': _password});
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushNamed(
-                                                                    '/settings');
-                                                          },
-                                                    child: const Text(
-                                                        'Confirmar contraseña'),
-                                                    style: ElevatedButton.styleFrom(
-                                                        minimumSize:
-                                                            Size(300, 50),
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        22)),
-                                                        backgroundColor:
-                                                            ColorsApp
-                                                                .successColor),
-                                                  ),
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                child: ElevatedButton(
+                                                  onPressed: _isButtonDesabled
+                                                      ? null
+                                                      : () async {
+                                                          print(
+                                                              '$_password,$_passwordConfirm');
+                                                          final SharedPreferences
+                                                              prefs =
+                                                              await SharedPreferences
+                                                                  .getInstance();
+
+                                                          var token =
+                                                              await prefs
+                                                                  .getString(
+                                                                      'token')!;
+                                                          print('$_phone');
+                                                          var response =
+                                                              await dio.post(
+                                                                  'http://192.168.75.139:3000/changePassword',
+                                                                  options: Options(
+                                                                      headers: {
+                                                                        'Authorization':
+                                                                            'Bearer $token'
+                                                                      }),
+                                                                  data: {
+                                                                "password":
+                                                                    _password
+                                                                        .text,
+                                                                "newPassword":
+                                                                    _passwordConfirm
+                                                                        .text,
+                                                              });
+                                                          print(response.data[
+                                                              'statusCode']);
+                                                          if (response.data[
+                                                                  'statusCode'] ==
+                                                              200) {
+                                                            showDialog<String>(
+                                                              context: context,
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  AlertDialog(
+                                                                title:
+                                                                    const Text(
+                                                                  'Modificación exitosa',
+                                                                  style: TextStyle(
+                                                                      color: ColorsApp
+                                                                          .successColor),
+                                                                ),
+                                                                content: const Text(
+                                                                    '¡Tu contraseña se ha modificado de manera exitosa!'),
+                                                                actions: <Widget>[
+                                                                  TextButton(
+                                                                    onPressed: () => Navigator.of(
+                                                                            context)
+                                                                        .pushNamed(
+                                                                            '/'),
+                                                                    child:
+                                                                        const Text(
+                                                                            'Ok'),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          }
+                                                        },
+                                                  child: const Text(
+                                                      'Confirmar contraseña'),
+                                                  style: ElevatedButton.styleFrom(
+                                                      minimumSize:
+                                                          Size(300, 50),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          22)),
+                                                      backgroundColor: ColorsApp
+                                                          .successColor),
                                                 ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      )),
-                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    )),
                                   );
                                 },
                               )
