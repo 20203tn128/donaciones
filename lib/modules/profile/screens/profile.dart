@@ -519,6 +519,22 @@ class _ProfileState extends State<Profile> {
                                     borderRadius: BorderRadius.circular(16))),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                {Navigator.pushReplacementNamed(context, '/')},
+                            child: const Text('Cerra Sesion'),
+                            style: OutlinedButton.styleFrom(
+                                minimumSize: Size(300, 50),
+                                backgroundColor: Colors.white,
+                                foregroundColor: ColorsApp.successColor,
+                                side: const BorderSide(
+                                    color: ColorsApp.successColor),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16))),
+                          ),
+                        ),
                       ],
                     ),
                   ),

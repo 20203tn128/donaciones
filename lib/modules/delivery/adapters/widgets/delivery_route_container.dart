@@ -1,23 +1,27 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/delivery/adapters/widgets/delivery_detail.dart';
 import 'package:flutter/material.dart';
 
-class DeliveruRouteContainer extends StatelessWidget {
+class DeliveryRouteContainer extends StatelessWidget {
   final String tittle;
-  final String number;
   final String acronimous;
-  final String adress;
   final String references;
   final String name;
-  final String phone;
-  const DeliveruRouteContainer(
-      {super.key,
-      required this.tittle,
-      required this.acronimous,
-      required this.adress,
-      required this.references,
-      required this.number,
-      required this.name,
-      required this.phone});
+  final List<String> phones;
+  final String status;
+  final int index;
+  final String idDelivery;
+  const DeliveryRouteContainer({
+    super.key,
+    required this.tittle,
+    required this.acronimous,
+    required this.references,
+    required this.name,
+    required this.status,
+    required this.index,
+    required this.idDelivery,
+    required this.phones,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +29,6 @@ class DeliveruRouteContainer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: [
-                Text(
-                  number,
-                  style: TextStyle(fontSize: 16, color: Colors.black45),
-                ),
-              ],
-            ),
-          ),
           Card(
             elevation: 5,
             child: Column(
@@ -53,6 +46,13 @@ class DeliveruRouteContainer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: ColorsApp.secondaryColor),
                   ),
+                  subtitle: Text(
+                    status,
+                    style: TextStyle(
+                      color: Colors.black45,
+                      fontSize: 12,
+                    ),
+                  ),
                   children: [
                     Divider(
                       height: 1,
@@ -62,43 +62,18 @@ class DeliveruRouteContainer extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Dirección: ',
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Referencias: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: ColorsApp.secondaryColor,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(
-                                  width: 6,
-                                ),
-                                SizedBox(
-                                  width: 200,
-                                  child: Text(
-                                    adress,
-                                    style: TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Referencias: ',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: ColorsApp.secondaryColor,
-                                ),
-                                textAlign: TextAlign.center,
                               ),
                               SizedBox(
                                 width: 6,
@@ -154,17 +129,47 @@ class DeliveruRouteContainer extends StatelessWidget {
                                 SizedBox(
                                   width: 6,
                                 ),
-                                SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    phone,
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.black45),
-                                  ),
+                                Row(
+                                  children: phones
+                                      .map((e) => SizedBox(
+                                            width: 80,
+                                            child: Text(e,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black45)),
+                                          ))
+                                      .toList(),
                                 ),
                               ],
                             ),
-                          )
+                          ),
+                          status == 'Finalizada' || status == 'Cancelada'
+                              ? ElevatedButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          height: 400,
+                                          child: Center(
+                                            child: DeliveryDetail(
+                                              index: index,
+                                              idDelivery: idDelivery,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: const Text('Ver comentarios'),
+                                  style: ElevatedButton.styleFrom(
+                                      minimumSize: Size(30, 30),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(22)),
+                                      backgroundColor: ColorsApp.successColor),
+                                )
+                              : SizedBox.shrink(),
                         ],
                       ),
                     )

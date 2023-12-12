@@ -35,7 +35,17 @@ class HomeStack extends StatelessWidget {
           '/home/coments-form': (context) => const ComentsForm(),
           '/home/all-coments-form': (context) => const AllComentsForm(),
           '/home/delivery': (context) => const Delivery(),
-          '/home/delivery-route': (context) => const DeliveryRoute(),
+          '/home/delivery-route': (context) {
+            final dynamic rawArgumrnts =
+                ModalRoute.of(context)!.settings.arguments;
+            final Map<String, dynamic> arguments =
+                (rawArgumrnts as Map<String, dynamic>?) ?? {};
+            final idDelivery = arguments['idDelivery'] ?? '';
+            print(idDelivery);
+            return DeliveryRoute(
+              idDelivery: idDelivery,
+            );
+          },
           '/home/start-delivery': (context) => const StartDevlivery(),
           '/home/profile': (context) => const Profile(),
         });
