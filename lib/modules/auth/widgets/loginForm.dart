@@ -107,7 +107,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                                 : () async {
                                     try {
                                       var response = await dio.post(
-                                          'http://192.168.75.139:3000/login',
+                                          'http://192.168.0.44:3000/login',
                                           data: {
                                             'email': _email.text,
                                             'password': _password.text
@@ -120,7 +120,8 @@ class _LoginFormextendsState extends State<LoginForm> {
                                       await prefs.setString('id',
                                           response.data['data']['user']['id']);
                                       print('Esto debio de imprimir algo :v');
-                                      Navigator.pushNamed(context, '/menu');
+                                      Navigator.pushReplacementNamed(
+                                          context, '/menu');
                                     } catch (e) {
                                       print('Error: $e');
                                     }

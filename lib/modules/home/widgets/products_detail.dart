@@ -1,14 +1,50 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductsDetail extends StatefulWidget {
-  const ProductsDetail({super.key});
+  final int index;
+  final String idPickup;
+  const ProductsDetail(
+      {super.key, required this.index, required this.idPickup});
 
   @override
   State<ProductsDetail> createState() => _ProductsDetailState();
 }
 
 class _ProductsDetailState extends State<ProductsDetail> {
+  final dio = Dio();
+  String? comments = '';
+  List<String> images = [];
+  Future<void> init() async {
+    Response response;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = await prefs.getString('token')!;
+    response = await dio.get(
+        'http://192.168.0.44:3000/pickups/${widget.idPickup}',
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    var idProduct = await prefs.getString('idProduct')!;
+    setState(() {
+      comments = response.data['data']['pickup']['products'][widget.index]
+          ['annexes']?['commentary'];
+      images = List<String>.from(response.data['data']['pickup']['products']
+              [widget.index]['annexes']?['photos'] ??
+          []);
+    });
+
+    print('Esto es lo que esta imprimiendo');
+    print(images);
+  }
+
+  @override
+  void initState() {
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -50,48 +86,41 @@ class _ProductsDetailState extends State<ProductsDetail> {
               ),
               Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    child: SizedBox(
-                      width: 250,
-                      child: const Text(
-                        'Estos son los comentarios chal alchalsdas ashdjhsajkdhshjdhlahdfjlfadjasdjfbjasdweuhruqwefhsadjkhhefoqweyfhsdfkjhañdfyhqwoeyfoh',
-                        style: TextStyle(fontSize: 12, color: Colors.black45),
-                      ),
-                    ),
-                  ),
+                  comments != null
+                      ? Container(
+                          margin: EdgeInsets.all(8),
+                          child: SizedBox(
+                            width: 250,
+                            child: Text(
+                              comments!,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black45),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink(),
                   Container(
                       margin: const EdgeInsets.all(8),
                       alignment: Alignment.centerLeft,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: [
-                            Card(
-                              elevation: 5,
-                              child: Image.asset(
-                                'assets/images/logo-gob-zapata.jpg',
-                                width: 100,
-                                height: 100,
-                              ),
-                            ),
-                            Card(
-                              elevation: 5,
-                              child: Image.asset(
-                                'assets/images/logo-gob-zapata.jpg',
-                                width: 100,
-                                height: 100,
-                              ),
-                            ),
-                            Card(
-                              elevation: 5,
-                              child: Image.asset(
-                                'assets/images/logo-gob-zapata.jpg',
-                                width: 100,
-                                height: 100,
-                              ),
-                            ),
-                          ],
+                          children: images.map((e) {
+                            try {
+                              String base64String = e.split(',').last;
+                              Uint8List bytes = base64.decode(base64String);
+                              return Card(
+                                child: Image.memory(
+                                  bytes,
+                                  height: 100,
+                                  width: 100,
+                                ),
+                              );
+                            } catch (error) {
+                              print('Error decodificando base64: $error');
+                              return SizedBox.shrink();
+                            }
+                          }).toList(),
                         ),
                       )),
                   Container(
@@ -99,8 +128,7 @@ class _ProductsDetailState extends State<ProductsDetail> {
                     padding: EdgeInsets.all(8),
                     child: ElevatedButton(
                       onPressed: () => {
-                        Navigator.pushNamed(
-                            context, '/home/recolections_detail')
+                        Navigator.pop(context),
                       },
                       child: const Text('Salir'),
                       style: ElevatedButton.styleFrom(

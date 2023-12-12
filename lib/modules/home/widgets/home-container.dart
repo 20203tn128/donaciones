@@ -13,6 +13,7 @@ class HomeContainer extends StatelessWidget {
   final String personName;
   final String chainsName;
   final List<String> phones;
+  final String idPickup;
 
   const HomeContainer(
       {super.key,
@@ -23,7 +24,8 @@ class HomeContainer extends StatelessWidget {
       required this.address,
       required this.personName,
       required this.phones,
-      required this.chainsName});
+      required this.chainsName,
+      required this.idPickup});
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +123,13 @@ class HomeContainer extends StatelessWidget {
                             ),
                             Row(
                               children: phones
-                                  .map((e) => Text(e,
-                                      style: TextStyle(
-                                          fontSize: 12, color: Colors.black45)))
+                                  .map((e) => SizedBox(
+                                        width: 80,
+                                        child: Text(e,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black45)),
+                                      ))
                                   .toList(),
                             )
                           ],
@@ -137,27 +143,69 @@ class HomeContainer extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () async {
                         final dio = Dio();
-                        var response = await dio.get(
-                            'http://192.168.75.139:3000/pickups',
-                            queryParameters: {'page': 1, 'rowsPerPage': 1},
-                            options: Options(
-                                headers: {'Authorization': 'Bearer $token'}));
+                        Response response;
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-                        await prefs.setString(
-                            'token', response.data['data']['token']);
-                        await prefs.setString(
-                            'id', response.data['data']['pickups']['id']);
+                        var token = await prefs.getString('token')!;
+                        response = await dio.get(
+                            'http://192.168.0.44:3000/pickups/$idPickup',
+                            options: Options(
+                                headers: {'Authorization': 'Bearer $token'}));
+                        print('Esti pmrime lo del home container');
+                        print(response.data);
+
                         Navigator.of(context)
-                            .pushNamed('/home/recolections_detail');
+                            .pushNamed('/home/recolections_detail', arguments: {
+                          'idPickup': idPickup,
+                        });
                       },
-                      child: const Text('Validar Productos'),
+                      child: const Text('Productos'),
                       style: ElevatedButton.styleFrom(
                           minimumSize: Size(30, 30),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(22)),
                           backgroundColor: ColorsApp.successColor),
                     ),
+                    Spacer(),
+                    status == 'Pendiente'
+                        ? ElevatedButton(
+                            onPressed: () async {
+                              final dio = Dio();
+                              Response response;
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              var token = await prefs.getString('token')!;
+                              response = await dio.patch(
+                                  'http://192.168.0.44:3000/pickups/start/$idPickup',
+                                  options: Options(headers: {
+                                    'Authorization': 'Bearer $token'
+                                  }));
+                              print('Esto es lo que imprime del patch');
+                              print(response.data);
+                              if (response.data['statusCode'] == 200) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Exito'),
+                                        content: Text(
+                                            'Se ha iniciado la recoleccion'),
+                                      );
+                                    });
+                                Future.delayed(
+                                    const Duration(seconds: 2),
+                                    () => Navigator.pushReplacementNamed(
+                                        context, '/home/recolections'));
+                              }
+                            },
+                            child: const Text('Iniciar '),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size(30, 30),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22)),
+                                backgroundColor: ColorsApp.successColor),
+                          )
+                        : SizedBox(),
                     Spacer(),
                     ElevatedButton(
                       onPressed: () {

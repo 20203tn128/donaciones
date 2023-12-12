@@ -22,7 +22,16 @@ class HomeStack extends StatelessWidget {
         routes: {
           '/home': (context) => const Dashboard(),
           '/home/recolections': (context) => const Recolection(),
-          '/home/recolections_detail': (context) => const RecolectionDetail(),
+          '/home/recolections_detail': (context) {
+            final dynamic rawArgumrnts =
+                ModalRoute.of(context)!.settings.arguments;
+            final Map<String, dynamic> arguments =
+                (rawArgumrnts as Map<String, dynamic>?) ?? {};
+            final idPickup = arguments['idPickup'] ?? '';
+            return RecolectionDetail(
+              idPickup: idPickup,
+            );
+          },
           '/home/coments-form': (context) => const ComentsForm(),
           '/home/all-coments-form': (context) => const AllComentsForm(),
           '/home/delivery': (context) => const Delivery(),

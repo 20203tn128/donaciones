@@ -40,9 +40,10 @@ class _HomeState extends State<Recolection> {
     Response response;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = await prefs.getString('token')!;
-    response = await dio.get('http://192.168.75.139:3000/pickups',
-        queryParameters: {'page': 1, 'rowsPerPage': 1},
+    response = await dio.get('http://192.168.0.44:3000/pickups',
+        queryParameters: {'page': 1, 'rowsPerPage': 10},
         options: Options(headers: {'Authorization': 'Bearer $token'}));
+    print(response.data['data']['pickups'][0]['id']);
     setState(() {
       items = response.data['data']['pickups']
           .map((e) => {
@@ -54,12 +55,14 @@ class _HomeState extends State<Recolection> {
                 'personName': e['chain']['nameLinkPerson'],
                 'phones': e['chain']['phones'],
                 'chainsName': e['chain']['name'],
+                'idPickup': e['id'],
+                'status':e['status'],
               })
           .toList();
     });
-
-    print(response.data['data']['chains']);
-    print(response.data['data']['chains'].runtimeType);
+    print('Esto es lo que esta imprimiendo');
+    print(response.data['data']['pickups']);
+    print(response.data['data']['pickups'].runtimeType);
   }
 
   @override
@@ -103,6 +106,7 @@ class _HomeState extends State<Recolection> {
                             personName: e['personName'],
                             phones: e['phones'].whereType<String>().toList(),
                             chainsName: e['chainsName'],
+                            idPickup: e['idPickup'],
                           ))
                       .toList()),
               // ListView(
