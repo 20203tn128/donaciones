@@ -27,7 +27,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = await prefs.getString('token')!;
     response = await dio.get(
-        'http://192.168.0.44:3000/deliveries/${widget.idDelivery}',
+        'http://192.168.1.69:3000/api/deliveries/${widget.idDelivery}',
         options: Options(headers: {'Authorization': 'Bearer $token'}));
     setState(() {
       comments = response.data['data']['delivery']['routes'][widget.index]

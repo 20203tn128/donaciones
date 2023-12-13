@@ -148,7 +148,7 @@ class HomeContainer extends StatelessWidget {
                             await SharedPreferences.getInstance();
                         var token = await prefs.getString('token')!;
                         response = await dio.get(
-                            'http://192.168.0.44:3000/pickups/$idPickup',
+                            'http://192.168.1.69:3000/api/pickups/$idPickup',
                             options: Options(
                                 headers: {'Authorization': 'Bearer $token'}));
                         print('Esti pmrime lo del home container');
@@ -176,7 +176,7 @@ class HomeContainer extends StatelessWidget {
                                   await SharedPreferences.getInstance();
                               var token = await prefs.getString('token')!;
                               response = await dio.patch(
-                                  'http://192.168.0.44:3000/pickups/start/$idPickup',
+                                  'http://192.168.1.69:3000/api/api/pickups/start/$idPickup',
                                   options: Options(headers: {
                                     'Authorization': 'Bearer $token'
                                   }));
@@ -207,17 +207,20 @@ class HomeContainer extends StatelessWidget {
                           )
                         : SizedBox(),
                     Spacer(),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/home/start-delivery');
-                      },
-                      child: const Text('Finalizar'),
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: Size(30, 30),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22)),
-                          backgroundColor: ColorsApp.successColor),
-                    ),
+                    status == 'Pendiente' || status == 'En proceso'
+                        ? ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/home/start-delivery');
+                            },
+                            child: const Text('Finalizar'),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size(30, 30),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22)),
+                                backgroundColor: ColorsApp.successColor),
+                          )
+                        : SizedBox.shrink(),
                   ],
                 )
               ],

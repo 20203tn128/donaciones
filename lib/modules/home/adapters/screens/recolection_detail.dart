@@ -25,7 +25,7 @@ class _RecolectionState extends State<RecolectionDetail> {
     Response response;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = await prefs.getString('token')!;
-    response = await dio.get('http://192.168.0.44:3000/pickups/$idPickup',
+    response = await dio.get('http://192.168.1.69:3000/api/pickups/$idPickup',
         options: Options(headers: {'Authorization': 'Bearer $token'}));
     total = response.data['data']['pickup']['products'].length;
     status = response.data['data']['pickup']['status'];

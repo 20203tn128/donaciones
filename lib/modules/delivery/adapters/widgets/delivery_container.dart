@@ -67,7 +67,7 @@ class DeliveryContainer extends StatelessWidget {
                               await SharedPreferences.getInstance();
                           var token = await prefs.getString('token')!;
                           response = await dio.get(
-                              'http://192.168.0.44:3000/deliveries/$idDelivery',
+                              'http://192.168.1.69:3000/api/deliveries/$idDelivery',
                               options: Options(
                                   headers: {'Authorization': 'Bearer $token'}));
                           print('Esti pmrime lo del home container');
@@ -89,9 +89,37 @@ class DeliveryContainer extends StatelessWidget {
                       Spacer(),
                       status == 'Pendiente'
                           ? ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/home/start-delivery');
+                              onPressed: () async {
+                                final dio = Dio();
+                                Response response;
+                                final SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                var token = await prefs.getString('token')!;
+                                response = await dio.patch(
+                                    'http://192.168.1.69:3000/api/deliveries/start/$idDelivery',
+                                    options: Options(headers: {
+                                      'Authorization': 'Bearer $token'
+                                    }));
+                                print('Esto es lo que imprime del patch');
+                                print(response.data);
+                                if (response.data['statusCode'] == 200) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Exito'),
+                                          content:
+                                              Text('Se ha iniciado el reparto'),
+                                        );
+                                      });
+                                  Future.delayed(
+                                      const Duration(seconds: 2),
+                                      () => Navigator.pushReplacementNamed(
+                                              context, '/home/delivery',
+                                              arguments: {
+                                                'idDelivery': idDelivery
+                                              }));
+                                }
                               },
                               child: const Text('Iniciar'),
                               style: ElevatedButton.styleFrom(
@@ -103,13 +131,29 @@ class DeliveryContainer extends StatelessWidget {
                           : Spacer(),
                       SizedBox.shrink(),
                       Spacer(),
-                      status == 'En curso'
+                      status == 'En proceso'
                           ? ElevatedButton(
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context, '/home/start-delivery');
                               },
                               child: const Text('Finalizar'),
+                              style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(30, 30),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(22)),
+                                  backgroundColor: ColorsApp.successColor),
+                            )
+                          : Spacer(),
+                      SizedBox.shrink(),
+                      Spacer(),
+                      status == 'En proceso'
+                          ? ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, '/home/start-delivery');
+                              },
+                              child: const Text('Cancelar'),
                               style: ElevatedButton.styleFrom(
                                   minimumSize: Size(30, 30),
                                   shape: RoundedRectangleBorder(
