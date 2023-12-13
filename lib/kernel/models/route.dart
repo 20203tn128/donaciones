@@ -18,24 +18,26 @@ class Route {
     required this.status,
     this.annexes,
   });
+  String get acronym => name.substring(0, 2).toUpperCase();
 
   static Route fromMap(Map<String, dynamic> map) => Route(
-    id: (map['_id'] ?? map['id'])!,
-    name: map['name']!,
-    reference: map['reference']!,
-    nameLinkPerson: map['nameLinkPerson']!,
-    phones: map['phones']!.whereType<String>().toList(),
-    status: map['status']!,
-    annexes: map['annexes'] != null ? Annexes.fromMap(map['annexes']) : null,
-  );
+        id: (map['_id'] ?? map['id'])!,
+        name: map['name']!,
+        reference: map['reference']!,
+        nameLinkPerson: map['nameLinkPerson']!,
+        phones: map['phones']!.whereType<String>().toList(),
+        status: map['status']!,
+        annexes:
+            map['annexes'] != null ? Annexes.fromMap(map['annexes']) : null,
+      );
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'name': name,
-    'reference': reference,
-    'nameLinkPerson': nameLinkPerson,
-    'phones': phones,
-    'status': status,
-    'annexes': annexes?.toMap(),
-  };
+        'id': id,
+        'name': name,
+        'reference': reference,
+        'nameLinkPerson': nameLinkPerson,
+        'phones': phones,
+        'status': status,
+        'annexes': annexes?.toMap(),
+      };
 }

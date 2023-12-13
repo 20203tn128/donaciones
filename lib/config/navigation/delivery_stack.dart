@@ -1,4 +1,5 @@
 import 'package:donaciones/modules/deliveries/adapters/screens/deliveries.dart';
+import 'package:donaciones/modules/deliveries/adapters/screens/delivery_detail.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryStack extends StatelessWidget {
@@ -12,6 +13,13 @@ class DeliveryStack extends StatelessWidget {
       routes: {
         '/': (context) => const Deliveries(),
         '/delivery': (context) => const Text('Deliveries'),
+        '/detail': (context) {
+          final dynamic args = ModalRoute.of(context)!.settings.arguments;
+          return DeliveryDetail(
+            delivery: args!['delivery'],
+          );
+        },
+        
       },
     );
   }

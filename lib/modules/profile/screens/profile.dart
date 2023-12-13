@@ -141,8 +141,7 @@ class _ProfileState extends State<Profile> {
                                                 child: Column(
                                               children: [
                                                 const Padding(
-                                                  padding: EdgeInsets.all(
-                                                      16.0),
+                                                  padding: EdgeInsets.all(16.0),
                                                   child: Text(
                                                     'Modificar Teléfono',
                                                     style: TextStyle(
@@ -179,10 +178,11 @@ class _ProfileState extends State<Profile> {
                                                                   labelText:
                                                                       'Teléfono: *'),
                                                           controller: _phone,
-                                                          style: const TextStyle(
-                                                              fontSize: 12,
-                                                              color: Colors
-                                                                  .black45),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .black45),
                                                           validator: (value) {
                                                             RegExp regex = RegExp(
                                                                 ValidationsApp
@@ -210,8 +210,10 @@ class _ProfileState extends State<Profile> {
                                                           onPressed:
                                                               _isphoneDisabled
                                                                   ? null
-                                                                  : () async {                                                                      
-                                                                      if (await _profileService.changePhone(_phone.text)) {
+                                                                  : () async {
+                                                                      if (await _profileService
+                                                                          .changePhone(
+                                                                              _phone.text)) {
                                                                         // ignore: use_build_context_synchronously
                                                                         showDialog<
                                                                             String>(
@@ -239,11 +241,11 @@ class _ProfileState extends State<Profile> {
                                                                           ),
                                                                         );
                                                                       }
-                                                                      
                                                                     },
                                                           style: ElevatedButton.styleFrom(
                                                               minimumSize:
-                                                                  const Size(300, 50),
+                                                                  const Size(
+                                                                      300, 50),
                                                               shape: RoundedRectangleBorder(
                                                                   borderRadius:
                                                                       BorderRadius
@@ -305,7 +307,8 @@ class _ProfileState extends State<Profile> {
                                           child: Column(
                                             children: <Container>[
                                               Container(
-                                                margin: const EdgeInsets.all(16),
+                                                margin:
+                                                    const EdgeInsets.all(16),
                                                 child: TextFormField(
                                                   decoration:
                                                       const InputDecoration(
@@ -338,7 +341,8 @@ class _ProfileState extends State<Profile> {
                                                 ),
                                               ),
                                               Container(
-                                                margin: const EdgeInsets.all(16),
+                                                margin:
+                                                    const EdgeInsets.all(16),
                                                 child: TextFormField(
                                                   decoration:
                                                       const InputDecoration(
@@ -377,10 +381,12 @@ class _ProfileState extends State<Profile> {
                                                   onPressed: _isButtonDisabled
                                                       ? null
                                                       : () async {
-                                                          if (await _profileService.changePassword(
-                                                            _password.text,
-                                                            _passwordConfirm.text
-                                                          )) {
+                                                          if (await _profileService
+                                                              .changePassword(
+                                                                  _password
+                                                                      .text,
+                                                                  _passwordConfirm
+                                                                      .text)) {
                                                             // ignore: use_build_context_synchronously
                                                             showDialog<String>(
                                                               context: context,
@@ -398,8 +404,11 @@ class _ProfileState extends State<Profile> {
                                                                     '¡Tu contraseña se ha modificado de manera exitosa!'),
                                                                 actions: <Widget>[
                                                                   TextButton(
-                                                                    onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
-                                                                            '/', (r) => false),
+                                                                    onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                                                                        context,
+                                                                        '/',
+                                                                        (r) =>
+                                                                            false),
                                                                     child:
                                                                         const Text(
                                                                             'Ok'),
@@ -447,8 +456,10 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
-                            onPressed: () =>
-                                {Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false)},
+                            onPressed: () => {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/login', (r) => false)
+                            },
                             style: OutlinedButton.styleFrom(
                                 minimumSize: const Size(300, 50),
                                 backgroundColor: Colors.white,

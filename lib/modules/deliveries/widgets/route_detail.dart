@@ -3,49 +3,23 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/kernel/models/route.dart' as routemodel;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DeliveryDetail extends StatefulWidget {
-  final int index;
-  final String idDelivery;
-  const DeliveryDetail(
-      {Key? key, required this.index, required this.idDelivery})
-      : super(key: key);
+class RouteDetail extends StatefulWidget {
+  final routemodel.Route route;
+  const RouteDetail({
+    Key? key,
+    required this.route,
+  }) : super(key: key);
 
   @override
-  State<DeliveryDetail> createState() => _DeliveryDetailState();
+  State<RouteDetail> createState() => _RouteDetailState();
 }
 
-class _DeliveryDetailState extends State<DeliveryDetail> {
-  final dio = Dio();
-  String? comments = '';
-  List<String> images = [];
-  Future<void> init() async {
-    Response response;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = await prefs.getString('token')!;
-    response = await dio.get(
-        'http://192.168.1.69:3000/api/deliveries/${widget.idDelivery}',
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
-    setState(() {
-      comments = response.data['data']['delivery']['routes'][widget.index]
-          ['annexes']?['commentary'];
-      images = List<String>.from(response.data['data']['delivery']['routes']
-              [widget.index]['annexes']?['photos'] ??
-          []);
-    });
-
-    print('Esto es lo que esta imprimiendo');
-    print(images);
-  }
-
-  @override
-  void initState() {
-    init();
-  }
-
+class _RouteDetailState extends State<RouteDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,13 +60,13 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
               ),
               Column(
                 children: [
-                  comments != null
+                  widget.route.annexes?.commentary != null
                       ? Container(
                           margin: EdgeInsets.all(8),
                           child: SizedBox(
                             width: 250,
                             child: Text(
-                              comments!,
+                              widget.route.annexes!.commentary!,
                               style: TextStyle(
                                   fontSize: 12, color: Colors.black45),
                             ),
@@ -105,7 +79,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: images.map((e) {
+                          children: widget.route.annexes!.photos!.map((e) {
                             try {
                               String base64String = e.split(',').last;
                               Uint8List bytes = base64.decode(base64String);

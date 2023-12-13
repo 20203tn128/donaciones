@@ -1,15 +1,43 @@
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
+import 'package:donaciones/modules/pickups/services/pickup_service.dart';
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   final Function(int) setItem;
   const Dashboard({super.key, required this.setItem});
 
   @override
-  Widget build(BuildContext context) {
-    int recolections = 3;
-    int delivery = 1;
+  State<Dashboard> createState() => _DashboardState();
+}
 
+class _DashboardState extends State<Dashboard> {
+  final PickupService _pickupService = PickupService();
+  final DeliveryService _deliveryService = DeliveryService();
+  int pickups = 13;
+  int deliveries = 8;
+
+  Future<void> _init() async {
+    // final pickups = (await _pickupService.get(
+    //         rowsPerPage: 100))
+    //     .length;
+    // final deliveries = (await _deliveryService.get(
+    //         rowsPerPage: 100))
+    //     .length;
+    // setState(() {
+    //   this.pickups = pickups;
+    //   this.deliveries = deliveries;
+    // });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(16),
@@ -40,7 +68,7 @@ class Dashboard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              recolections.toString(),
+                              '$pickups',
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -78,7 +106,7 @@ class Dashboard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              delivery.toString(),
+                              '$deliveries',
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -106,7 +134,7 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  setItem(1);
+                  widget.setItem(1);
                 },
                 child: const Text('Ir a mis recolecciones'),
                 style: ElevatedButton.styleFrom(
@@ -120,7 +148,7 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  setItem(2);
+                  widget.setItem(2);
                 },
                 child: const Text('Ir a mis repartos'),
                 style: ElevatedButton.styleFrom(
