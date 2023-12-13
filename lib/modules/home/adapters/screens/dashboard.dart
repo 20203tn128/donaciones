@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

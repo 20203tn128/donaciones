@@ -1,11 +1,8 @@
+import 'package:donaciones/kernel/services/session_service.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/validations/validations-app.dart';
+import 'package:donaciones/modules/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-final dio = Dio(BaseOptions(baseUrl: ''));
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -15,6 +12,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormextendsState extends State<LoginForm> {
+  final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool _isButtonDesabled = true;
   final TextEditingController _email = TextEditingController(text: '');
@@ -105,26 +103,14 @@ class _LoginFormextendsState extends State<LoginForm> {
                             onPressed: _isButtonDesabled
                                 ? null
                                 : () async {
-                                    try {
-                                      var response = await dio.post(
-                                          'http://192.168.0.44:3000/login',
-                                          data: {
-                                            'email': _email.text,
-                                            'password': _password.text
-                                          });
-                                      print(response.data['data']['token']);
-                                      final SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      await prefs.setString('token',
-                                          response.data['data']['token']);
-                                      await prefs.setString('id',
-                                          response.data['data']['user']['id']);
-                                      print('Esto debio de imprimir algo :v');
-                                      Navigator.pushReplacementNamed(
-                                          context, '/menu');
-                                    } catch (e) {
-                                      print('Error: $e');
-                                    }
+                                    // try {
+                                      print(1);
+                                      if (await _authService.login(_email.text, _password.text)) {
+                                        Navigator.pushReplacementNamed(context, '/menu');
+                                      } else print('hola, no jaló xD');
+                                    // } catch (e) {
+                                    //   print('Error: $e');
+                                    // }
                                   },
                             child: const Text('Iniciar sesion'),
                             style: ElevatedButton.styleFrom(

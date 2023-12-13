@@ -1,9 +1,9 @@
-import 'package:dio/dio.dart';
+import 'package:donaciones/kernel/models/user.dart';
+import 'package:donaciones/kernel/services/session_service.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/validations/validations-app.dart';
-import 'package:donaciones/modules/profile/widgets/password-form.dart';
+import 'package:donaciones/modules/profile/services/profile_service.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({
@@ -15,46 +15,28 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final SessionService _sessionService = const SessionService();
+  final ProfileService _profileService = ProfileService();
   final _formKey = GlobalKey<FormState>();
-  bool _isButtonDesabled = true;
+  bool _isButtonDisabled = true;
   final TextEditingController _password = TextEditingController(text: '');
   final TextEditingController _passwordConfirm =
       TextEditingController(text: '');
   final TextEditingController _phone = TextEditingController(text: '');
   final _phoneFormKey = GlobalKey<FormState>();
-  bool _isphoneDesabled = true;
-  String name = '';
-  String fullName = '';
-  String lastname = '';
-  String secondSurname = '';
-  String acronimus = '';
-  String phone = '';
-  String email = '';
-  String role = '';
-  final dio = Dio();
+  bool _isphoneDisabled = true;
+  User? _user;
 
   Future<void> init() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = await prefs.getString('id')!;
-    var token = await prefs.getString('token')!;
-    Response response = await dio.get('http://192.168.0.44:3000/users/$id',
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    final user = await _sessionService.getUser();
     setState(() {
-      name = response.data['data']['user']['name'];
-      lastname = response.data['data']['user']['lastname'];
-      secondSurname = response.data['data']['user']['secondSurname'] ?? '';
-      fullName = '$name $lastname $secondSurname';
-
-      acronimus = response.data['data']['user']['name'][0].toUpperCase() +
-          response.data['data']['user']['lastname'][0].toUpperCase();
-      role = response.data['data']['user']['role'];
-      phone = response.data['data']['user']['phone'];
-      email = response.data['data']['user']['email'];
+      _user = user;
     });
-    print(response.data);
   }
 
+  @override
   initState() {
+    super.initState();
     init();
   }
 
@@ -77,19 +59,19 @@ class _ProfileState extends State<Profile> {
                     CircleAvatar(
                       backgroundColor: ColorsApp.secondaryColor,
                       foregroundColor: Colors.white,
-                      child: Text(
-                        acronimus,
-                        style: TextStyle(fontSize: 60),
-                      ),
                       maxRadius: 60,
+                      child: Text(
+                        _user?.acronym ?? 'U',
+                        style: const TextStyle(fontSize: 60),
+                      ),
                     )
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    fullName,
-                    style: TextStyle(fontSize: 24),
+                    _user?.fullname ?? '',
+                    style: const TextStyle(fontSize: 24),
                   ),
                 ),
                 Padding(
@@ -105,15 +87,15 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Icon(Icons.email),
                             ),
                             Column(
                               children: [
                                 Row(
                                   children: [
-                                    Text(email),
+                                    Text(_user?.email ?? ''),
                                   ],
                                 ),
                                 const Text(
@@ -127,15 +109,15 @@ class _ProfileState extends State<Profile> {
                         ),
                         Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Icon(Icons.phone),
                             ),
                             Column(
                               children: [
                                 Row(
                                   children: [
-                                    Text(phone),
+                                    Text(_user?.phone ?? ''),
                                   ],
                                 ),
                                 const Text(
@@ -145,7 +127,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 150,
                             ),
                             IconButton(
@@ -158,8 +140,8 @@ class _ProfileState extends State<Profile> {
                                             child: SingleChildScrollView(
                                                 child: Column(
                                               children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.all(
+                                                const Padding(
+                                                  padding: EdgeInsets.all(
                                                       16.0),
                                                   child: Text(
                                                     'Modificar Teléfono',
@@ -175,7 +157,7 @@ class _ProfileState extends State<Profile> {
                                                   key: _phoneFormKey,
                                                   onChanged: () => {
                                                     setState(() {
-                                                      _isphoneDesabled =
+                                                      _isphoneDisabled =
                                                           !_phoneFormKey
                                                               .currentState!
                                                               .validate();
@@ -188,7 +170,7 @@ class _ProfileState extends State<Profile> {
                                                             .all(16),
                                                         child: TextFormField(
                                                           decoration:
-                                                              InputDecoration(
+                                                              const InputDecoration(
                                                                   icon: Icon(
                                                                     Icons.phone,
                                                                     color: ColorsApp
@@ -197,7 +179,7 @@ class _ProfileState extends State<Profile> {
                                                                   labelText:
                                                                       'Teléfono: *'),
                                                           controller: _phone,
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               fontSize: 12,
                                                               color: Colors
                                                                   .black45),
@@ -226,43 +208,11 @@ class _ProfileState extends State<Profile> {
                                                                 .all(16),
                                                         child: ElevatedButton(
                                                           onPressed:
-                                                              _isphoneDesabled
+                                                              _isphoneDisabled
                                                                   ? null
-                                                                  : () async {
-                                                                      final SharedPreferences
-                                                                          prefs =
-                                                                          await SharedPreferences
-                                                                              .getInstance();
-                                                                      var id = await prefs
-                                                                          .getString(
-                                                                              'id')!;
-                                                                      var token =
-                                                                          await prefs
-                                                                              .getString('token')!;
-                                                                      print(
-                                                                          '$_phone');
-                                                                      var response = await dio.put(
-                                                                          'http://192.168.0.44:3000/users/$id',
-                                                                          options:
-                                                                              Options(headers: {
-                                                                            'Authorization':
-                                                                                'Bearer $token'
-                                                                          }),
-                                                                          data: {
-                                                                            "name":
-                                                                                name,
-                                                                            "lastname":
-                                                                                lastname,
-                                                                            "secondSurname":
-                                                                                secondSurname,
-                                                                            "role":
-                                                                                role,
-                                                                            "phone":
-                                                                                _phone.text,
-                                                                          });
-                                                                      if (response
-                                                                              .data['statusCode'] ==
-                                                                          200) {
+                                                                  : () async {                                                                      
+                                                                      if (await _profileService.changePhone(_phone.text)) {
+                                                                        // ignore: use_build_context_synchronously
                                                                         showDialog<
                                                                             String>(
                                                                           context:
@@ -278,19 +228,22 @@ class _ProfileState extends State<Profile> {
                                                                                 const Text('¡Tu telefono se ha modificado de manera exitosa!'),
                                                                             actions: <Widget>[
                                                                               TextButton(
-                                                                                onPressed: () => Navigator.pushNamed(context, '/profile'),
+                                                                                onPressed: () {
+                                                                                  init();
+                                                                                  Navigator.pop(context);
+                                                                                  Navigator.pop(context);
+                                                                                },
                                                                                 child: const Text('Ok'),
                                                                               ),
                                                                             ],
                                                                           ),
                                                                         );
                                                                       }
+                                                                      
                                                                     },
-                                                          child: const Text(
-                                                              'Guardar teléfono'),
                                                           style: ElevatedButton.styleFrom(
                                                               minimumSize:
-                                                                  Size(300, 50),
+                                                                  const Size(300, 50),
                                                               shape: RoundedRectangleBorder(
                                                                   borderRadius:
                                                                       BorderRadius
@@ -299,6 +252,8 @@ class _ProfileState extends State<Profile> {
                                                               backgroundColor:
                                                                   ColorsApp
                                                                       .successColor),
+                                                          child: const Text(
+                                                              'Guardar teléfono'),
                                                         ),
                                                       ),
                                                     ],
@@ -310,7 +265,7 @@ class _ProfileState extends State<Profile> {
                                         },
                                       )
                                     },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.edit,
                                   color: ColorsApp.secondaryColor,
                                 )),
@@ -328,8 +283,8 @@ class _ProfileState extends State<Profile> {
                                     child: SingleChildScrollView(
                                         child: Column(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                        const Padding(
+                                          padding: EdgeInsets.all(8.0),
                                           child: Text(
                                             'Modificar contraseña',
                                             style: TextStyle(
@@ -342,7 +297,7 @@ class _ProfileState extends State<Profile> {
                                           key: _formKey,
                                           onChanged: () => {
                                             setState(() {
-                                              _isButtonDesabled = !_formKey
+                                              _isButtonDisabled = !_formKey
                                                   .currentState!
                                                   .validate();
                                             })
@@ -350,7 +305,7 @@ class _ProfileState extends State<Profile> {
                                           child: Column(
                                             children: <Container>[
                                               Container(
-                                                margin: EdgeInsets.all(16),
+                                                margin: const EdgeInsets.all(16),
                                                 child: TextFormField(
                                                   decoration:
                                                       const InputDecoration(
@@ -361,7 +316,7 @@ class _ProfileState extends State<Profile> {
                                                           ),
                                                           labelText:
                                                               'Contraseña Actual: *'),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 12,
                                                       color: Colors.black45),
                                                   validator: (value) {
@@ -383,7 +338,7 @@ class _ProfileState extends State<Profile> {
                                                 ),
                                               ),
                                               Container(
-                                                margin: EdgeInsets.all(16),
+                                                margin: const EdgeInsets.all(16),
                                                 child: TextFormField(
                                                   decoration:
                                                       const InputDecoration(
@@ -394,7 +349,7 @@ class _ProfileState extends State<Profile> {
                                                           ),
                                                           labelText:
                                                               'Nueva contraseña: *'),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 12,
                                                       color: Colors.black45),
                                                   validator: (value) {
@@ -419,42 +374,14 @@ class _ProfileState extends State<Profile> {
                                                 padding:
                                                     const EdgeInsets.all(16),
                                                 child: ElevatedButton(
-                                                  onPressed: _isButtonDesabled
+                                                  onPressed: _isButtonDisabled
                                                       ? null
                                                       : () async {
-                                                          print(
-                                                              '$_password,$_passwordConfirm');
-                                                          final SharedPreferences
-                                                              prefs =
-                                                              await SharedPreferences
-                                                                  .getInstance();
-
-                                                          var token =
-                                                              await prefs
-                                                                  .getString(
-                                                                      'token')!;
-                                                          print('$_phone');
-                                                          var response =
-                                                              await dio.post(
-                                                                  'http://192.168.0.44:3000/changePassword',
-                                                                  options: Options(
-                                                                      headers: {
-                                                                        'Authorization':
-                                                                            'Bearer $token'
-                                                                      }),
-                                                                  data: {
-                                                                "password":
-                                                                    _password
-                                                                        .text,
-                                                                "newPassword":
-                                                                    _passwordConfirm
-                                                                        .text,
-                                                              });
-                                                          print(response.data[
-                                                              'statusCode']);
-                                                          if (response.data[
-                                                                  'statusCode'] ==
-                                                              200) {
+                                                          if (await _profileService.changePassword(
+                                                            _password.text,
+                                                            _passwordConfirm.text
+                                                          )) {
+                                                            // ignore: use_build_context_synchronously
                                                             showDialog<String>(
                                                               context: context,
                                                               builder: (BuildContext
@@ -471,10 +398,8 @@ class _ProfileState extends State<Profile> {
                                                                     '¡Tu contraseña se ha modificado de manera exitosa!'),
                                                                 actions: <Widget>[
                                                                   TextButton(
-                                                                    onPressed: () => Navigator.of(
-                                                                            context)
-                                                                        .pushNamed(
-                                                                            '/'),
+                                                                    onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
+                                                                            '/', (r) => false),
                                                                     child:
                                                                         const Text(
                                                                             'Ok'),
@@ -484,11 +409,9 @@ class _ProfileState extends State<Profile> {
                                                             );
                                                           }
                                                         },
-                                                  child: const Text(
-                                                      'Confirmar contraseña'),
                                                   style: ElevatedButton.styleFrom(
                                                       minimumSize:
-                                                          Size(300, 50),
+                                                          const Size(300, 50),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                               borderRadius:
@@ -497,6 +420,8 @@ class _ProfileState extends State<Profile> {
                                                                           22)),
                                                       backgroundColor: ColorsApp
                                                           .successColor),
+                                                  child: const Text(
+                                                      'Confirmar contraseña'),
                                                 ),
                                               ),
                                             ],
@@ -508,31 +433,31 @@ class _ProfileState extends State<Profile> {
                                 },
                               )
                             },
-                            child: const Text('Modificar contraseña'),
                             style: OutlinedButton.styleFrom(
-                                minimumSize: Size(300, 50),
+                                minimumSize: const Size(300, 50),
                                 backgroundColor: Colors.white,
                                 foregroundColor: ColorsApp.successColor,
                                 side: const BorderSide(
                                     color: ColorsApp.successColor),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16))),
+                            child: const Text('Modificar contraseña'),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
                             onPressed: () =>
-                                {Navigator.pushReplacementNamed(context, '/')},
-                            child: const Text('Cerra Sesion'),
+                                {Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false)},
                             style: OutlinedButton.styleFrom(
-                                minimumSize: Size(300, 50),
+                                minimumSize: const Size(300, 50),
                                 backgroundColor: Colors.white,
                                 foregroundColor: ColorsApp.successColor,
                                 side: const BorderSide(
                                     color: ColorsApp.successColor),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16))),
+                            child: const Text('Cerrar sesión'),
                           ),
                         ),
                       ],
