@@ -5,7 +5,7 @@ class Response {
 
   const Response({required this.message, required this.statusCode, required this.data});
 
-  static Response fromMap(dynamic map) => Response(
+  static Response fromMap(Map<String, dynamic> map) => Response(
     message: map['message'],
     statusCode: map['statusCode'],
     data: map['data'],

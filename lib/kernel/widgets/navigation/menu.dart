@@ -1,5 +1,7 @@
-import 'package:donaciones/config/navigation/home_stack.dart';
-import 'package:donaciones/kernel/widgets/navigation/botton-navigation-tab.dart';
+import 'package:donaciones/config/navigation/delivery_stack.dart';
+import 'package:donaciones/config/navigation/pickup_stack.dart';
+import 'package:donaciones/kernel/widgets/navigation/botton_navigation_tab.dart';
+import 'package:donaciones/modules/dashboard/adapters/screens/dashboard.dart';
 import 'package:donaciones/modules/profile/screens/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,7 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   int _selectedIndex = 0;
-  void _onItemTapped(int index) {
+  void _setItem(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -23,13 +25,14 @@ class _MenuState extends State<Menu> {
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: const [
-          HomeStack(),
-          Profile(),
+        children: [
+          Dashboard(setItem: _setItem,),
+          const PickupStack(),
+          const DeliveryStack(),
+          const Profile(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationTab(
-          selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
+      bottomNavigationBar: BottomNavigationTab(selectedIndex: _selectedIndex, onItemTapped: _setItem),
     );
   }
 }

@@ -60,6 +60,4 @@ class SessionService {
       status: prefs.getBool('session_user_status')!,
     );
   }
-
-
 }

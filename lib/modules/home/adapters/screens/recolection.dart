@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
-import 'package:donaciones/kernel/widgets/navigation/botton-navigation-tab.dart';
+import 'package:donaciones/kernel/widgets/navigation/botton_navigation_tab.dart';
 import 'package:donaciones/modules/home/widgets/home-container.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

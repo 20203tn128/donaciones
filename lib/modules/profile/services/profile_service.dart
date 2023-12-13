@@ -3,14 +3,14 @@ import 'package:donaciones/kernel/services/api_service.dart';
 import 'package:donaciones/kernel/services/session_service.dart';
 
 class ProfileService {
-  final ApiService apiService = ApiService();
-  final SessionService sessionService = const SessionService();
+  final ApiService _apiService = ApiService();
+  final SessionService _sessionService = const SessionService();
 
   Future<bool> changePhone(String phone) async {
-    var user = await sessionService.getUser();
+    var user = await _sessionService.getUser();
     user.phone = phone;
 
-    final response = await apiService.put(
+    final response = await _apiService.put(
       '/users/${user.id}',
       data: {
         'name': user.name,
@@ -25,14 +25,14 @@ class ProfileService {
 
     if (res.statusCode != 200) return false;
 
-    final token = await sessionService.getToken();
-    await sessionService.setSession(token, user);
+    final token = await _sessionService.getToken();
+    await _sessionService.setSession(token, user);
 
     return true;
   }
 
   Future<bool> changePassword(String password, String passwordConfirmation) async {
-    var response = await apiService.post(
+    var response = await _apiService.post(
       '/changePassword',
       data: {
         'password': password,
@@ -44,7 +44,7 @@ class ProfileService {
 
     if (res.statusCode != 200) return false;
 
-    await sessionService.clearSession();
+    await _sessionService.clearSession();
     return true;
   }
 }

@@ -3,10 +3,10 @@ import 'package:donaciones/config/environment.dart';
 import 'package:donaciones/kernel/interceptors/auth_interceptor.dart';
 
 class ApiService {
-  final Dio dio = Dio(BaseOptions(baseUrl: Environment.baseUrl));
+  final Dio _dio = Dio(BaseOptions(baseUrl: Environment.baseUrl));
 
   ApiService() {
-    dio.interceptors.add(AuthInterceptor());
+    _dio.interceptors.add(AuthInterceptor());
   }
 
   Future<Response<T>> get<T>(
@@ -16,7 +16,7 @@ class ApiService {
     Options? options,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
-  }) => dio.get(
+  }) => _dio.get(
     path,
     data: data,
     queryParameters: queryParameters,
@@ -35,7 +35,7 @@ class ApiService {
     ProgressCallback? onReceiveProgress,
   }) async {
     print(23);
-    var x = await dio.post(
+    var x = await _dio.post(
     path,
     data: data,
     queryParameters: queryParameters,
@@ -56,7 +56,7 @@ class ApiService {
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
-  }) => dio.put(
+  }) => _dio.put(
     path,
     data: data,
     queryParameters: queryParameters,
@@ -73,7 +73,7 @@ class ApiService {
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
-  }) => dio.patch(
+  }) => _dio.patch(
     path,
     data: data,
     queryParameters: queryParameters,
@@ -88,7 +88,7 @@ class ApiService {
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
-  }) => dio.delete(
+  }) => _dio.delete(
     path,
     data: data,
     queryParameters: queryParameters,
