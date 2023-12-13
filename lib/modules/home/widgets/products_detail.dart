@@ -25,7 +25,7 @@ class _ProductsDetailState extends State<ProductsDetail> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = await prefs.getString('token')!;
     response = await dio.get(
-        'http://192.168.0.44:3000/pickups/${widget.idPickup}',
+        'http://192.168.1.69:3000/api/api/pickups/${widget.idPickup}',
         options: Options(headers: {'Authorization': 'Bearer $token'}));
     var idProduct = await prefs.getString('idProduct')!;
     setState(() {

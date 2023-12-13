@@ -107,7 +107,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                                 : () async {
                                     try {
                                       var response = await dio.post(
-                                          'http://192.168.0.44:3000/login',
+                                          'http://192.168.1.69:3000/api/login',
                                           data: {
                                             'email': _email.text,
                                             'password': _password.text

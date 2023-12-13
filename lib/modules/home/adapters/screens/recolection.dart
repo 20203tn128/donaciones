@@ -40,7 +40,7 @@ class _HomeState extends State<Recolection> {
     Response response;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = await prefs.getString('token')!;
-    response = await dio.get('http://192.168.0.44:3000/pickups',
+    response = await dio.get('http://192.168.1.69:3000/api/pickups',
         queryParameters: {'page': 1, 'rowsPerPage': 10},
         options: Options(headers: {'Authorization': 'Bearer $token'}));
     print(response.data['data']['pickups'][0]['id']);

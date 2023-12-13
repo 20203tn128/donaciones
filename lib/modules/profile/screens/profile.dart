@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = await prefs.getString('id')!;
     var token = await prefs.getString('token')!;
-    Response response = await dio.get('http://192.168.0.44:3000/users/$id',
+    Response response = await dio.get('http://192.168.1.69:3000/api/users/$id',
         options: Options(headers: {'Authorization': 'Bearer $token'}));
     setState(() {
       name = response.data['data']['user']['name'];
@@ -242,7 +242,7 @@ class _ProfileState extends State<Profile> {
                                                                       print(
                                                                           '$_phone');
                                                                       var response = await dio.put(
-                                                                          'http://192.168.0.44:3000/users/$id',
+                                                                          'http://192.168.1.69:3000/api/users/$id',
                                                                           options:
                                                                               Options(headers: {
                                                                             'Authorization':
@@ -436,7 +436,7 @@ class _ProfileState extends State<Profile> {
                                                           print('$_phone');
                                                           var response =
                                                               await dio.post(
-                                                                  'http://192.168.0.44:3000/changePassword',
+                                                                  'http://192.168.1.69:3000/api/changePassword',
                                                                   options: Options(
                                                                       headers: {
                                                                         'Authorization':
