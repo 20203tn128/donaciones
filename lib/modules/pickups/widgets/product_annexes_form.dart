@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProductAnnexesForm extends StatefulWidget {
-  const ProductAnnexesForm({super.key});
+  final Function reload;
+
+  const ProductAnnexesForm({super.key, required this.reload});
 
   @override
   State<ProductAnnexesForm> createState() => _ProductAnnexesFormState();
@@ -52,17 +52,17 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
           child: Column(
             children: [
               const Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Card(
                   elevation: 5,
                   color: Color.fromARGB(255, 245, 219, 126),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         Icon(Icons.warning_amber_outlined),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8),
+                          padding: EdgeInsets.only(left: 8),
                           child: Text(
                             'Realiza un comentario referente a la recolección',
                             style: TextStyle(
@@ -82,7 +82,7 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       child: const TextField(
                         decoration: InputDecoration(
                           labelText: 'Comentarios: *',

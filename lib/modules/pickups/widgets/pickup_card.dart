@@ -1,15 +1,18 @@
 import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/pickups/services/pickup_service.dart';
+import 'package:donaciones/modules/pickups/widgets/product_annexes_form.dart';
 import 'package:flutter/material.dart';
 
 class PickupCard extends StatelessWidget {
   final PickupService _pickupService = PickupService();
+  final Function reload;
   final Pickup pickup;
 
   PickupCard({
     super.key,
-    required this.pickup
+    required this.pickup,
+    required this.reload,
   });
 
   @override
@@ -141,19 +144,20 @@ class PickupCard extends StatelessWidget {
                         ? ElevatedButton(
                             onPressed: () async {
                               if (await _pickupService.start(pickup.id)) {
+                                reload();
+                                // ignore: use_build_context_synchronously
                                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Exito'),
-                                        content: Text(
-                                            'Se ha iniciado la recoleccion'),
-                                      );
-                                    });
-                                Future.delayed(
-                                    const Duration(seconds: 2),
-                                    () => Navigator.pushReplacementNamed(
-                                        context, '/home/recolections'));
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Exito'),
+                                      content: const Text('Se ha iniciado la recolección'),
+                                      actions: [TextButton(onPressed: () {
+                                        Navigator.pop(context);
+                                      }, child: const Text('OK'))],
+                                    );
+                                  }
+                                );
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -167,9 +171,23 @@ class PickupCard extends StatelessWidget {
                     const Spacer(),
                     pickup.status == 'Pendiente' || pickup.status == 'En proceso'
                         ? ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, '/home/start-delivery');
+                            onPressed: () async {
+                              pickup.status = 'Finalizada';
+                              await _pickupService.setOffline(pickup);
+                              reload();
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Exito'),
+                                    content: const Text('Se ha finalizado la recolección'),
+                                    actions: [TextButton(onPressed: () {
+                                      Navigator.pop(context);
+                                    }, child: const Text('OK'))],
+                                  );
+                                }
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(30, 30),
@@ -177,6 +195,30 @@ class PickupCard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(22)),
                                 backgroundColor: ColorsApp.successColor),
                             child: const Text('Finalizar'),
+                          )
+                        : const SizedBox.shrink(),
+                      const Spacer(),
+                    pickup.status == 'Pendiente' || pickup.status == 'En proceso'
+                        ? ElevatedButton(
+                            onPressed: () async {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const SizedBox(
+                                    height: 400,
+                                    child: Center(
+                                      child: ProductAnnexesForm(reload: reload),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(30, 30),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22)),
+                                backgroundColor: ColorsApp.dangerColor),
+                            child: const Text('Cancelar'),
                           )
                         : const SizedBox.shrink(),
                   ],

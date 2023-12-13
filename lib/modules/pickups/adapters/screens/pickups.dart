@@ -73,7 +73,9 @@ class _PickupsState extends State<Pickups> {
                     ],
                   ),
                 ),
-                Column(children: _pickups.map((pickup) => PickupCard(pickup: pickup)).toList()),
+                Column(children: _pickups.map((pickup) => PickupCard(pickup: pickup, reload: () async {
+                  _init(await (Connectivity().checkConnectivity()));
+                },)).toList()),
               ],
             ),
           ),

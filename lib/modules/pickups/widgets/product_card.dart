@@ -6,6 +6,7 @@ import 'package:donaciones/modules/pickups/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
+  final Function reload;
   final Pickup pickup;
   final Product product;
 
@@ -13,13 +14,18 @@ class ProductCard extends StatefulWidget {
     super.key,
     required this.pickup,
     required this.product,
+    required this.reload,
   });
 
   @override
-  State<ProductCard> createState() => _ProductCardState();
+  State<ProductCard> createState() => _ProductCardState(reload: reload);
 }
 
 class _ProductCardState extends State<ProductCard> {
+  final Function reload;
+
+  _ProductCardState({required this.reload});
+
   final _formKey = GlobalKey<FormState>();
 
   bool? isChecked = false;
@@ -95,7 +101,7 @@ class _ProductCardState extends State<ProductCard> {
                         return const SizedBox(
                           height: 400,
                           child: Center(
-                            child: ProductAnnexesForm(),
+                            child: ProductAnnexesForm(reload: reload),
                           ),
                         );
                       },
