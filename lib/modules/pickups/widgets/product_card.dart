@@ -98,7 +98,7 @@ class _ProductCardState extends State<ProductCard> {
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return const SizedBox(
+                        return  SizedBox(
                           height: 400,
                           child: Center(
                             child: ProductAnnexesForm(reload: reload),

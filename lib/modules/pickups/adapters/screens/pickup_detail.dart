@@ -36,7 +36,7 @@ class PickupDetail extends StatelessWidget {
                     children: pickup.products
                         .map((product) => ProductCard(
                               pickup: pickup,
-                              product: product,
+                              product: product, reload: (){},
                             ))
                         .toList())
                 : const SizedBox.shrink(),
