@@ -1,3 +1,3 @@
 class Environment {
-  static String baseUrl = 'http://10.0.2.2:3000/api';
+  static String baseUrl = 'https://donaciones-api.ddns.net/api';
 }

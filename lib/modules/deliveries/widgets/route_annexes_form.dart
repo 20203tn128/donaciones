@@ -177,6 +177,9 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                             onPressed: () => {Navigator.pop(context)},
                             child: const Text('Cancelar'),
                             style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
                                 minimumSize: Size(150, 50),
                                 backgroundColor: ColorsApp.dangerColor),
                           ),
@@ -225,6 +228,9 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                             },
                             child: const Text('Guardar'),
                             style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
                                 minimumSize: Size(150, 50),
                                 backgroundColor: ColorsApp.successColor),
                           ),

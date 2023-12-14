@@ -32,6 +32,7 @@ class _RouteCardState extends State<RouteCard> {
       child: Column(
         children: [
           Card(
+            margin: const EdgeInsets.all(8),
             elevation: 5,
             child: Column(
               children: [
@@ -120,30 +121,45 @@ class _RouteCardState extends State<RouteCard> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                Text(
-                                  'Teléfonos: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: ColorsApp.secondaryColor,
-                                  ),
-                                  textAlign: TextAlign.center,
+                                Column(
+                                  children: [
+                                    Text(
+                                      'Teléfonos: ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: ColorsApp.secondaryColor,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   width: 6,
                                 ),
-                                Row(
-                                  children: route.phones
-                                      .map((e) => SizedBox(
-                                            width: 80,
-                                            child: Text(e,
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black45)),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: route.phones
+                                          .map((e) => Row(
+                                            children: [
+                                              SizedBox(
+                                                    width: 120,
+                                                    child: Text(e,
+                                                        style: const TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.black45)),
+                                                  ),
+                                            ],
                                           ))
-                                      .toList(),
+                                          .toList(),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           route.status == 'Finalizada' ||
                                   route.status == 'Cancelada'
@@ -165,10 +181,10 @@ class _RouteCardState extends State<RouteCard> {
                                   },
                                   child: const Text('Ver comentarios'),
                                   style: ElevatedButton.styleFrom(
-                                      minimumSize: Size(30, 30),
+                                      minimumSize: Size(60, 50),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(22)),
+                                              BorderRadius.circular(10)),
                                       backgroundColor: ColorsApp.successColor),
                                 )
                               : SizedBox.shrink(),
