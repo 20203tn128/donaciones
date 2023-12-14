@@ -8,7 +8,6 @@ class AuthService {
   final SessionService sessionService = const SessionService();
 
   Future<bool> login(String email, String password) async {
-    print(2);
     final response = await apiService.post(
       '/login',
       data: {
@@ -17,16 +16,9 @@ class AuthService {
       }
     );
 
-    print(3);
-
     final res = Response.fromMap(response.data);
 
-    print(4);
-    print(res);
-
     if (res.statusCode != 200) return false;
-
-    print(5);
     
     await sessionService.setSession(
       res.data['token'],

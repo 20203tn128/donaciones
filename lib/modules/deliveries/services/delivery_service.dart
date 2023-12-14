@@ -57,8 +57,6 @@ class DeliveryService {
 
     final res = Response.fromMap(response.data);
 
-    print(response);
-
     if (res.statusCode != 200) return false;
 
     setOffline(await getById(id));
@@ -85,11 +83,6 @@ class DeliveryService {
           .toList(),
       'dateEnd': dateEnd.toIso8601String(),
     };
-    print('esto es algo');
-    routes.forEach((element) => print(element.toMap()));
-    print('Esto es impresion');
-    print(data);
-    print('esto sesbsdbsdhfsdf');
     final response = await _apiService.patch('/deliveries/end/$id', data: data);
 
     final res = Response.fromMap(response.data);
@@ -98,6 +91,7 @@ class DeliveryService {
   }
 
   Future<bool> cancel(String id, Annexes generalAnnexes) async {
+    print(generalAnnexes.toMap());
     final response = await _apiService.patch('/deliveries/cancel/$id', data: {
       'generalAnnexes': {
         'commentary': generalAnnexes.commentary,
@@ -122,10 +116,7 @@ class DeliveryService {
 
   Future<void> setOffline(Delivery delivery) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("Esto es el seltoffline");
-    print(delivery.toMap());
     final json = jsonEncode(delivery.toMap());
-    print(json);
     await prefs.setString('offline_delivery', json);
   }
 

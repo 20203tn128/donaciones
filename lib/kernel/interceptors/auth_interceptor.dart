@@ -6,15 +6,11 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    print(41);
     if (await sessionService.isLoggedIn()) {
-      print(42);
       final token = await sessionService.getToken();
       options.headers.addAll({'authorization': 'Bearer $token'});
     }
     options.contentType = 'application/json';
-    print(43);
     handler.next(options);
-    print(44);
   }
 }

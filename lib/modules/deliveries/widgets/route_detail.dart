@@ -91,7 +91,6 @@ class _RouteDetailState extends State<RouteDetail> {
                                 ),
                               );
                             } catch (error) {
-                              print('Error decodificando base64: $error');
                               return SizedBox.shrink();
                             }
                           }).toList(),

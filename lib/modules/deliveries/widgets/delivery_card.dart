@@ -4,11 +4,31 @@ import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
 import 'package:donaciones/modules/deliveries/widgets/delivery_general_annexes_form.dart';
 import 'package:flutter/material.dart';
 
-class DeliveryCard extends StatelessWidget {
-  final DeliveryService _deliveryService = DeliveryService();
+class DeliveryCard extends StatefulWidget {
   final Delivery delivery;
   final Function() reload;
-  DeliveryCard({super.key, required this.delivery, required this.reload});
+  const DeliveryCard({super.key, required this.delivery, required this.reload});
+
+  @override
+  State<DeliveryCard> createState() => _DeliveryCardState(delivery: delivery);
+}
+
+class _DeliveryCardState extends State<DeliveryCard> {
+  Delivery delivery;
+  final DeliveryService _deliveryService = DeliveryService();
+
+  _DeliveryCardState({required this.delivery});
+
+
+  Future<void> reloadIfOffline() async {
+    final offlineDelivery = await _deliveryService.getOffline();
+    if(offlineDelivery == null) return;
+    if (delivery.id == offlineDelivery.id) {
+      setState(() {
+      delivery = offlineDelivery;
+    });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,21 +75,22 @@ class DeliveryCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () async {
                           Navigator.pushNamed(context, '/detail',
-                              arguments: {'delivery': delivery});
+                              arguments: {'delivery': delivery, 'reloadFunction': reloadIfOffline});
                         },
                         style: ElevatedButton.styleFrom(
                             minimumSize: const Size(30, 30),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(22)),
                             backgroundColor: ColorsApp.successColor),
-                        child: const Text('Ver ruta'),
+                        child: const Text('Ver ruta', style: TextStyle(color: Colors.white),),
                       ),
                       const Spacer(),
                       delivery.status == 'Pendiente'
                           ? ElevatedButton(
                               onPressed: () async {
-                                if (await _deliveryService.start(delivery.id)) {
-                                  reload();
+                                if (await _deliveryService
+                                    .start(delivery.id)) {
+                                  reloadIfOffline();
                                   // ignore: use_build_context_synchronously
                                   showDialog(
                                       context: context,
@@ -94,7 +115,7 @@ class DeliveryCard extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22)),
                                   backgroundColor: ColorsApp.successColor),
-                              child: const Text('Iniciar'),
+                              child: const Text('Iniciar', style: TextStyle(color: Colors.white),),
                             )
                           : const Spacer(),
                       const SizedBox.shrink(),
@@ -104,8 +125,9 @@ class DeliveryCard extends StatelessWidget {
                               onPressed: () async {
                                 delivery.status = 'Finalizada';
                                 delivery.dateEnd = DateTime.now();
-                                await _deliveryService.setOffline(delivery);
-                                reload();
+                                await _deliveryService
+                                    .setOffline(delivery);
+                                widget.reload();
                                 // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
@@ -130,7 +152,7 @@ class DeliveryCard extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22)),
                                   backgroundColor: ColorsApp.successColor),
-                              child: const Text('Finalizar'),
+                              child: const Text('Finalizar', style: TextStyle(color: Colors.white),),
                             )
                           : const Spacer(),
                       const SizedBox.shrink(),
@@ -141,10 +163,10 @@ class DeliveryCard extends StatelessWidget {
                                 showModalBottomSheet(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return const SizedBox(
+                                    return SizedBox(
                                       height: 400,
                                       child: Center(
-                                          child: DeliveryGeneralAnnexesForm()),
+                                          child: DeliveryGeneralAnnexesForm(reloadParent: reloadIfOffline),),
                                     );
                                   },
                                 );
@@ -154,7 +176,7 @@ class DeliveryCard extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22)),
                                   backgroundColor: ColorsApp.successColor),
-                              child: const Text('Cancelar'),
+                              child: const Text('Cancelar', style: TextStyle(color: Colors.white),),
                             )
                           : const Spacer(),
                       const SizedBox.shrink(),

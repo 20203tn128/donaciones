@@ -80,7 +80,6 @@ class ProductDetail extends StatelessWidget {
                                 ),
                               );
                             } catch (error) {
-                              print('Error decodificando base64: $error');
                               return const SizedBox.shrink();
                             }
                           }).toList(),

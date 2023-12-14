@@ -34,7 +34,6 @@ class ApiService {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async { // si segun yo es lalala si 20203tn055@ute.edu.mx
-    print(23);
     var x = await _dio.post(
     path,
     data: data,
@@ -43,8 +42,6 @@ class ApiService {
     cancelToken: cancelToken,
     onReceiveProgress: onReceiveProgress,
     );
-    print(24);
-    print(x);
     return x as Response<T>;
   }
 

@@ -102,20 +102,16 @@ class _LoginFormextendsState extends State<LoginForm> {
                             onPressed: _isButtonDesabled
                                 ? null
                                 : () async {
-                                    // try { // se murio en inicar no hace nada
-                                    
-                                      print(1);
+                                    try {
                                       if (await _authService.login(
                                           _email.text, _password.text)) {
                                         Navigator.pushReplacementNamed(
                                             context, '/menu');
-                                      } else
-                                        print('hola, no jaló xD');
-                                    // } catch (e) {
-                                      // print('Error: $e');
-                                    // }
+                                      }
+                                    } catch (e) {
+                                    }
                                   },
-                            child: const Text('Iniciar sesion'),
+                            child: const Text('Iniciar sesion', style: TextStyle(color: Colors.white),),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: Size(100, 50),
                                 shape: RoundedRectangleBorder(

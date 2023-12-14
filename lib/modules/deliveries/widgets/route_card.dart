@@ -6,11 +6,15 @@ import 'package:donaciones/modules/deliveries/widgets/route_detail.dart';
 import 'package:flutter/material.dart';
 
 class RouteCard extends StatefulWidget {
+  final Function reloadParent;
   final DeliveryService _deliveryService = DeliveryService();
   final routemodel.Route route;
+  final int index;
   RouteCard({
     super.key,
     required this.route,
+    required this.index,
+    required this.reloadParent,
   });
 
   @override
@@ -175,12 +179,11 @@ class _RouteCardState extends State<RouteCard> {
                                         ._deliveryService
                                         .getOffline();
                                     if (delivery != null) {
-                                      int index = delivery.routes.indexWhere(
-                                          (element) => element.id == route.id);
-                                      delivery.routes[index].status =
+                                      delivery.routes[widget.index].status =
                                           'En proceso';
                                       await widget._deliveryService
                                           .setOffline(delivery);
+                                      // ignore: use_build_context_synchronously
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -193,7 +196,7 @@ class _RouteCardState extends State<RouteCard> {
                                                     onPressed: () {
                                                       setState(() {
                                                         route = delivery
-                                                            .routes[index];
+                                                            .routes[widget.index];
                                                       });
                                                       Navigator.pop(context);
                                                     },
@@ -225,6 +228,16 @@ class _RouteCardState extends State<RouteCard> {
                                               child: Center(
                                                   child: RouteAnnexesForm(
                                                 route: route,
+                                                reloadParents: () async {
+                                                  widget.reloadParent();
+                                                  final offlineDelivery = await widget._deliveryService.getOffline();
+                                                  if (offlineDelivery != null) {
+                                                    setState(() {
+                                                      route = offlineDelivery.routes[widget.index];
+                                                  });
+                                                  }
+                                                },
+                                                status: 'Finalizada',
                                               )),
                                             );
                                           },
@@ -250,6 +263,16 @@ class _RouteCardState extends State<RouteCard> {
                                               child: Center(
                                                   child: RouteAnnexesForm(
                                                 route: route,
+                                                reloadParents: () async {
+                                                  widget.reloadParent();
+                                                  final offlineDelivery = await widget._deliveryService.getOffline();
+                                                  if (offlineDelivery != null) {
+                                                    setState(() {
+                                                      route = offlineDelivery.routes[widget.index];
+                                                  });
+                                                  }
+                                                },
+                                                status: 'Cancelada',
                                               )),
                                             );
                                           },

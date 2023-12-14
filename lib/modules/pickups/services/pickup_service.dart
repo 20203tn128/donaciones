@@ -52,8 +52,6 @@ class PickupService {
     final response = await _apiService.patch('/pickups/start/$id');
 
     final res = Response.fromMap(response.data);
-
-    print(response);
     
     if (res.statusCode != 200) return false;
 

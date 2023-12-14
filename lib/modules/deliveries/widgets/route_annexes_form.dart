@@ -12,7 +12,9 @@ import 'package:image_picker/image_picker.dart';
 
 class RouteAnnexesForm extends StatefulWidget {
   final routemodel.Route route;
-  const RouteAnnexesForm({super.key, required this.route});
+  final Function reloadParents;
+  final String status;
+  const RouteAnnexesForm({super.key, required this.route, required this.reloadParents, required this.status});
 
   @override
   State<RouteAnnexesForm> createState() => _RouteAnnexesFormState(route: route);
@@ -189,27 +191,23 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                 delivery.routes[index].annexes = Annexes(
                                     commentary: _comments.text,
                                     photos: _images.map((e) {
-                                      print('esto es una foto');
                                       final String bytes =
                                           base64Encode(e.readAsBytesSync());
                                       return 'data:image/jpeg;base64,$bytes';
                                     }).toList());
-                                print('Que es esto');
-                                print(delivery.toMap());
-                                print('eso era lo de las fotos xd');
-                                delivery.routes[index].status = 'Finalizada';
+                                delivery.routes[index].status = widget.status;
                                 delivery.routes[index].dateEnd = DateTime.now();
 
                                 await _deliveryService.setOffline(delivery);
-                                final indes = await _deliveryService.getOffline();
-                                print( indes?.toMap());
+                                widget.reloadParents();
+                                // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: const Text('Exito'),
-                                        content: const Text(
-                                            'Se ha finalizado la ruta'),
+                                        content: Text(
+                                            'Se ha ${widget.status == 'Finalizada' ? 'finalizado' : 'cancelado'} la ruta'),
                                         actions: [
                                           TextButton(
                                               onPressed: () {

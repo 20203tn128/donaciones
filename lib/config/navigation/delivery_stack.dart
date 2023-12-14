@@ -17,6 +17,7 @@ class DeliveryStack extends StatelessWidget {
           final dynamic args = ModalRoute.of(context)!.settings.arguments;
           return DeliveryDetail(
             delivery: args!['delivery'],
+            reloadParent: args!['reloadFunction'],
           );
         },
         

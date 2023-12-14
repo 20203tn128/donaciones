@@ -5,11 +5,11 @@ import 'package:donaciones/kernel/models/annexes.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DeliveryGeneralAnnexesForm extends StatefulWidget {
-  const DeliveryGeneralAnnexesForm({super.key});
+  final Function reloadParent;
+  const DeliveryGeneralAnnexesForm({super.key, required this.reloadParent});
 
   @override
   State<DeliveryGeneralAnnexesForm> createState() =>
@@ -89,8 +89,9 @@ class _DeliveryGeneralAnnexesFormState
                   children: [
                     Container(
                       margin: EdgeInsets.all(8),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: _comments,
+                        decoration: const InputDecoration(
                           labelText: 'Comentarios: *',
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -192,6 +193,8 @@ class _DeliveryGeneralAnnexesFormState
                                 delivery.status = 'Cancelada';
                                 delivery.dateEnd = DateTime.now();
                                 await _deliveryService.setOffline(delivery);
+                                widget.reloadParent();
+                                // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -211,10 +214,10 @@ class _DeliveryGeneralAnnexesFormState
                                     });
                               }
                             },
-                            child: const Text('Guardar'),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: Size(150, 50),
                                 backgroundColor: ColorsApp.successColor),
+                            child: const Text('Guardar'),
                           ),
                         ],
                       ),

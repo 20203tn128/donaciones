@@ -24,6 +24,11 @@ class _DeliveriesState extends State<Deliveries> {
 
     if (result != ConnectivityResult.none) {
       deliveries.addAll(await _deliveryService.get());
+      final offlineDelivery = await _deliveryService.getOffline();
+      if (offlineDelivery != null) {
+        final int index = deliveries.indexWhere((delivery) => delivery.id == offlineDelivery.id);
+        if (index != -1) deliveries[index] = offlineDelivery;
+      }
     } else {
       final delivery = await _deliveryService.getOffline();
       if (delivery != null) deliveries.add(delivery);
