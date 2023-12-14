@@ -148,7 +148,7 @@ class HomeContainer extends StatelessWidget {
                             await SharedPreferences.getInstance();
                         var token = await prefs.getString('token')!;
                         response = await dio.get(
-                            'http://192.168.1.69:3000/api/pickups/$idPickup',
+                            'http://192.168.43.79:3000/api/pickups/$idPickup',
                             options: Options(
                                 headers: {'Authorization': 'Bearer $token'}));
                         print('Esti pmrime lo del home container');
@@ -176,7 +176,7 @@ class HomeContainer extends StatelessWidget {
                                   await SharedPreferences.getInstance();
                               var token = await prefs.getString('token')!;
                               response = await dio.patch(
-                                  'http://192.168.1.69:3000/api/api/pickups/start/$idPickup',
+                                  'http://192.168.43.79:3000/api/api/pickups/start/$idPickup',
                                   options: Options(headers: {
                                     'Authorization': 'Bearer $token'
                                   }));

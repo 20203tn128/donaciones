@@ -102,6 +102,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                             onPressed: _isButtonDesabled
                                 ? null
                                 : () async {
+<<<<<<< Updated upstream
                                     // try {
                                       print(1);
                                       if (await _authService.login(_email.text, _password.text)) {
@@ -110,6 +111,28 @@ class _LoginFormextendsState extends State<LoginForm> {
                                     // } catch (e) {
                                     //   print('Error: $e');
                                     // }
+=======
+                                    try {
+                                      var response = await dio.post(
+                                          'http://192.168.43.79:3000/api/login',
+                                          data: {
+                                            'email': _email.text,
+                                            'password': _password.text
+                                          });
+                                      print(response.data['data']['token']);
+                                      final SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      await prefs.setString('token',
+                                          response.data['data']['token']);
+                                      await prefs.setString('id',
+                                          response.data['data']['user']['id']);
+                                      print('Esto debio de imprimir algo :v');
+                                      Navigator.pushReplacementNamed(
+                                          context, '/menu');
+                                    } catch (e) {
+                                      print('Error: $e');
+                                    }
+>>>>>>> Stashed changes
                                   },
                             child: const Text('Iniciar sesion'),
                             style: ElevatedButton.styleFrom(
