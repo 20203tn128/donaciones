@@ -12,7 +12,7 @@ class PickupDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalles de la recolección'),
+        title: const Text('Detalles de la recolección', style: TextStyle(color: Colors.white),),
         backgroundColor: ColorsApp.prmaryColor,
       ),
       body: Column(

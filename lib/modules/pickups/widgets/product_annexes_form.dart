@@ -15,7 +15,7 @@ class ProductAnnexesForm extends StatefulWidget {
 
 class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
   final _formKey = GlobalKey<FormState>();
-  List<File> _images = [];
+  final List<File> _images = [];
 
   Future _getImageFromCamera() async {
     final imagePicker = ImagePicker();
@@ -121,9 +121,9 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: const Text('Seleccione una opción'),
-                                content: SizedBox(
+                                content: const SizedBox(
                                   width: 250,
-                                  child: const Text(
+                                  child: Text(
                                     'Selecione una opción desde la cual podra subir el archivo deaseado',
                                   ),
                                 ),
@@ -134,8 +134,8 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                                           .textTheme
                                           .labelLarge,
                                     ),
-                                    child: const Text('Camara'),
                                     onPressed: _getImageFromCamera,
+                                    child: const Text('Camara'),
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
@@ -143,8 +143,8 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                                           .textTheme
                                           .labelLarge,
                                     ),
-                                    child: const Text('Galeria'),
                                     onPressed: _getImageFromGallery,
+                                    child: const Text('Galeria'),
                                   ),
                                 ],
                               );
@@ -157,17 +157,17 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                       child: Row(
                         children: [
                           ElevatedButton(
                             onPressed: () => {
                               Navigator.pushNamed(context, '/detail')
                             },
-                            child: const Text('Cancelar'),
                             style: ElevatedButton.styleFrom(
-                                minimumSize: Size(150, 50),
+                                minimumSize: const Size(150, 50),
                                 backgroundColor: ColorsApp.dangerColor),
+                            child: const Text('Cancelar'),
                           ),
                           const Spacer(),
                           ElevatedButton(
@@ -175,10 +175,10 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                               Navigator.pushNamed(
                                   context, '/detail')
                             },
-                            child: const Text('Guardar'),
                             style: ElevatedButton.styleFrom(
-                                minimumSize: Size(150, 50),
+                                minimumSize: const Size(150, 50),
                                 backgroundColor: ColorsApp.successColor),
+                            child: const Text('Guardar'),
                           ),
                         ],
                       ),

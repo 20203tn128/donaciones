@@ -44,7 +44,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Perfil'),
+          title: const Text('Perfil', style: TextStyle(color: Colors.white),),
           backgroundColor: ColorsApp.prmaryColor,
         ),
         body: Padding(
@@ -67,7 +67,7 @@ class _ProfileState extends State<Profile> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(

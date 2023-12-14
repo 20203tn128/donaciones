@@ -1,4 +1,3 @@
-import 'package:donaciones/kernel/widgets/navigation/menu.dart';
 import 'package:donaciones/modules/deliveries/adapters/screens/deliveries.dart';
 import 'package:donaciones/modules/profile/screens/profile.dart';
 import 'package:flutter/material.dart';

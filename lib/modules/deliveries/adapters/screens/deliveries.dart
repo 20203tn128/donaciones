@@ -2,12 +2,9 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/delivery.dart';
-import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/widgets/delivery_card.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
-import 'package:donaciones/modules/pickups/services/pickup_service.dart';
-import 'package:donaciones/modules/pickups/widgets/pickup_card.dart';
 import 'package:flutter/material.dart';
 
 class Deliveries extends StatefulWidget {
@@ -57,7 +54,7 @@ class _DeliveriesState extends State<Deliveries> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Repartos'),
+        title: const Text('Repartos', style: TextStyle(color: Colors.white),),
         backgroundColor: ColorsApp.prmaryColor,
       ),
       body: SingleChildScrollView(

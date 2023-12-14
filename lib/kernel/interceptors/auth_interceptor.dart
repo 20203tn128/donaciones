@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/services/session_service.dart';
 
 class AuthInterceptor extends Interceptor {
-  final SessionService sessionService = SessionService();
+  final SessionService sessionService = const SessionService();
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {

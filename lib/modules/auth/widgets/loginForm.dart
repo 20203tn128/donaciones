@@ -102,7 +102,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                             onPressed: _isButtonDesabled
                                 ? null
                                 : () async {
-                                    try { // se murio en inicar no hace nada
+                                    // try { // se murio en inicar no hace nada
                                     
                                       print(1);
                                       if (await _authService.login(
@@ -111,9 +111,9 @@ class _LoginFormextendsState extends State<LoginForm> {
                                             context, '/menu');
                                       } else
                                         print('hola, no jaló xD');
-                                    } catch (e) {
-                                      print('Error: $e');
-                                    }
+                                    // } catch (e) {
+                                      // print('Error: $e');
+                                    // }
                                   },
                             child: const Text('Iniciar sesion'),
                             style: ElevatedButton.styleFrom(

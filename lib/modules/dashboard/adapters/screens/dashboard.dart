@@ -1,8 +1,6 @@
 import 'package:donaciones/kernel/models/response.dart';
 import 'package:donaciones/kernel/services/api_service.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
-import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
-import 'package:donaciones/modules/pickups/services/pickup_service.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -14,31 +12,14 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final PickupService _pickupService = PickupService();
-  final DeliveryService _deliveryService = DeliveryService();
   final ApiService _apiService = ApiService();
 
   int pickups = 0;
   int deliveries = 0;
 
-
-  Future<void> _init() async {
-    // final pickups = (await _pickupService.get(
-    //         rowsPerPage: 100))
-    //     .length;
-    // final deliveries = (await _deliveryService.get(
-    //         rowsPerPage: 100))
-    //     .length;
-    // setState(() {
-    //   this.pickups = pickups;
-    //   this.deliveries = deliveries;
-    // });
-  }
-
   @override
   void initState() {
     super.initState();
-    _init();
     getPickups();
     getDeliveries();
   }
@@ -62,7 +43,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -199,27 +180,27 @@ class _DashboardState extends State<Dashboard> {
                 onPressed: () {
                   widget.setItem(1);
                 },
-                child: const Text('Ir a mis recolecciones'),
                 style: ElevatedButton.styleFrom(
-                    minimumSize: Size(300, 50),
+                    minimumSize: const Size(300, 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: ColorsApp.successColor),
+                    backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
+                child: const Text('Ir a mis recolecciones'),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
                   widget.setItem(2);
                 },
-                child: const Text('Ir a mis repartos'),
                 style: ElevatedButton.styleFrom(
-                    minimumSize: Size(300, 50),
+                    minimumSize: const Size(300, 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: ColorsApp.successColor),
+                    backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
+                child: const Text('Ir a mis repartos'),
               ),
             ),
           ],

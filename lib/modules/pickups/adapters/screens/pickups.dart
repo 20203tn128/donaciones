@@ -52,7 +52,7 @@ class _PickupsState extends State<Pickups> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Recolecciones'),
+          title: const Text('Recolecciones', style: TextStyle(color: Colors.white),),
           backgroundColor: ColorsApp.prmaryColor,
         ),
         body: SingleChildScrollView(

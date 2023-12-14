@@ -1,4 +1,3 @@
-import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/models/route.dart' as routemodel;
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
@@ -40,20 +39,20 @@ class _RouteCardState extends State<RouteCard> {
                   ),
                   title: Text(
                     route.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: ColorsApp.secondaryColor),
                   ),
                   subtitle: Text(
                     route.status,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black45,
                       fontSize: 12,
                     ),
                   ),
                   children: [
-                    Divider(
+                    const Divider(
                       height: 1,
                       color: Colors.grey,
                     ),

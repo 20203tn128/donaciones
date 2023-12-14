@@ -1,10 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
 import 'package:donaciones/modules/deliveries/widgets/delivery_general_annexes_form.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DeliveryCard extends StatelessWidget {
   final DeliveryService _deliveryService = DeliveryService();
@@ -30,21 +28,21 @@ class DeliveryCard extends StatelessWidget {
                 children: [
                   Text(
                     delivery.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: ColorsApp.secondaryColor),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     delivery.status,
-                    style: TextStyle(fontSize: 12, color: Colors.black45),
+                    style: const TextStyle(fontSize: 12, color: Colors.black45),
                   )
                 ],
               ),
               subtitle: Text(
                 '${delivery.date.day}/${delivery.date.month}/${delivery.date.year}',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black45,
                   fontSize: 12,
                 ),
@@ -59,14 +57,14 @@ class DeliveryCard extends StatelessWidget {
                           Navigator.pushNamed(context, '/detail',
                               arguments: {'delivery': delivery});
                         },
-                        child: const Text('Ver ruta'),
                         style: ElevatedButton.styleFrom(
-                            minimumSize: Size(30, 30),
+                            minimumSize: const Size(30, 30),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(22)),
                             backgroundColor: ColorsApp.successColor),
+                        child: const Text('Ver ruta'),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       delivery.status == 'Pendiente'
                           ? ElevatedButton(
                               onPressed: () async {
@@ -91,16 +89,16 @@ class DeliveryCard extends StatelessWidget {
                                       });
                                 }
                               },
-                              child: const Text('Iniciar'),
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(30, 30),
+                                  minimumSize: const Size(30, 30),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22)),
                                   backgroundColor: ColorsApp.successColor),
+                              child: const Text('Iniciar'),
                             )
-                          : Spacer(),
-                      SizedBox.shrink(),
-                      Spacer(),
+                          : const Spacer(),
+                      const SizedBox.shrink(),
+                      const Spacer(),
                       delivery.status == 'En proceso'
                           ? ElevatedButton(
                               onPressed: () async {
@@ -127,23 +125,23 @@ class DeliveryCard extends StatelessWidget {
                                       );
                                     });
                               },
-                              child: const Text('Finalizar'),
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(30, 30),
+                                  minimumSize: const Size(30, 30),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22)),
                                   backgroundColor: ColorsApp.successColor),
+                              child: const Text('Finalizar'),
                             )
-                          : Spacer(),
-                      SizedBox.shrink(),
-                      Spacer(),
+                          : const Spacer(),
+                      const SizedBox.shrink(),
+                      const Spacer(),
                       delivery.status == 'En proceso'
                           ? ElevatedButton(
                               onPressed: () async {
                                 showModalBottomSheet(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return Container(
+                                    return const SizedBox(
                                       height: 400,
                                       child: Center(
                                           child: DeliveryGeneralAnnexesForm()),
@@ -151,15 +149,15 @@ class DeliveryCard extends StatelessWidget {
                                   },
                                 );
                               },
-                              child: const Text('Cancelar'),
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(30, 30),
+                                  minimumSize: const Size(30, 30),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22)),
                                   backgroundColor: ColorsApp.successColor),
+                              child: const Text('Cancelar'),
                             )
-                          : Spacer(),
-                      SizedBox.shrink(),
+                          : const Spacer(),
+                      const SizedBox.shrink(),
                     ],
                   ),
                 ),
