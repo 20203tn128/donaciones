@@ -63,13 +63,17 @@ class _RouteDetailState extends State<RouteDetail> {
                   widget.route.annexes?.commentary != null
                       ? Container(
                           margin: EdgeInsets.all(8),
-                          child: SizedBox(
-                            width: 250,
-                            child: Text(
-                              widget.route.annexes!.commentary!,
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black45),
-                            ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 250,
+                                child: Text(
+                                  widget.route.annexes!.commentary!,
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.black),
+                                ),
+                              ),
+                            ],
                           ),
                         )
                       : SizedBox.shrink(),
@@ -103,9 +107,14 @@ class _RouteDetailState extends State<RouteDetail> {
                       onPressed: () => {
                         Navigator.pop(context),
                       },
-                      child: const Text('Salir'),
+                      child: const Text(
+                        'Salir',
+                        style: TextStyle(fontSize: 12.0),
+                      ),
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(150, 50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          minimumSize: Size(60, 40),
                           backgroundColor: ColorsApp.dangerColor),
                     ),
                   ),
