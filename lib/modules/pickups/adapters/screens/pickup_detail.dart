@@ -1,18 +1,44 @@
 import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/pickups/services/pickup_service.dart';
 import 'package:donaciones/modules/pickups/widgets/pickup_general_annexes_form.dart';
 import 'package:donaciones/modules/pickups/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
-class PickupDetail extends StatelessWidget {
+class PickupDetail extends StatefulWidget {
   final Pickup pickup;
-  const PickupDetail({super.key, required this.pickup});
+  final Function reloadParent;
+  const PickupDetail(
+      {super.key, required this.pickup, required this.reloadParent});
+
+  @override
+  State<PickupDetail> createState() => _PickupDetailState(pickup: pickup);
+}
+
+class _PickupDetailState extends State<PickupDetail> {
+  Pickup pickup;
+  _PickupDetailState({required this.pickup});
+  final PickupService _pickupService = PickupService();
+  reloadIfOffline() async {
+    widget.reloadParent();
+
+    final offlinePickup = await _pickupService.getOffline();
+    if (offlinePickup == null) return;
+    if (pickup.id == offlinePickup.id) {
+      setState(() {
+        pickup = offlinePickup;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalles de la recolección', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Detalles de la recolección',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: ColorsApp.prmaryColor,
       ),
       body: Column(
@@ -29,21 +55,25 @@ class PickupDetail extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: pickup.status == 'En proceso' ||
-                    pickup.status == 'Finalizado' ||
-                    pickup.status == 'Cancelada'
+            child: widget.pickup.status == 'En proceso' ||
+                    widget.pickup.status == 'Finalizado' ||
+                    widget.pickup.status == 'Cancelada'
                 ? Column(
                     children: pickup.products
-                        .map((product) => ProductCard(
-                              pickup: pickup,
-                              product: product, reload: (){},
+                        .asMap()
+                        .entries
+                        .map((entry) => ProductCard(
+                              pickup: widget.pickup,
+                              product: entry.value,
+                              reloadParent: reloadIfOffline(),
+                              index: entry.key,
                             ))
                         .toList())
                 : const SizedBox.shrink(),
           ),
-          pickup.status == 'En proceso' ||
-                  pickup.status == 'Finalizado' ||
-                  pickup.status == 'Cancelada'
+          widget.pickup.status == 'En proceso' ||
+                  widget.pickup.status == 'Finalizado' ||
+                  widget.pickup.status == 'Cancelada'
               ? Row(
                   children: [
                     const Padding(
@@ -55,41 +85,13 @@ class PickupDetail extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      pickup.products.length.toString(),
+                      widget.pickup.products.length.toString(),
                       style:
                           const TextStyle(fontSize: 16, color: Colors.black45),
                     ),
                     const SizedBox(
                       width: 180,
                     ),
-                    pickup.status == 'En proceso'
-                        ? Align(
-                            alignment: Alignment.bottomLeft,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const SizedBox(
-                                      height: 400,
-                                      child: Center(
-                                        child: PickupGeneralAnnexesForm(),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              style: OutlinedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: ColorsApp.successColor,
-                                  side: const BorderSide(
-                                      color: ColorsApp.successColor),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16))),
-                              child: const Text('Guardar'),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
                   ],
                 )
               : const Card(

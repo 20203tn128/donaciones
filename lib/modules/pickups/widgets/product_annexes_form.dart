@@ -1,20 +1,34 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:donaciones/kernel/models/annexes.dart';
+import 'package:donaciones/kernel/models/product.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/pickups/services/pickup_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProductAnnexesForm extends StatefulWidget {
-  final Function reload;
+  final Product product;
+  final Function reloadParents;
 
-  const ProductAnnexesForm({super.key, required this.reload});
+  const ProductAnnexesForm({
+    super.key,
+    required this.reloadParents,
+    required this.product,
+  });
 
   @override
-  State<ProductAnnexesForm> createState() => _ProductAnnexesFormState();
+  State<ProductAnnexesForm> createState() => _ProductAnnexesFormState(
+        product: product,
+      );
 }
 
 class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
+  Product product;
+  _ProductAnnexesFormState({required this.product});
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _comments = TextEditingController(text: '');
   final List<File> _images = [];
 
   Future _getImageFromCamera() async {
@@ -43,6 +57,7 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
 
   @override
   Widget build(BuildContext context) {
+    final PickupService _pickupService = PickupService();
     return Scaffold(
       body: SingleChildScrollView(
           child: Padding(
@@ -83,7 +98,8 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                   children: [
                     Container(
                       margin: const EdgeInsets.all(8),
-                      child: const TextField(
+                      child: TextField(
+                        controller: _comments,
                         decoration: InputDecoration(
                           labelText: 'Comentarios: *',
                           border: OutlineInputBorder(
@@ -157,13 +173,13 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      padding:
+                          const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                       child: Row(
                         children: [
                           ElevatedButton(
-                            onPressed: () => {
-                              Navigator.pushNamed(context, '/detail')
-                            },
+                            onPressed: () =>
+                                {Navigator.pushNamed(context, '/detail')},
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(150, 50),
                                 backgroundColor: ColorsApp.dangerColor),
@@ -171,9 +187,42 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                           ),
                           const Spacer(),
                           ElevatedButton(
-                            onPressed: () => {
-                              Navigator.pushNamed(
-                                  context, '/detail')
+                            onPressed: () async {
+                              final pickup = await _pickupService.getOffline();
+                              if (pickup != null) {
+                                int index = pickup.products.indexWhere(
+                                    (element) => element.id == product.id);
+                                pickup.products[index].annexes = Annexes(
+                                    commentary: _comments.text,
+                                    photos: _images.map((e) {
+                                      final String bytes =
+                                          base64Encode(e.readAsBytesSync());
+                                      return 'data:image/jpeg;base64,$bytes';
+                                    }).toList());
+
+                                await _pickupService.setOffline(pickup);
+                                widget.reloadParents();
+                                // ignore: use_build_context_synchronously
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Exito'),
+                                        content: Text('Se ha agregado la nota'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  product =
+                                                      pickup.products[index];
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'))
+                                        ],
+                                      );
+                                    });
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(150, 50),

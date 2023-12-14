@@ -1,30 +1,33 @@
 import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/models/product.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
+import 'package:donaciones/modules/pickups/services/pickup_service.dart';
 import 'package:donaciones/modules/pickups/widgets/product_annexes_form.dart';
 import 'package:donaciones/modules/pickups/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
-  final Function reload;
+  final Function reloadParent;
+  final PickupService _pickupService = PickupService();
   final Pickup pickup;
   final Product product;
+  final int index;
 
-  const ProductCard({
+  ProductCard({
     super.key,
     required this.pickup,
     required this.product,
-    required this.reload,
+    required this.reloadParent,
+    required this.index,
   });
 
   @override
-  State<ProductCard> createState() => _ProductCardState(reload: reload);
+  State<ProductCard> createState() => _ProductCardState(product: product);
 }
 
 class _ProductCardState extends State<ProductCard> {
-  final Function reload;
-
-  _ProductCardState({required this.reload});
+  Product product;
+  _ProductCardState({required this.product});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -98,10 +101,22 @@ class _ProductCardState extends State<ProductCard> {
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return  SizedBox(
+                        return SizedBox(
                           height: 400,
                           child: Center(
-                            child: ProductAnnexesForm(reload: reload),
+                            child: ProductAnnexesForm(
+                                reloadParents: () async {
+                                  widget.reloadParent();
+                                  final offlinePickup =
+                                      await widget._pickupService.getOffline();
+                                  if (offlinePickup != null) {
+                                    setState(() {
+                                      product =
+                                          offlinePickup.products[widget.index];
+                                    });
+                                  }
+                                },
+                                product: product),
                           ),
                         );
                       },

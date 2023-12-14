@@ -20,7 +20,6 @@ class DeliveryStack extends StatelessWidget {
             reloadParent: args!['reloadFunction'],
           );
         },
-        
       },
     );
   }

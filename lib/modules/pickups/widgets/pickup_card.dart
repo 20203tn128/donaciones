@@ -1,12 +1,12 @@
 import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/pickups/services/pickup_service.dart';
+import 'package:donaciones/modules/pickups/widgets/pickup_general_annexes_form.dart';
 import 'package:donaciones/modules/pickups/widgets/product_annexes_form.dart';
 import 'package:flutter/material.dart';
 
-class PickupCard extends StatelessWidget {
-  final PickupService _pickupService = PickupService();
-  final Function reload;
+class PickupCard extends StatefulWidget {
+  final Function() reload;
   final Pickup pickup;
 
   PickupCard({
@@ -16,20 +16,39 @@ class PickupCard extends StatelessWidget {
   });
 
   @override
+  State<PickupCard> createState() => _PickupCardState(pickup: pickup);
+}
+
+class _PickupCardState extends State<PickupCard> {
+  Pickup pickup;
+  final PickupService _pickupService = PickupService();
+  _PickupCardState({required this.pickup});
+
+  Future<void> reloadIfOffline() async {
+    final offlinePickup = await _pickupService.getOffline();
+    if (offlinePickup == null) return;
+    if (pickup.id == offlinePickup.id) {
+      setState(() {
+        pickup = offlinePickup;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
         child: ExpansionTile(
             leading: CircleAvatar(
               backgroundColor: ColorsApp.prmaryColor,
               foregroundColor: Colors.white,
-              child: Text(pickup.acronym),
+              child: Text(widget.pickup.acronym),
             ),
             title: Row(
               children: [
                 SizedBox(
                   width: 120,
                   child: Text(
-                    pickup.name,
+                    widget.pickup.name,
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -38,13 +57,13 @@ class PickupCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  pickup.status,
+                  widget.pickup.status,
                   style: const TextStyle(fontSize: 12, color: Colors.black45),
                 )
               ],
             ),
             subtitle: Text(
-              '${pickup.products.length} unidades',
+              '${widget.pickup.products.length} unidades',
               style: const TextStyle(
                 color: Colors.black45,
                 fontSize: 12,
@@ -69,7 +88,7 @@ class PickupCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Detalles de la cadena ${pickup.chain.name}',
+                            'Detalles de la cadena ${widget.pickup.chain.name}',
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -85,7 +104,7 @@ class PickupCard extends StatelessWidget {
                             ),
                             SizedBox(
                                 width: 180,
-                                child: Text(pickup.chain.address,
+                                child: Text(widget.pickup.chain.address,
                                     style: const TextStyle(
                                         fontSize: 12, color: Colors.black45))),
                           ],
@@ -97,7 +116,7 @@ class PickupCard extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             ),
-                            Text(pickup.chain.nameLinkPerson,
+                            Text(widget.pickup.chain.nameLinkPerson,
                                 style: const TextStyle(
                                     fontSize: 12, color: Colors.black45))
                           ],
@@ -110,7 +129,7 @@ class PickupCard extends StatelessWidget {
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             ),
                             Row(
-                              children: pickup.chain.phones
+                              children: widget.pickup.chain.phones
                                   .map((e) => SizedBox(
                                         width: 80,
                                         child: Text(e,
@@ -131,7 +150,7 @@ class PickupCard extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () async {
                         Navigator.pushNamed(context, '/detail',
-                            arguments: {'pickup': pickup});
+                            arguments: {'pickup': widget.pickup});
                       },
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(30, 30),
@@ -141,11 +160,12 @@ class PickupCard extends StatelessWidget {
                       child: const Text('Productos'),
                     ),
                     const Spacer(),
-                    pickup.status == 'Pendiente'
+                    widget.pickup.status == 'Pendiente'
                         ? ElevatedButton(
                             onPressed: () async {
-                              if (await _pickupService.start(pickup.id)) {
-                                reload();
+                              if (await _pickupService
+                                  .start(widget.pickup.id)) {
+                                widget.reload();
                                 // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
@@ -174,12 +194,12 @@ class PickupCard extends StatelessWidget {
                           )
                         : const SizedBox(),
                     const Spacer(),
-                    pickup.status == 'En proceso'
+                    widget.pickup.status == 'En proceso'
                         ? ElevatedButton(
                             onPressed: () async {
-                              pickup.status = 'Finalizada';
-                              await _pickupService.setOffline(pickup);
-                              reload();
+                              widget.pickup.status = 'Finalizada';
+                              await _pickupService.setOffline(widget.pickup);
+                              widget.reload();
                               // ignore: use_build_context_synchronously
                               showDialog(
                                   context: context,
@@ -207,7 +227,7 @@ class PickupCard extends StatelessWidget {
                           )
                         : const SizedBox.shrink(),
                     const Spacer(),
-                    pickup.status == 'En proceso'
+                    widget.pickup.status == 'En proceso'
                         ? ElevatedButton(
                             onPressed: () async {
                               showModalBottomSheet(
@@ -216,7 +236,8 @@ class PickupCard extends StatelessWidget {
                                   return SizedBox(
                                     height: 400,
                                     child: Center(
-                                      child: ProductAnnexesForm(reload: reload),
+                                      child: PickupGeneralAnnexesForm(
+                                          reloadParent: reloadIfOffline),
                                     ),
                                   );
                                 },
