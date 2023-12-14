@@ -51,87 +51,128 @@ class _DashboardState extends State<Dashboard> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(children: [
-                Column(children: [
-                  SizedBox(
-                    height: 200,
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColorsApp.prmaryColor,
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '$pickups',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorsApp.secondaryColor),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(children: [
+                      SizedBox(
+                        height: 200,
+                        width: 150,
+                        child: Card(
+                          elevation: 5,
+                          shape: const RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: ColorsApp.prmaryColor,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Recolecciones pendientes',
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                            )
-                          ]),
-                    ),
-                  )
-                ]),
-                Column(children: [
-                  SizedBox(
-                    height: 200,
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColorsApp.prmaryColor,
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '$deliveries',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorsApp.secondaryColor),
-                            ),
-                            Row(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Repartos pendientes',
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.black45),
-                                  ),
+                                Text(
+                                  '$pickups',
+                                  style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                const Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Recolecciones',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'pendientes',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                  ],
                                 )
-                              ],
-                            )
-                          ]),
-                    ),
-                  )
-                ]),
-              ]),
+                              ]),
+                        ),
+                      )
+                    ]),
+                    Column(children: [
+                      SizedBox(
+                        height: 200,
+                        width: 150,
+                        child: Card(
+                          elevation: 5,
+                          shape: const RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: ColorsApp.prmaryColor,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '$deliveries',
+                                  style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                const Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Repartos',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'pendientes',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ]),
+                        ),
+                      )
+                    ]),
+                  ]),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 40.0),
               child: ElevatedButton(
                 onPressed: () {
                   widget.setItem(1);
@@ -139,11 +180,12 @@ class _DashboardState extends State<Dashboard> {
                 child: const Text('Ir a mis recolecciones'),
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(300, 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(22)),
+                     shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                     backgroundColor: ColorsApp.successColor),
               ),
             ),
+            SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
@@ -153,8 +195,8 @@ class _DashboardState extends State<Dashboard> {
                 child: const Text('Ir a mis repartos'),
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(300, 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(22)),
+                     shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                     backgroundColor: ColorsApp.successColor),
               ),
             ),

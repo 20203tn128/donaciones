@@ -67,226 +67,279 @@ class _ProfileState extends State<Profile> {
                     )
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    _user?.fullname ?? '',
-                    style: const TextStyle(fontSize: 24),
-                  ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _user?.name ?? '',
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _user?.lastname ?? '',
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    const Text(' '),
+                    Text(
+                      _user?.secondSurname ?? '',
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: Theme.of(context).colorScheme.outline,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(14.0),
+                            child: Column(
+                              children: [
+                                Icon(Icons.email),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(_user?.email ?? ''),
+                                ],
+                              ),
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Correo electrónico',
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(Icons.email),
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(_user?.email ?? ''),
-                                  ],
-                                ),
-                                const Text(
-                                  'Correo electrónico',
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.black45),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(Icons.phone),
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(_user?.phone ?? ''),
-                                  ],
-                                ),
-                                const Text(
-                                  'Telefóno celular',
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.black45),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 150,
-                            ),
-                            IconButton(
-                                onPressed: () => {
-                                      showModalBottomSheet<void>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return SizedBox(
-                                            height: 450,
-                                            child: SingleChildScrollView(
-                                                child: Column(
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.all(16.0),
-                                                  child: Text(
-                                                    'Modificar Teléfono',
-                                                    style: TextStyle(
-                                                        fontSize: 24,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: ColorsApp
-                                                            .prmaryColor),
-                                                  ),
-                                                ),
-                                                Form(
-                                                  key: _phoneFormKey,
-                                                  onChanged: () => {
-                                                    setState(() {
-                                                      _isphoneDisabled =
-                                                          !_phoneFormKey
-                                                              .currentState!
-                                                              .validate();
-                                                    })
-                                                  },
-                                                  child: Column(
-                                                    children: <Container>[
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                            .all(16),
-                                                        child: TextFormField(
-                                                          decoration:
-                                                              const InputDecoration(
-                                                                  icon: Icon(
-                                                                    Icons.phone,
-                                                                    color: ColorsApp
-                                                                        .secondaryColor,
-                                                                  ),
-                                                                  labelText:
-                                                                      'Teléfono: *'),
-                                                          controller: _phone,
-                                                          style:
-                                                              const TextStyle(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(14.0),
+                                    child: Icon(Icons.phone),
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(_user?.phone ?? ''),
+                                        ],
+                                      ),
+                                      const Text(
+                                        'Telefóno celular',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black45),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                  onPressed: () => {
+                                        showModalBottomSheet<void>(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Padding(
+                                              padding: MediaQuery.of(context).viewInsets,
+                                              child: SizedBox(
+                                                height: 250,
+                                                child: SingleChildScrollView(
+                                                    child: Column(
+                                                  children: [
+                                                    const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(16.0),
+                                                      child: Text(
+                                                        'Modificar Teléfono',
+                                                        style: TextStyle(
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: ColorsApp
+                                                                .prmaryColor),
+                                                      ),
+                                                    ),
+                                                    Form(
+                                                      key: _phoneFormKey,
+                                                      onChanged: () => {
+                                                        setState(() {
+                                                          _isphoneDisabled =
+                                                              !_phoneFormKey
+                                                                  .currentState!
+                                                                  .validate();
+                                                        })
+                                                      },
+                                                      child: Column(
+                                                        children: <Container>[
+                                                          Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(16),
+                                                            child: TextFormField(
+                                                              decoration:
+                                                                  const InputDecoration(
+                                                                      icon: Icon(
+                                                                        Icons
+                                                                            .phone,
+                                                                        color: ColorsApp
+                                                                            .secondaryColor,
+                                                                      ),
+                                                                      labelText:
+                                                                          'Teléfono: *'),
+                                                              controller: _phone,
+                                                              style: const TextStyle(
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                       .black45),
-                                                          validator: (value) {
-                                                            RegExp regex = RegExp(
-                                                                ValidationsApp
-                                                                    .phone);
-                                                            if (value == null ||
-                                                                value.isEmpty) {
-                                                              return 'Campo obligatorio';
-                                                            } else if (!regex
-                                                                .hasMatch(
-                                                                    value)) {
-                                                              return 'Introduce un número telefonico valido';
-                                                            }
-                                                            return null;
-                                                          },
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16),
-                                                        child: ElevatedButton(
-                                                          onPressed:
-                                                              _isphoneDisabled
-                                                                  ? null
-                                                                  : () async {
-                                                                      if (await _profileService
-                                                                          .changePhone(
-                                                                              _phone.text)) {
-                                                                        // ignore: use_build_context_synchronously
-                                                                        showDialog<
-                                                                            String>(
-                                                                          context:
-                                                                              context,
-                                                                          builder: (BuildContext context) =>
-                                                                              AlertDialog(
-                                                                            title:
-                                                                                const Text(
-                                                                              'Modificación exitosa',
-                                                                              style: TextStyle(color: ColorsApp.successColor),
-                                                                            ),
-                                                                            content:
-                                                                                const Text('¡Tu telefono se ha modificado de manera exitosa!'),
-                                                                            actions: <Widget>[
-                                                                              TextButton(
-                                                                                onPressed: () {
-                                                                                  init();
-                                                                                  Navigator.pop(context);
-                                                                                  Navigator.pop(context);
-                                                                                },
-                                                                                child: const Text('Ok'),
+                                                              validator: (value) {
+                                                                RegExp regex = RegExp(
+                                                                    ValidationsApp
+                                                                        .phone);
+                                                                if (value ==
+                                                                        null ||
+                                                                    value
+                                                                        .isEmpty) {
+                                                                  return 'Campo obligatorio';
+                                                                } else if (!regex
+                                                                    .hasMatch(
+                                                                        value)) {
+                                                                  return 'Introduce un número telefonico valido';
+                                                                }
+                                                                return null;
+                                                              },
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(16),
+                                                            child: ElevatedButton(
+                                                              onPressed:
+                                                                  _isphoneDisabled
+                                                                      ? null
+                                                                      : () async {
+                                                                          if (await _profileService
+                                                                              .changePhone(_phone.text)) {
+                                                                            // ignore: use_build_context_synchronously
+                                                                            showDialog<
+                                                                                String>(
+                                                                              context:
+                                                                                  context,
+                                                                              builder: (BuildContext context) =>
+                                                                                  AlertDialog(
+                                                                                title: const Text(
+                                                                                  'Modificación exitosa',
+                                                                                  style: TextStyle(color: ColorsApp.successColor),
+                                                                                ),
+                                                                                content: const Text('¡Tu telefono se ha modificado de manera exitosa!'),
+                                                                                actions: <Widget>[
+                                                                                  TextButton(
+                                                                                    onPressed: () {
+                                                                                      init();
+                                                                                      Navigator.pop(context);
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: const Text('Ok'),
+                                                                                  ),
+                                                                                ],
                                                                               ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      }
-                                                                    },
-                                                          style: ElevatedButton.styleFrom(
-                                                              minimumSize:
-                                                                  const Size(
-                                                                      300, 50),
-                                                              shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              22)),
-                                                              backgroundColor:
-                                                                  ColorsApp
-                                                                      .successColor),
-                                                          child: const Text(
-                                                              'Guardar teléfono'),
-                                                        ),
+                                                                            );
+                                                                          }
+                                                                        },
+                                                              style: ElevatedButton.styleFrom(
+                                                                  minimumSize:
+                                                                      const Size(
+                                                                          300,
+                                                                          50),
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10)),
+                                                                  backgroundColor:
+                                                                      ColorsApp
+                                                                          .successColor),
+                                                              child: const Text(
+                                                                  'Guardar teléfono'),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            )),
-                                          );
-                                        },
-                                      )
-                                    },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: ColorsApp.secondaryColor,
-                                )),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () => {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                    height: 550,
+                                                    )
+                                                  ],
+                                                )),
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      },
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: ColorsApp.secondaryColor,
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: SizedBox(
+                                    height: 350,
                                     child: SingleChildScrollView(
                                         child: Column(
                                       children: [
                                         const Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.only(top: 20.0),
                                           child: Text(
                                             'Modificar contraseña',
                                             style: TextStyle(
@@ -426,7 +479,7 @@ class _ProfileState extends State<Profile> {
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
-                                                                          22)),
+                                                                          10)),
                                                       backgroundColor: ColorsApp
                                                           .successColor),
                                                   child: const Text(
@@ -438,41 +491,41 @@ class _ProfileState extends State<Profile> {
                                         )
                                       ],
                                     )),
-                                  );
-                                },
-                              )
-                            },
-                            style: OutlinedButton.styleFrom(
-                                minimumSize: const Size(300, 50),
-                                backgroundColor: Colors.white,
-                                foregroundColor: ColorsApp.successColor,
-                                side: const BorderSide(
-                                    color: ColorsApp.successColor),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16))),
-                            child: const Text('Modificar contraseña'),
-                          ),
+                                  ),
+                                );
+                              },
+                            )
+                          },
+                          style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(300, 50),
+                              backgroundColor: ColorsApp.successColor,
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(
+                                  color: ColorsApp.successColor),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: const Text('Modificar contraseña'),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () => {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, '/login', (r) => false)
-                            },
-                            style: OutlinedButton.styleFrom(
-                                minimumSize: const Size(300, 50),
-                                backgroundColor: Colors.white,
-                                foregroundColor: ColorsApp.successColor,
-                                side: const BorderSide(
-                                    color: ColorsApp.successColor),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16))),
-                            child: const Text('Cerrar sesión'),
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/login', (r) => false)
+                          },
+                          style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(300, 50),
+                              backgroundColor: ColorsApp.successColor,
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(
+                                  color: ColorsApp.successColor),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: const Text('Cerrar sesión'),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],

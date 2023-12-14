@@ -10,14 +10,14 @@ class BottomNavigationTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
-        BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: 'Recolecciones'),
-        BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: 'Repartos'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+        BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard', backgroundColor: ColorsApp.prmaryColor),
+        BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: 'Recolecciones', backgroundColor: ColorsApp.prmaryColor),
+        BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: 'Repartos', backgroundColor: ColorsApp.prmaryColor),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil', backgroundColor: ColorsApp.prmaryColor),
       ],
       currentIndex: selectedIndex,
-      selectedItemColor: ColorsApp.successColor,
-      unselectedItemColor: ColorsApp.prmaryColor,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey,
       onTap: onItemTapped,
     );
   }
