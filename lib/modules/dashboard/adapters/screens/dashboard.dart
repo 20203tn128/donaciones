@@ -1,3 +1,5 @@
+import 'package:donaciones/kernel/models/response.dart';
+import 'package:donaciones/kernel/services/api_service.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
 import 'package:donaciones/modules/pickups/services/pickup_service.dart';
@@ -14,8 +16,11 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final PickupService _pickupService = PickupService();
   final DeliveryService _deliveryService = DeliveryService();
-  int pickups = 13;
-  int deliveries = 8;
+  final ApiService _apiService = ApiService();
+
+  int pickups = 0;
+  int deliveries = 0;
+
 
   Future<void> _init() async {
     // final pickups = (await _pickupService.get(
@@ -34,6 +39,23 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     _init();
+    getPickups();
+    getDeliveries();
+  }
+
+  void getPickups() async {
+    final response = await _apiService.get('/pickups/pendings');
+    final res = Response.fromMap(response.data);
+    setState(() {
+      pickups = res.data['count'];
+    });
+  }
+  void getDeliveries() async {
+    final response = await _apiService.get('/deliveries/pendings');
+    final res = Response.fromMap(response.data);
+    setState(() {
+      deliveries = res.data['count'];
+    });
   }
 
   @override
@@ -180,7 +202,7 @@ class _DashboardState extends State<Dashboard> {
                 child: const Text('Ir a mis recolecciones'),
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(300, 50),
-                     shape: RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                     backgroundColor: ColorsApp.successColor),
               ),
@@ -195,7 +217,7 @@ class _DashboardState extends State<Dashboard> {
                 child: const Text('Ir a mis repartos'),
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(300, 50),
-                     shape: RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                     backgroundColor: ColorsApp.successColor),
               ),
