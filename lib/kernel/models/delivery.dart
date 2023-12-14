@@ -10,6 +10,7 @@ class Delivery {
   DateTime date;
   String status;
   Annexes? generalAnnexes;
+  DateTime? dateEnd;
 
   Delivery({
     required this.id,
@@ -19,6 +20,7 @@ class Delivery {
     required this.date,
     required this.status,
     this.generalAnnexes,
+    this.dateEnd,
   });
   String get acronym => name.substring(0, 2).toUpperCase();
 
@@ -35,6 +37,7 @@ class Delivery {
         generalAnnexes: map['generalAnnexes'] != null
             ? Annexes.fromMap(map['generalAnnexes'])
             : null,
+        dateEnd: map['dateEnd'] != null ? DateTime.parse(map['dateEnd']) : null,
       );
 
   Map<String, dynamic> toMap() => {
@@ -45,5 +48,6 @@ class Delivery {
         'date': date.toIso8601String(),
         'status': status,
         'generalAnnexes': generalAnnexes?.toMap(),
+        'dateEnd': dateEnd?.toIso8601String(),
       };
 }

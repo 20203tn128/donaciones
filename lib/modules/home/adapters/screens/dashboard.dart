@@ -46,7 +46,8 @@ class _DashboardState extends State<Dashboard> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              recolections.toString(),
+                              // recolections.toString(),
+                              '12',
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -84,7 +85,8 @@ class _DashboardState extends State<Dashboard> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              delivery.toString(),
+                              // delivery.toString(),
+                              '3',
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,

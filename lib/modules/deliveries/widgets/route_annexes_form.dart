@@ -194,6 +194,7 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                       return 'data:image/jpeg;base64,$bytes';
                                     }).toList());
                                 delivery.routes[index].status = 'Finalizada';
+                                delivery.routes[index].dateEnd = DateTime.now();
                                 await _deliveryService.setOffline(delivery);
                                 showDialog(
                                     context: context,
@@ -211,7 +212,7 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                                 });
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text('OK'))
+                                              child: const Text('OK'))  
                                         ],
                                       );
                                     });

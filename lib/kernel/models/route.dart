@@ -8,6 +8,7 @@ class Route {
   List<String> phones;
   String status;
   Annexes? annexes;
+  DateTime? dateEnd;
 
   Route({
     required this.id,
@@ -17,6 +18,7 @@ class Route {
     required this.phones,
     required this.status,
     this.annexes,
+    this.dateEnd,
   });
   String get acronym => name.substring(0, 2).toUpperCase();
 
@@ -29,6 +31,7 @@ class Route {
         status: map['status']!,
         annexes:
             map['annexes'] != null ? Annexes.fromMap(map['annexes']) : null,
+        dateEnd: map['dateEnd'] != null ? DateTime.parse(map['dateEnd']) : null,
       );
 
   Map<String, dynamic> toMap() => {
@@ -39,5 +42,6 @@ class Route {
         'phones': phones,
         'status': status,
         'annexes': annexes?.toMap(),
+        'dateEnd': dateEnd?.toIso8601String(),
       };
 }

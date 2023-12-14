@@ -66,21 +66,24 @@ class DeliveryService {
     return true;
   }
 
-  Future<bool> end(String id, List<Route> routes) async {
-    final response = await _apiService.patch('/deliveries/end/$id', data: {
-      'routes': routes.map((route) => {
-            'id': route.id,
-            'name': route.name,
-            'refrence': route.reference,
-            'nameLinkPerson': route.nameLinkPerson,
-            'phones': route.phones,
-            'status': route.status,
-            'annexes': {
-              'commentary': route.annexes!.commentary,
-              'photos': route.annexes!.photos,
-            },
-            'dateEnd': DateTime.now().toIso8601String(),
-          })
+  Future<bool> end(String id, List<Route> routes, DateTime dateEnd) async {
+    final response = await _apiService.patch('/deliveries/end/$id', data: { // como que resoluciion se pdoria pero como se eso  de la cantidad ay como se que es ligerita
+      'routes': routes
+          .map((route) => {
+                '_id': route.id,
+                'name': route.name,
+                'reference': route.reference,
+                'nameLinkPerson': route.nameLinkPerson,
+                'phones': route.phones,
+                'status': route.status,
+                'annexes': {
+                  'commentary': route.annexes?.commentary!,
+                  'photos': route.annexes?.photos,
+                },
+                'dateEnd': route.dateEnd?.toIso8601String(),
+              })
+          .toList(),
+      'dateEnd': dateEnd.toIso8601String(),
     });
 
     final res = Response.fromMap(response.data);
@@ -127,7 +130,7 @@ class DeliveryService {
         delivery.status == 'En proceso') return;
 
     if (delivery.status == 'Finalizada') {
-      await end(delivery.id, delivery.routes);
+      await end(delivery.id, delivery.routes, delivery.dateEnd!);
     } else if (delivery.status == 'Cancelada') {
       await cancel(delivery.id, delivery.generalAnnexes!);
     }

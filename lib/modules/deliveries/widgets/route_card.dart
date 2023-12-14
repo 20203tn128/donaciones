@@ -188,7 +188,7 @@ class _RouteCardState extends State<RouteCard> {
                                             return AlertDialog(
                                               title: const Text('Exito'),
                                               content: const Text(
-                                                  'Se ha iniciado la ruta'),
+                                                  'Se ha iniciado la ruta'),  // 
                                               actions: [
                                                 TextButton(
                                                     onPressed: () {
