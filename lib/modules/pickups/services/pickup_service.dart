@@ -65,12 +65,12 @@ class PickupService {
       'products': products.map((product) => {
         'id': product.id,
         'name': product.name,
-        'annexes': {
+        'annexes': product.annexes != null ? {
           'commentary': product.annexes!.commentary,
           'photos': product.annexes!.photos,
-        },
+        } : null,
         'recolected': product.recolected,
-      })
+      }).toList()
     });
 
     final res = Response.fromMap(response.data);

@@ -65,7 +65,7 @@ class _PickupDetailState extends State<PickupDetail> {
                         .map((entry) => ProductCard(
                               pickup: widget.pickup,
                               product: entry.value,
-                              reloadParent: reloadIfOffline(),
+                              reloadParent: reloadIfOffline,
                               index: entry.key,
                             ))
                         .toList())

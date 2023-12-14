@@ -88,7 +88,9 @@ class _ProductCardState extends State<ProductCard> {
                     checkColor: Colors.white,
                     fillColor: MaterialStateProperty.resolveWith(getColor),
                     value: isChecked,
-                    onChanged: (bool? value) {
+                    onChanged: (bool? value) async {
+                      final offlineProduct = await widget._pickupService.getOffline;
+                      if (offlineProduct != null) 
                       setState(() {
                         isChecked = value;
                       });

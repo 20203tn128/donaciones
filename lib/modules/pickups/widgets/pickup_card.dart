@@ -150,7 +150,7 @@ class _PickupCardState extends State<PickupCard> {
                     ElevatedButton(
                       onPressed: () async {
                         Navigator.pushNamed(context, '/detail',
-                            arguments: {'pickup': widget.pickup});
+                            arguments: {'pickup': widget.pickup, 'reloadFunction': reloadIfOffline});
                       },
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(30, 30),
