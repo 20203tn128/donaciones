@@ -67,7 +67,7 @@ class DeliveryService {
   }
 
   Future<bool> end(String id, List<Route> routes, DateTime dateEnd) async {
-    final response = await _apiService.patch('/deliveries/end/$id', data: { // como que resoluciion se pdoria pero como se eso  de la cantidad ay como se que es ligerita
+    final response = await _apiService.patch('/deliveries/end/$id', data: { 
       'routes': routes
           .map((route) => {
                 '_id': route.id,

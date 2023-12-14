@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
+import 'package:donaciones/modules/deliveries/widgets/delivery_general_annexes_form.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -106,15 +107,16 @@ class DeliveryCard extends StatelessWidget {
                                 delivery.status = 'Finalizada';
                                 delivery.dateEnd = DateTime.now();
                                 await _deliveryService.setOffline(delivery);
-                                reload(); 
+                                reload();
                                 // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog( // ok 
+                                      return AlertDialog(
+                                        // ok
                                         title: const Text('Exito'),
                                         content: const Text(
-                                            'Se ha finalizado el reparto'),// no tenia internet  nell
+                                            'Se ha finalizado el reparto'), // no tenia internet  nell
                                         actions: [
                                           TextButton(
                                               onPressed: () {
@@ -137,9 +139,17 @@ class DeliveryCard extends StatelessWidget {
                       Spacer(),
                       delivery.status == 'En proceso'
                           ? ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/home/start-delivery');
+                              onPressed: () async {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      height: 400,
+                                      child: Center(
+                                          child: DeliveryGeneralAnnexesForm()),
+                                    );
+                                  },
+                                );
                               },
                               child: const Text('Cancelar'),
                               style: ElevatedButton.styleFrom(
