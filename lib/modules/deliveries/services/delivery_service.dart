@@ -67,7 +67,7 @@ class DeliveryService {
   }
 
   Future<bool> end(String id, List<Route> routes, DateTime dateEnd) async {
-    final response = await _apiService.patch('/deliveries/end/$id', data: { 
+    final data = {
       'routes': routes
           .map((route) => {
                 '_id': route.id,
@@ -84,7 +84,13 @@ class DeliveryService {
               })
           .toList(),
       'dateEnd': dateEnd.toIso8601String(),
-    });
+    };
+    print('esto es algo');
+    routes.forEach((element) => print(element.toMap()));
+    print('Esto es impresion');
+    print(data);
+    print('esto sesbsdbsdhfsdf');
+    final response = await _apiService.patch('/deliveries/end/$id', data: data);
 
     final res = Response.fromMap(response.data);
 
@@ -116,10 +122,16 @@ class DeliveryService {
 
   Future<void> setOffline(Delivery delivery) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    print("Esto es el seltoffline");
+    print(delivery.toMap());
     final json = jsonEncode(delivery.toMap());
-
+    print(json);
     await prefs.setString('offline_delivery', json);
+  }
+
+  Future<void> clearOffline() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('offline_delivery');
   }
 
   Future<void> sync() async {
@@ -134,5 +146,6 @@ class DeliveryService {
     } else if (delivery.status == 'Cancelada') {
       await cancel(delivery.id, delivery.generalAnnexes!);
     }
+    await clearOffline();
   }
 }

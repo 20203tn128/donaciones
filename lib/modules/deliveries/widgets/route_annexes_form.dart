@@ -189,13 +189,20 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                 delivery.routes[index].annexes = Annexes(
                                     commentary: _comments.text,
                                     photos: _images.map((e) {
+                                      print('esto es una foto');
                                       final String bytes =
                                           base64Encode(e.readAsBytesSync());
                                       return 'data:image/jpeg;base64,$bytes';
                                     }).toList());
+                                print('Que es esto');
+                                print(delivery.toMap());
+                                print('eso era lo de las fotos xd');
                                 delivery.routes[index].status = 'Finalizada';
                                 delivery.routes[index].dateEnd = DateTime.now();
+
                                 await _deliveryService.setOffline(delivery);
+                                final indes = await _deliveryService.getOffline();
+                                print( indes?.toMap());
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -212,7 +219,7 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                                 });
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text('OK'))  
+                                              child: const Text('OK'))
                                         ],
                                       );
                                     });
