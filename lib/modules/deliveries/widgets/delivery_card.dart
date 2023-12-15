@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
@@ -32,7 +33,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
+      elevation: 3,
       child: Column(
         children: [
           ExpansionTile(
@@ -83,10 +84,10 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(60, 40),
+                                  minimumSize: const Size(30, 30),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                  backgroundColor: ColorsApp.successColor),
+                                      borderRadius: BorderRadius.circular(6)),
+                                  backgroundColor: ColorsApp.prmaryColor),
                               child: const Text(
                                 'Ver ruta',
                                 style:
@@ -123,8 +124,9 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(30, 30),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12)),
+                                        borderRadius: BorderRadius.circular(6)),
                                     backgroundColor: ColorsApp.successColor),
                                 child: const Text(
                                   'Iniciar',
@@ -144,7 +146,10 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                   delivery.status = 'Finalizada';
                                   delivery.dateEnd = DateTime.now();
                                   await _deliveryService.setOffline(delivery);
-                                  widget.reload();
+                                  reloadIfOffline();
+                                  if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+                                    _deliveryService.sync();
+                                  }
                                   // ignore: use_build_context_synchronously
                                   showDialog(
                                       context: context,
@@ -165,9 +170,9 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                       });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(60, 40),
+                                  minimumSize: const Size(30, 30),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12)),
+                                        borderRadius: BorderRadius.circular(6)),
                                     backgroundColor: ColorsApp.successColor),
                                 child: const Text(
                                   'Finalizar',
@@ -191,17 +196,21 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                         height: 400,
                                         child: Center(
                                           child: DeliveryGeneralAnnexesForm(
-                                              reloadParent: reloadIfOffline),
+                                              reloadParent: reloadIfOffline,
+                                              closeFunction: () {
+                                                Navigator.pop(context);
+                                              },
+                                              ),
                                         ),
                                       );
                                     },
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(60, 40),
+                                    minimumSize: const Size(30, 30),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12)),
-                                    backgroundColor: ColorsApp.successColor),
+                                        borderRadius: BorderRadius.circular(6)),
+                                    backgroundColor: ColorsApp.dangerColor),
                                 child: const Text(
                                   'Cancelar',
                                   style: TextStyle(color: Colors.white, fontSize: 12.0),

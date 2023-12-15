@@ -19,7 +19,10 @@ class ProductCard extends StatefulWidget {
     required this.product,
     required this.reloadParent,
     required this.index,
-  });
+  }) {
+    print('CONSTRUCTOR STATEFUL');
+    print(this.product.toMap());
+  }
 
   @override
   State<ProductCard> createState() => _ProductCardState(product: product);
@@ -27,11 +30,15 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   Product product;
-  _ProductCardState({required this.product});
+  _ProductCardState({required this.product}) {
+    print('CONSTRUCTOR');
+    print(product.toMap());
+    isChecked = product.recolected ?? false;
+  }
 
   final _formKey = GlobalKey<FormState>();
 
-  bool? isChecked = false;
+  late bool isChecked;
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
@@ -47,7 +54,7 @@ class _ProductCardState extends State<ProductCard> {
     }
 
     return Card(
-      elevation: 5,
+      elevation: 3,
       child: Row(
         children: [
           const Padding(
@@ -89,10 +96,14 @@ class _ProductCardState extends State<ProductCard> {
                     fillColor: MaterialStateProperty.resolveWith(getColor),
                     value: isChecked,
                     onChanged: (bool? value) async {
-                      final offlineProduct = await widget._pickupService.getOffline;
-                      if (offlineProduct != null) 
+                      final offlineProduct = await widget._pickupService.getOffline();
+                      if (offlineProduct != null) {
+                        offlineProduct.products[widget.index].recolected = value;
+                        await widget._pickupService.setOffline(offlineProduct);
+                      }
+                      widget.reloadParent();
                       setState(() {
-                        isChecked = value;
+                        isChecked = value!;
                       });
                     },
                   ))
@@ -107,16 +118,18 @@ class _ProductCardState extends State<ProductCard> {
                           height: 400,
                           child: Center(
                             child: ProductAnnexesForm(
+                              closeFunction: () {
+                                Navigator.pop(context);
+                              },
                                 reloadParents: () async {
-                                  widget.reloadParent();
-                                  final offlinePickup =
-                                      await widget._pickupService.getOffline();
+                                  final offlinePickup = await widget._pickupService.getOffline();
                                   if (offlinePickup != null) {
                                     setState(() {
                                       product =
                                           offlinePickup.products[widget.index];
                                     });
                                   }
+                                  widget.reloadParent();
                                 },
                                 product: product),
                           ),

@@ -14,7 +14,8 @@ class RouteAnnexesForm extends StatefulWidget {
   final routemodel.Route route;
   final Function reloadParents;
   final String status;
-  const RouteAnnexesForm({super.key, required this.route, required this.reloadParents, required this.status});
+  Function closeFunction;
+  RouteAnnexesForm({super.key, required this.route, required this.reloadParents, required this.status, required this.closeFunction});
 
   @override
   State<RouteAnnexesForm> createState() => _RouteAnnexesFormState(route: route);
@@ -148,7 +149,10 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                           .labelLarge,
                                     ),
                                     child: const Text('Camara'),
-                                    onPressed: _getImageFromCamera,
+                                    onPressed: () {
+                                      _getImageFromCamera();
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
@@ -157,7 +161,10 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                           .labelLarge,
                                     ),
                                     child: const Text('Galeria'),
-                                    onPressed: _getImageFromGallery,
+                                    onPressed: () {
+                                      _getImageFromGallery();
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                 ],
                               );
@@ -219,6 +226,7 @@ class _RouteAnnexesFormState extends State<RouteAnnexesForm> {
                                                       delivery.routes[index];
                                                 });
                                                 Navigator.pop(context);
+                                                widget.closeFunction();
                                               },
                                               child: const Text('OK'))
                                         ],

@@ -65,6 +65,7 @@ class PickupService {
       'products': products.map((product) => {
         'id': product.id,
         'name': product.name,
+        'quantity': product.quantity,
         'annexes': product.annexes != null ? {
           'commentary': product.annexes!.commentary,
           'photos': product.annexes!.photos,
@@ -94,18 +95,23 @@ class PickupService {
   Future<Pickup?> getOffline() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final json = prefs.getString('offline_pickup');
-
+    print('CONSULTA OFFLINE');
     if (json == null) return null;
-
+    print(jsonDecode(json));
     return Pickup.fromMap(jsonDecode(json));
   }
 
   Future<void> setOffline(Pickup pickup) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    print('SETTER OFFLINE');
     final json = jsonEncode(pickup.toMap());
-
+    print(pickup.toMap());
     await prefs.setString('offline_pickup', json);
+  }
+
+  Future<void> clearOffline() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('offline_pickup');
   }
 
   Future<void> sync() async {
@@ -118,5 +124,7 @@ class PickupService {
     } else if (pickup.status == 'Cancelada') {
       await cancel(pickup.id, pickup.generalAnnexes!);
     }
+
+    await clearOffline();
   }
 }

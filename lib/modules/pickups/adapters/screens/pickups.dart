@@ -24,6 +24,11 @@ class _PickupsState extends State<Pickups> {
 
     if (result != ConnectivityResult.none) {
       pickups.addAll(await _pickupService.get());
+      final offlinePickup = await _pickupService.getOffline();
+      if (offlinePickup != null) {
+        final int index = pickups.indexWhere((delivery) => delivery.id == offlinePickup.id);
+        if (index != -1) pickups[index] = offlinePickup;
+      }
     } else {
       final pickup = await _pickupService.getOffline();
       if (pickup != null) pickups.add(pickup);

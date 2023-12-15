@@ -26,6 +26,7 @@ class _PickupDetailState extends State<PickupDetail> {
     if (offlinePickup == null) return;
     if (pickup.id == offlinePickup.id) {
       setState(() {
+        print('SET STATE PICKUP DETALL');
         pickup = offlinePickup;
       });
     }
@@ -55,25 +56,25 @@ class _PickupDetailState extends State<PickupDetail> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: widget.pickup.status == 'En proceso' ||
-                    widget.pickup.status == 'Finalizado' ||
-                    widget.pickup.status == 'Cancelada'
+            child: widget.pickup.status !='Pendiente'
                 ? Column(
                     children: pickup.products
                         .asMap()
                         .entries
-                        .map((entry) => ProductCard(
+                        .map((entry) {
+                          print('MAP PICKUP DETAIL');
+                          print(entry.value.toMap());
+                          return ProductCard(
                               pickup: widget.pickup,
                               product: entry.value,
                               reloadParent: reloadIfOffline,
                               index: entry.key,
-                            ))
+                            );
+                        })
                         .toList())
                 : const SizedBox.shrink(),
           ),
-          widget.pickup.status == 'En proceso' ||
-                  widget.pickup.status == 'Finalizado' ||
-                  widget.pickup.status == 'Cancelada'
+          widget.pickup.status !='Pendiente'
               ? Row(
                   children: [
                     const Padding(

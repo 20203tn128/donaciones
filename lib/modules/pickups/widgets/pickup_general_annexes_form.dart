@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/annexes.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/pickups/services/pickup_service.dart';
@@ -9,7 +10,8 @@ import 'package:image_picker/image_picker.dart';
 
 class PickupGeneralAnnexesForm extends StatefulWidget {
   final Function reloadParent;
-  const PickupGeneralAnnexesForm({super.key, required this.reloadParent});
+  final Function closeFunction;
+  const PickupGeneralAnnexesForm({super.key, required this.reloadParent, required this.closeFunction});
 
   @override
   State<PickupGeneralAnnexesForm> createState() =>
@@ -99,18 +101,6 @@ class _PickupGeneralAnnexesFormState extends State<PickupGeneralAnnexesForm> {
                         keyboardType: TextInputType.multiline,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.all(8),
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                        onPressed: () => {
-                          Navigator.pushNamed(context, '/home/coments-form')
-                        },
-                        child: const Icon(
-                          Icons.camera_alt,
-                        ),
-                      ),
-                    ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -152,7 +142,10 @@ class _PickupGeneralAnnexesFormState extends State<PickupGeneralAnnexesForm> {
                                           .labelLarge,
                                     ),
                                     child: const Text('Camara'),
-                                    onPressed: _getImageFromCamera,
+                                    onPressed: () {
+                                      _getImageFromCamera();
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
@@ -161,7 +154,10 @@ class _PickupGeneralAnnexesFormState extends State<PickupGeneralAnnexesForm> {
                                           .labelLarge,
                                     ),
                                     child: const Text('Galeria'),
-                                    onPressed: _getImageFromGallery,
+                                    onPressed: () {
+                                      _getImageFromGallery();
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                 ],
                               );
@@ -192,7 +188,9 @@ class _PickupGeneralAnnexesFormState extends State<PickupGeneralAnnexesForm> {
                           ElevatedButton(
                             onPressed: () async {
                               final pickup = await _pickupService.getOffline();
+                              print(pickup);
                               if (pickup != null) {
+                                print('akjshdkashdkahskdjhaskdja');
                                 pickup.generalAnnexes = Annexes(
                                     commentary: _comments.text,
                                     photos: _images.map((e) {
@@ -204,6 +202,9 @@ class _PickupGeneralAnnexesFormState extends State<PickupGeneralAnnexesForm> {
 
                                 await _pickupService.setOffline(pickup);
                                 widget.reloadParent();
+                                if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+                                    _pickupService.sync();
+                                  }
                                 // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
@@ -217,6 +218,7 @@ class _PickupGeneralAnnexesFormState extends State<PickupGeneralAnnexesForm> {
                                               onPressed: () {
                                                 setState(() {});
                                                 Navigator.pop(context);
+                                                widget.closeFunction();
                                               },
                                               child: const Text('OK'))
                                         ],

@@ -126,17 +126,23 @@ class DeliveryService {
   }
 
   Future<void> sync() async {
+    print(1);
     final delivery = await getOffline();
 
     if (delivery == null ||
         delivery.status == 'Pendiente' ||
         delivery.status == 'En proceso') return;
+        print(2);
 
     if (delivery.status == 'Finalizada') {
+      print(3);
       await end(delivery.id, delivery.routes, delivery.dateEnd!);
     } else if (delivery.status == 'Cancelada') {
+      print(4);
       await cancel(delivery.id, delivery.generalAnnexes!);
     }
+      print(5);
     await clearOffline();
+      print(6);
   }
 }

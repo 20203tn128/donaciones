@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/pickups/services/pickup_service.dart';
@@ -29,6 +30,7 @@ class _PickupCardState extends State<PickupCard> {
     if (offlinePickup == null) return;
     if (pickup.id == offlinePickup.id) {
       setState(() {
+        print('SET STATE PICKUP CARD');
         pickup = offlinePickup;
       });
     }
@@ -37,18 +39,19 @@ class _PickupCardState extends State<PickupCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 3,
         child: ExpansionTile(
             leading: CircleAvatar(
               backgroundColor: ColorsApp.prmaryColor,
               foregroundColor: Colors.white,
-              child: Text(widget.pickup.acronym),
+              child: Text(pickup.acronym),
             ),
             title: Row(
               children: [
                 SizedBox(
                   width: 120,
                   child: Text(
-                    widget.pickup.name,
+                    pickup.name,
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -57,13 +60,13 @@ class _PickupCardState extends State<PickupCard> {
                 ),
                 const Spacer(),
                 Text(
-                  widget.pickup.status,
+                  pickup.status,
                   style: const TextStyle(fontSize: 12, color: Colors.black45),
                 )
               ],
             ),
             subtitle: Text(
-              '${widget.pickup.products.length} unidades',
+              '${pickup.products.length} unidades',
               style: const TextStyle(
                 color: Colors.black45,
                 fontSize: 12,
@@ -88,7 +91,7 @@ class _PickupCardState extends State<PickupCard> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Detalles de la cadena ${widget.pickup.chain.name}',
+                            'Detalles de la cadena ${pickup.chain.name}',
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -104,7 +107,7 @@ class _PickupCardState extends State<PickupCard> {
                             ),
                             SizedBox(
                                 width: 180,
-                                child: Text(widget.pickup.chain.address,
+                                child: Text(pickup.chain.address,
                                     style: const TextStyle(
                                         fontSize: 12, color: Colors.black45))),
                           ],
@@ -116,7 +119,7 @@ class _PickupCardState extends State<PickupCard> {
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             ),
-                            Text(widget.pickup.chain.nameLinkPerson,
+                            Text(pickup.chain.nameLinkPerson,
                                 style: const TextStyle(
                                     fontSize: 12, color: Colors.black45))
                           ],
@@ -129,7 +132,7 @@ class _PickupCardState extends State<PickupCard> {
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             ),
                             Row(
-                              children: widget.pickup.chain.phones
+                              children: pickup.chain.phones
                                   .map((e) => SizedBox(
                                         width: 80,
                                         child: Text(e,
@@ -150,22 +153,22 @@ class _PickupCardState extends State<PickupCard> {
                     ElevatedButton(
                       onPressed: () async {
                         Navigator.pushNamed(context, '/detail',
-                            arguments: {'pickup': widget.pickup, 'reloadFunction': reloadIfOffline});
+                            arguments: {'pickup': pickup, 'reloadFunction': reloadIfOffline});
                       },
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(30, 30),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22)),
-                          backgroundColor: ColorsApp.successColor),
+                              borderRadius: BorderRadius.circular(6)),
+                          backgroundColor: ColorsApp.prmaryColor),
                       child: const Text('Productos'),
                     ),
                     const Spacer(),
-                    widget.pickup.status == 'Pendiente'
+                    pickup.status == 'Pendiente'
                         ? ElevatedButton(
                             onPressed: () async {
                               if (await _pickupService
-                                  .start(widget.pickup.id)) {
-                                widget.reload();
+                                  .start(pickup.id)) {
+                                reloadIfOffline();
                                 // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
@@ -188,18 +191,21 @@ class _PickupCardState extends State<PickupCard> {
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(30, 30),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(22)),
+                                    borderRadius: BorderRadius.circular(6)),
                                 backgroundColor: ColorsApp.successColor),
                             child: const Text('Iniciar '),
                           )
                         : const SizedBox(),
                     const Spacer(),
-                    widget.pickup.status == 'En proceso'
+                    pickup.status == 'En proceso'
                         ? ElevatedButton(
                             onPressed: () async {
-                              widget.pickup.status = 'Finalizada';
-                              await _pickupService.setOffline(widget.pickup);
-                              widget.reload();
+                              pickup.status = 'Finalizada';
+                              await _pickupService.setOffline(pickup);
+                              reloadIfOffline();
+                              if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+                                _pickupService.sync();
+                              }
                               // ignore: use_build_context_synchronously
                               showDialog(
                                   context: context,
@@ -221,13 +227,13 @@ class _PickupCardState extends State<PickupCard> {
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(30, 30),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(22)),
+                                    borderRadius: BorderRadius.circular(6)),
                                 backgroundColor: ColorsApp.successColor),
                             child: const Text('Finalizar'),
                           )
                         : const SizedBox.shrink(),
                     const Spacer(),
-                    widget.pickup.status == 'En proceso'
+                    pickup.status == 'En proceso'
                         ? ElevatedButton(
                             onPressed: () async {
                               showModalBottomSheet(
@@ -237,7 +243,11 @@ class _PickupCardState extends State<PickupCard> {
                                     height: 400,
                                     child: Center(
                                       child: PickupGeneralAnnexesForm(
-                                          reloadParent: reloadIfOffline),
+                                          reloadParent: reloadIfOffline,
+                                          closeFunction: () {
+                                            Navigator.pop(context);
+                                          },
+                                          ),
                                     ),
                                   );
                                 },
@@ -246,7 +256,7 @@ class _PickupCardState extends State<PickupCard> {
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(30, 30),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(22)),
+                                    borderRadius: BorderRadius.circular(6)),
                                 backgroundColor: ColorsApp.dangerColor),
                             child: const Text('Cancelar'),
                           )

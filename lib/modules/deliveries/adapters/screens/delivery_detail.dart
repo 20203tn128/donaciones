@@ -49,7 +49,8 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
               .asMap().entries.map((entry) => RouteCard(
                     route: entry.value,
                     index: entry.key,
-                    reloadParent: reloadIfOffline,
+                    reloadParent: reloadIfOffline, 
+                    delivery: delivery,
                   ))
               .toList(),
         ),

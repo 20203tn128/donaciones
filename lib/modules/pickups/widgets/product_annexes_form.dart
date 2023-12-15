@@ -11,11 +11,13 @@ import 'package:image_picker/image_picker.dart';
 class ProductAnnexesForm extends StatefulWidget {
   final Product product;
   final Function reloadParents;
+  final Function closeFunction;
 
   const ProductAnnexesForm({
     super.key,
     required this.reloadParents,
     required this.product,
+    required this.closeFunction,
   });
 
   @override
@@ -150,7 +152,10 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                                           .textTheme
                                           .labelLarge,
                                     ),
-                                    onPressed: _getImageFromCamera,
+                                    onPressed: () {
+                                      _getImageFromCamera();
+                                      Navigator.pop(context);
+                                    },
                                     child: const Text('Camara'),
                                   ),
                                   TextButton(
@@ -159,7 +164,10 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                                           .textTheme
                                           .labelLarge,
                                     ),
-                                    onPressed: _getImageFromGallery,
+                                    onPressed: () {
+                                      _getImageFromGallery();
+                                      Navigator.pop(context);
+                                    },
                                     child: const Text('Galeria'),
                                   ),
                                 ],
@@ -217,6 +225,7 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                                                       pickup.products[index];
                                                 });
                                                 Navigator.pop(context);
+                                                widget.closeFunction();
                                               },
                                               child: const Text('OK'))
                                         ],

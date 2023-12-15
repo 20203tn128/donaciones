@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/annexes.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
@@ -9,7 +10,8 @@ import 'package:image_picker/image_picker.dart';
 
 class DeliveryGeneralAnnexesForm extends StatefulWidget {
   final Function reloadParent;
-  const DeliveryGeneralAnnexesForm({super.key, required this.reloadParent});
+  final Function closeFunction;
+  const DeliveryGeneralAnnexesForm({super.key, required this.reloadParent, required this.closeFunction});
 
   @override
   State<DeliveryGeneralAnnexesForm> createState() =>
@@ -142,7 +144,10 @@ class _DeliveryGeneralAnnexesFormState
                                           .labelLarge,
                                     ),
                                     child: const Text('Camara'),
-                                    onPressed: _getImageFromCamera,
+                                    onPressed: () {
+                                      _getImageFromCamera();
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
@@ -151,7 +156,10 @@ class _DeliveryGeneralAnnexesFormState
                                           .labelLarge,
                                     ),
                                     child: const Text('Galeria'),
-                                    onPressed: _getImageFromGallery,
+                                    onPressed: () {
+                                      _getImageFromGallery();
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                 ],
                               );
@@ -194,6 +202,9 @@ class _DeliveryGeneralAnnexesFormState
                                 delivery.dateEnd = DateTime.now();
                                 await _deliveryService.setOffline(delivery);
                                 widget.reloadParent();
+                                if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+                                    _deliveryService.sync();
+                                  }
                                 // ignore: use_build_context_synchronously
                                 showDialog(
                                     context: context,
@@ -207,6 +218,7 @@ class _DeliveryGeneralAnnexesFormState
                                               onPressed: () {
                                                 setState(() {});
                                                 Navigator.pop(context);
+                                                widget.closeFunction();
                                               },
                                               child: const Text('OK'))
                                         ],
