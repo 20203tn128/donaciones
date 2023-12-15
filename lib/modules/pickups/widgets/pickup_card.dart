@@ -148,7 +148,7 @@ class _PickupCardState extends State<PickupCard> {
                                   return SizedBox(
                                     height: 400,
                                     child: Center(
-                                      child: PickupInfo(pickup: widget.pickup),
+                                      child: PickupInfo(pickup: pickup),
                                     ),
                                   );
                                 },

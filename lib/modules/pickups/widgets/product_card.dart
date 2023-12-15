@@ -24,12 +24,13 @@ class ProductCard extends StatefulWidget {
   });
 
   @override
-  State<ProductCard> createState() => _ProductCardState(product: product);
+  State<ProductCard> createState() => _ProductCardState(product: product, pickup: pickup);
 }
 
 class _ProductCardState extends State<ProductCard> {
   Product product;
-  _ProductCardState({required this.product}) {
+  Pickup pickup;
+  _ProductCardState({required this.product, required this.pickup}) {
     isChecked = product.recolected ?? false;
   }
 
@@ -61,29 +62,20 @@ class _ProductCardState extends State<ProductCard> {
           ),
           Column(
             children: [
-              Text(widget.product.name,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: ColorsApp.secondaryColor)),
+              Text(product.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor)),
               Row(
                 children: [
-                  const Text('Cantidad:',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: ColorsApp.secondaryColor)),
+                  const Text('Cantidad:', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor)),
                   const SizedBox(
                     width: 6,
                   ),
-                  Text(widget.product.quantity.toString()),
+                  Text(product.quantity.toString()),
                 ],
               )
             ],
           ),
           const Spacer(),
-          widget.pickup.status == 'En proceso' ||
-                  widget.pickup.status == 'Finalizada'
+          pickup.status == 'En proceso' || pickup.status == 'Finalizada'
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Checkbox(
@@ -91,15 +83,12 @@ class _ProductCardState extends State<ProductCard> {
                     checkColor: Colors.white,
                     fillColor: MaterialStateProperty.resolveWith(getColor),
                     value: isChecked,
-                    onChanged: widget.pickup.status == 'En proceso'
+                    onChanged: pickup.status == 'En proceso'
                         ? (bool? value) async {
-                            final offlineProduct =
-                                await widget._pickupService.getOffline();
+                            final offlineProduct = await widget._pickupService.getOffline();
                             if (offlineProduct != null) {
-                              offlineProduct.products[widget.index].recolected =
-                                  value;
-                              await widget._pickupService
-                                  .setOffline(offlineProduct);
+                              offlineProduct.products[widget.index].recolected = value;
+                              await widget._pickupService.setOffline(offlineProduct);
                             }
                             widget.reloadParent();
                             setState(() {
@@ -109,7 +98,7 @@ class _ProductCardState extends State<ProductCard> {
                         : null,
                   ))
               : const SizedBox.shrink(),
-          widget.pickup.status == 'En proceso'
+          pickup.status == 'En proceso'
               ? IconButton(
                   onPressed: () {
                     showModalBottomSheet(
@@ -123,12 +112,10 @@ class _ProductCardState extends State<ProductCard> {
                                   Navigator.pop(context);
                                 },
                                 reloadParents: () async {
-                                  final offlinePickup =
-                                      await widget._pickupService.getOffline();
+                                  final offlinePickup = await widget._pickupService.getOffline();
                                   if (offlinePickup != null) {
                                     setState(() {
-                                      product =
-                                          offlinePickup.products[widget.index];
+                                      product = offlinePickup.products[widget.index];
                                     });
                                   }
                                   widget.reloadParent();
@@ -145,7 +132,7 @@ class _ProductCardState extends State<ProductCard> {
                     semanticLabel: 'Agrega nota',
                   ))
               : const SizedBox.shrink(),
-          widget.product.annexes != null
+          product.annexes != null && product.annexes?.commentary != null
               ? IconButton(
                   onPressed: () {
                     showModalBottomSheet(
@@ -154,7 +141,7 @@ class _ProductCardState extends State<ProductCard> {
                         return SizedBox(
                           height: 400,
                           child: Center(
-                            child: ProductDetail(product: widget.product),
+                            child: ProductDetail(product: product),
                           ),
                         );
                       },

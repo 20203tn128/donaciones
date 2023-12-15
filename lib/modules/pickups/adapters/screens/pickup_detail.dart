@@ -50,11 +50,11 @@ class _PickupDetailState extends State<PickupDetail> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: widget.pickup.status != 'Pendiente'
+            child: pickup.status != 'Pendiente'
                 ? Column(
                     children: pickup.products.asMap().entries.map((entry) {
                     return ProductCard(
-                      pickup: widget.pickup,
+                      pickup: pickup,
                       product: entry.value,
                       reloadParent: reloadIfOffline,
                       index: entry.key,
@@ -62,7 +62,7 @@ class _PickupDetailState extends State<PickupDetail> {
                   }).toList())
                 : const SizedBox.shrink(),
           ),
-          widget.pickup.status != 'Pendiente'
+          pickup.status != 'Pendiente'
               ? Row(
                   children: [
                     const Padding(
@@ -73,7 +73,7 @@ class _PickupDetailState extends State<PickupDetail> {
                       ),
                     ),
                     Text(
-                      widget.pickup.products.length.toString(),
+                      pickup.products.length.toString(),
                       style: const TextStyle(fontSize: 16, color: Colors.black45),
                     ),
                     const SizedBox(

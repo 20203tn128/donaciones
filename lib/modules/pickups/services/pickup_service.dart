@@ -71,7 +71,7 @@ class PickupService {
               'commentary': product.annexes!.commentary,
               'photos': product.annexes!.photos,
             }
-          : null,
+          : {},
         'recolected': product.recolected ?? false,
       }).toList()
     });
