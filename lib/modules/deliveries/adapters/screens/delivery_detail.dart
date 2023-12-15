@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
@@ -23,16 +25,15 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
 
   _DeliveryDetailState({required this.delivery});
 
-
   reloadIfOffline() async {
     widget.reloadParent();
 
     final offlineDelivery = await _deliveryService.getOffline();
-    if(offlineDelivery == null) return;
+    if (offlineDelivery == null) return;
     if (delivery.id == offlineDelivery.id) {
       setState(() {
-      delivery = offlineDelivery;
-    });
+        delivery = offlineDelivery;
+      });
     }
   }
 
@@ -40,19 +41,18 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ruta de entrega', style: TextStyle(color: Colors.white),),
-        backgroundColor: ColorsApp.prmaryColor,
+        title: const Text('Ruta de entrega'),
+        backgroundColor: ColorsApp.primaryColor,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: delivery.routes
-              .asMap().entries.map((entry) => RouteCard(
-                    route: entry.value,
-                    index: entry.key,
-                    reloadParent: reloadIfOffline, 
-                    delivery: delivery,
-                  ))
-              .toList(),
+          children: delivery.routes.asMap().entries.map((entry) => RouteCard(
+            route: entry.value,
+            index: entry.key,
+            reloadParent: reloadIfOffline,
+            delivery: delivery,
+          )).toList(),
         ),
       ),
     );

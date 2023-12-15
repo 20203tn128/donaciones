@@ -17,32 +17,32 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _sessionService.isLoggedIn(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return const CircularProgressIndicator();
+      future: _sessionService.isLoggedIn(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
 
-          var loggedIn = snapshot.data!;
+        var loggedIn = snapshot.data!;
 
-          if (loggedIn) {
-            Connectivity()
-                .onConnectivityChanged
-                .listen((ConnectivityResult result) async {
-              if (result != ConnectivityResult.none) {
-                await PickupService().sync();
-                await DeliveryService().sync();
-              }
-            });
-          }
+        if (loggedIn) {
+          Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
+            if (result != ConnectivityResult.none) {
+              await PickupService().sync();
+              await DeliveryService().sync();
+            }
+          });
+        }
 
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            initialRoute: loggedIn ? '/menu' : '/login',
-            routes: {
-              '/login': (context) => const Login(),
-              '/menu': (context) => const Menu(),
-            },
-          );
-        });
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: loggedIn ? '/menu' : '/login',
+          routes: {
+            '/login': (context) => const Login(),
+            '/menu': (context) => const Menu(),
+          },
+        );
+      }
+    );
   }
 }

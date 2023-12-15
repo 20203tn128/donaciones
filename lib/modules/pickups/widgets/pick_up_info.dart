@@ -23,7 +23,7 @@ class PickupInfo extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: Card(
                   elevation: 5,
-                  color: ColorsApp.prmaryColor,
+                  color: ColorsApp.primaryColor,
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Row(
@@ -36,10 +36,7 @@ class PickupInfo extends StatelessWidget {
                           padding: EdgeInsets.only(left: 8),
                           child: Text(
                             'Detalles de la recolección',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
                       ],
@@ -56,8 +53,7 @@ class PickupInfo extends StatelessWidget {
                             width: 250,
                             child: Text(
                               pickup.generalAnnexes!.commentary!,
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.black45),
+                              style: const TextStyle(fontSize: 12, color: Colors.black45),
                             ),
                           ),
                         )
@@ -92,9 +88,7 @@ class PickupInfo extends StatelessWidget {
                       onPressed: () => {
                         Navigator.pop(context),
                       },
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(150, 50),
-                          backgroundColor: ColorsApp.dangerColor),
+                      style: ElevatedButton.styleFrom(minimumSize: const Size(150, 50), backgroundColor: ColorsApp.dangerColor, foregroundColor: Colors.white),
                       child: const Text('Salir'),
                     ),
                   ),

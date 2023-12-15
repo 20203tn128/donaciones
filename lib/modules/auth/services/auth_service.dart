@@ -8,18 +8,15 @@ class AuthService {
   final SessionService sessionService = const SessionService();
 
   Future<bool> login(String email, String password) async {
-    final response = await apiService.post(
-      '/login',
-      data: {
-        'email': email,
-        'password': password,
-      }
-    );
+    final response = await apiService.post('/login', data: {
+      'email': email,
+      'password': password,
+    });
 
     final res = Response.fromMap(response.data);
 
     if (res.statusCode != 200) return false;
-    
+
     await sessionService.setSession(
       res.data['token'],
       User.fromMap(res.data['user']),

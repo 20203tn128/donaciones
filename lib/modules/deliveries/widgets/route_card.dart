@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/models/route.dart' as routemodel;
 import 'package:donaciones/kernel/themes/colors_app.dart';
@@ -16,7 +19,8 @@ class RouteCard extends StatefulWidget {
     super.key,
     required this.route,
     required this.index,
-    required this.reloadParent, required this.delivery,
+    required this.reloadParent,
+    required this.delivery,
   });
 
   @override
@@ -36,16 +40,13 @@ class _RouteCardState extends State<RouteCard> {
         children: [
           ExpansionTile(
             leading: CircleAvatar(
-              backgroundColor: ColorsApp.prmaryColor,
+              backgroundColor: ColorsApp.primaryColor,
               foregroundColor: Colors.white,
               child: Text(route.acronym),
             ),
             title: Text(
               route.name,
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: ColorsApp.secondaryColor),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor),
             ),
             subtitle: Text(
               route.status,
@@ -65,8 +66,8 @@ class _RouteCardState extends State<RouteCard> {
                   children: [
                     Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Referencias: ',
                             style: TextStyle(
@@ -76,15 +77,14 @@ class _RouteCardState extends State<RouteCard> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 6,
                         ),
                         SizedBox(
                           width: 200,
                           child: Text(
                             route.reference,
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.black45),
+                            style: const TextStyle(fontSize: 12, color: Colors.black45),
                           ),
                         ),
                       ],
@@ -93,7 +93,7 @@ class _RouteCardState extends State<RouteCard> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Text(
+                          const Text(
                             'Enlaces: ',
                             style: TextStyle(
                               fontSize: 12,
@@ -101,15 +101,14 @@ class _RouteCardState extends State<RouteCard> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 6,
                           ),
                           SizedBox(
                             width: 200,
                             child: Text(
                               route.nameLinkPerson,
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black45),
+                              style: const TextStyle(fontSize: 12, color: Colors.black45),
                             ),
                           ),
                         ],
@@ -119,7 +118,7 @@ class _RouteCardState extends State<RouteCard> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Column(
+                          const Column(
                             children: [
                               Text(
                                 'Teléfonos: ',
@@ -131,42 +130,36 @@ class _RouteCardState extends State<RouteCard> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 6,
                           ),
                           Column(
                             children: [
                               Row(
-                                children: route.phones
-                                    .map((e) => Row(
-                                      children: [
-                                        SizedBox(
-                                              width: 100,
-                                              child: Text(e,
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.black45)),
-                                            ),
-                                      ],
-                                    ))
-                                    .toList(),
+                                children: route.phones.map((e) => Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 100,
+                                      child: Text(e, style: const TextStyle(fontSize: 12, color: Colors.black45)),
+                                    ),
+                                  ],
+                                )).toList(),
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    route.status == 'Finalizada' ||
-                            route.status == 'Cancelada'
+                    route.status == 'Finalizada' || route.status == 'Cancelada'
                         ? ElevatedButton(
                             onPressed: () {
                               showModalBottomSheet(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return Container(
+                                  return SizedBox(
                                     height: 400,
                                     child: Center(
                                       child: RouteDetail(
@@ -177,58 +170,50 @@ class _RouteCardState extends State<RouteCard> {
                                 },
                               );
                             },
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
                             child: const Text('Ver comentarios'),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: Size(30, 30),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(6)),
-                                backgroundColor: ColorsApp.successColor),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     route.status == 'Pendiente' && widget.delivery.status == 'En proceso'
                         ? ElevatedButton(
                             onPressed: () async {
-                              final delivery = await widget
-                                  ._deliveryService
-                                  .getOffline();
+                              final delivery = await widget._deliveryService.getOffline();
                               if (delivery != null) {
-                                delivery.routes[widget.index].status =
-                                    'En proceso';
-                                await widget._deliveryService
-                                    .setOffline(delivery);
-                                // ignore: use_build_context_synchronously
+                                delivery.routes[widget.index].status = 'En proceso';
+                                await widget._deliveryService.setOffline(delivery);
+
                                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Exito'),
-                                        content: const Text(
-                                            'Se ha iniciado la ruta'),  // 
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  route = delivery
-                                                      .routes[widget.index];
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('OK'))
-                                        ],
-                                      );
-                                    });
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Éxito'),
+                                      content: const Text('Se ha iniciado la ruta'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK')
+                                        )
+                                      ],
+                                    );
+                                  }
+                                );
+
+                                setState(() {
+                                  route = delivery.routes[widget.index];
+                                });
                               }
                             },
-                            child: const Text('Iniciar'),
                             style: ElevatedButton.styleFrom(
-                                minimumSize: Size(30, 30),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(6)),
-                                backgroundColor: ColorsApp.successColor),
+                              minimumSize: const Size(30, 30),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                              backgroundColor: ColorsApp.successColor,
+                              foregroundColor: Colors.white
+                            ),
+                            child: const Text('Iniciar'),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     route.status == 'En proceso'
                         ? Row(
                             children: [
@@ -237,7 +222,7 @@ class _RouteCardState extends State<RouteCard> {
                                   showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return Container(
+                                      return SizedBox(
                                         height: 400,
                                         child: Center(
                                             child: RouteAnnexesForm(
@@ -248,7 +233,7 @@ class _RouteCardState extends State<RouteCard> {
                                             if (offlineDelivery != null) {
                                               setState(() {
                                                 route = offlineDelivery.routes[widget.index];
-                                            });
+                                              });
                                             }
                                           },
                                           status: 'Finalizada',
@@ -260,22 +245,16 @@ class _RouteCardState extends State<RouteCard> {
                                     },
                                   );
                                 },
+                                style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
                                 child: const Text('Finalizar'),
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(30, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6)),
-                                    backgroundColor:
-                                        ColorsApp.successColor),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               ElevatedButton(
                                 onPressed: () {
                                   showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return Container(
+                                      return SizedBox(
                                         height: 400,
                                         child: Center(
                                             child: RouteAnnexesForm(
@@ -286,7 +265,7 @@ class _RouteCardState extends State<RouteCard> {
                                             if (offlineDelivery != null) {
                                               setState(() {
                                                 route = offlineDelivery.routes[widget.index];
-                                            });
+                                              });
                                             }
                                           },
                                           status: 'Cancelada',
@@ -298,18 +277,12 @@ class _RouteCardState extends State<RouteCard> {
                                     },
                                   );
                                 },
+                                style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.dangerColor, foregroundColor: Colors.white),
                                 child: const Text('Cancelar'),
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(30, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6)),
-                                    backgroundColor:
-                                        ColorsApp.dangerColor),
                               ),
                             ],
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                   ],
                 ),
               )

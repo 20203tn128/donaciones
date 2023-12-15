@@ -22,32 +22,28 @@ class Delivery {
     this.generalAnnexes,
     this.dateEnd,
   });
+
   String get acronym => name.substring(0, 2).toUpperCase();
 
   static Delivery fromMap(Map<String, dynamic> map) => Delivery(
-        id: (map['_id'] ?? map['id'])!,
-        name: map['name']!,
-        routes: map['routes']!
-            .map((map) => Route.fromMap(map))
-            .whereType<Route>()
-            .toList(),
-        user: User.fromMap(map['user']!),
-        date: DateTime.parse(map['date']!),
-        status: map['status']!,
-        generalAnnexes: map['generalAnnexes'] != null
-            ? Annexes.fromMap(map['generalAnnexes'])
-            : null,
-        dateEnd: map['dateEnd'] != null ? DateTime.parse(map['dateEnd']) : null,
-      );
+    id: (map['_id'] ?? map['id'])!,
+    name: map['name']!,
+    routes: map['routes']!.map((map) => Route.fromMap(map)).whereType<Route>().toList(),
+    user: User.fromMap(map['user']!),
+    date: DateTime.parse(map['date']!),
+    status: map['status']!,
+    generalAnnexes: map['generalAnnexes'] != null ? Annexes.fromMap(map['generalAnnexes']) : null,
+    dateEnd: map['dateEnd'] != null ? DateTime.parse(map['dateEnd']) : null,
+  );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'name': name,
-        'routes': routes.map((route) => route.toMap()).toList(),
-        'user': user.toMap(),
-        'date': date.toIso8601String(),
-        'status': status,
-        'generalAnnexes': generalAnnexes?.toMap(),
-        'dateEnd': dateEnd?.toIso8601String(),
-      };
+    'id': id,
+    'name': name,
+    'routes': routes.map((route) => route.toMap()).toList(),
+    'user': user.toMap(),
+    'date': date.toIso8601String(),
+    'status': status,
+    'generalAnnexes': generalAnnexes?.toMap(),
+    'dateEnd': dateEnd?.toIso8601String(),
+  };
 }

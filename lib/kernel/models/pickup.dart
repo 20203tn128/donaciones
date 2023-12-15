@@ -12,7 +12,7 @@ class Pickup {
   List<Product> products;
   Annexes? generalAnnexes;
   User user;
-  
+
   Pickup({
     required this.id,
     required this.name,

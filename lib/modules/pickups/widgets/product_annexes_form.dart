@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state, use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -27,6 +29,7 @@ class ProductAnnexesForm extends StatefulWidget {
 }
 
 class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
+  final PickupService _pickupService = PickupService();
   Product product;
   _ProductAnnexesFormState({required this.product});
   final _formKey = GlobalKey<FormState>();
@@ -35,16 +38,14 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
 
   Future _getImageFromCamera() async {
     final imagePicker = ImagePicker();
-    final XFile? pickedFile =
-        await imagePicker.pickImage(source: ImageSource.camera);
+    final XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
 
     _addImage(pickedFile);
   }
 
   Future _getImageFromGallery() async {
     final imagePicker = ImagePicker();
-    final XFile? pickedFile =
-        await imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
 
     _addImage(pickedFile);
   }
@@ -59,7 +60,6 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
 
   @override
   Widget build(BuildContext context) {
-    final PickupService _pickupService = PickupService();
     return Scaffold(
       body: SingleChildScrollView(
           child: Padding(
@@ -82,10 +82,7 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                           padding: EdgeInsets.only(left: 8),
                           child: Text(
                             'Realiza un comentario referente a la recolección',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(115, 43, 42, 42)),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color.fromARGB(115, 43, 42, 42)),
                           ),
                         ),
                       ],
@@ -102,11 +99,9 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                       margin: const EdgeInsets.all(8),
                       child: TextField(
                         controller: _comments,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Comentarios: *',
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1, color: ColorsApp.secondaryColor)),
+                          border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: ColorsApp.secondaryColor)),
                         ),
                         maxLines: 4,
                         keyboardType: TextInputType.multiline,
@@ -119,12 +114,12 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Card(
-                                elevation: 5,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.file(image,
-                                      height: 100, width: 100),
-                                )),
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.file(image, height: 100, width: 100),
+                              )
+                            ),
                           );
                         }).toList(),
                       ),
@@ -134,7 +129,7 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
                         onPressed: () => {
-                          showDialog<void>(
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
@@ -142,33 +137,29 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                                 content: const SizedBox(
                                   width: 250,
                                   child: Text(
-                                    'Selecione una opción desde la cual podra subir el archivo deaseado',
+                                    'Selecione una opción desde la cual podra subir el archivo deseado',
                                   ),
                                 ),
                                 actions: <Widget>[
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
+                                      textStyle: Theme.of(context).textTheme.labelLarge,
                                     ),
                                     onPressed: () {
                                       _getImageFromCamera();
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Camara'),
+                                    child: const Text('Cámara'),
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
+                                      textStyle: Theme.of(context).textTheme.labelLarge,
                                     ),
                                     onPressed: () {
                                       _getImageFromGallery();
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Galeria'),
+                                    child: const Text('Galería'),
                                   ),
                                 ],
                               );
@@ -181,16 +172,12 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                       ),
                     ),
                     Container(
-                      padding:
-                          const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                       child: Row(
                         children: [
                           ElevatedButton(
-                            onPressed: () =>
-                                {Navigator.pushNamed(context, '/detail')},
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(150, 50),
-                                backgroundColor: ColorsApp.dangerColor),
+                            onPressed: () => {Navigator.pushNamed(context, '/detail')},
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(150, 50), backgroundColor: ColorsApp.dangerColor, foregroundColor: Colors.white),
                             child: const Text('Cancelar'),
                           ),
                           const Spacer(),
@@ -198,44 +185,42 @@ class _ProductAnnexesFormState extends State<ProductAnnexesForm> {
                             onPressed: () async {
                               final pickup = await _pickupService.getOffline();
                               if (pickup != null) {
-                                int index = pickup.products.indexWhere(
-                                    (element) => element.id == product.id);
+                                int index = pickup.products.indexWhere((element) => element.id == product.id);
                                 pickup.products[index].annexes = Annexes(
-                                    commentary: _comments.text,
-                                    photos: _images.map((e) {
-                                      final String bytes =
-                                          base64Encode(e.readAsBytesSync());
-                                      return 'data:image/jpeg;base64,$bytes';
-                                    }).toList());
+                                  commentary: _comments.text,
+                                  photos: _images.map((e) {
+                                    final String bytes = base64Encode(e.readAsBytesSync());
+                                    return 'data:image/jpeg;base64,$bytes';
+                                  }).toList()
+                                );
 
                                 await _pickupService.setOffline(pickup);
                                 widget.reloadParents();
-                                // ignore: use_build_context_synchronously
+
                                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Exito'),
-                                        content: Text('Se ha agregado la nota'),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  product =
-                                                      pickup.products[index];
-                                                });
-                                                Navigator.pop(context);
-                                                widget.closeFunction();
-                                              },
-                                              child: const Text('OK'))
-                                        ],
-                                      );
-                                    });
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Éxito'),
+                                      content: const Text('Se ha agregado la nota'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            widget.closeFunction();
+                                          },
+                                          child: const Text('OK')
+                                        )
+                                      ],
+                                    );
+                                  }
+                                );
+                                setState(() {
+                                  product = pickup.products[index];
+                                });
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(150, 50),
-                                backgroundColor: ColorsApp.successColor),
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(150, 50), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
                             child: const Text('Guardar'),
                           ),
                         ],

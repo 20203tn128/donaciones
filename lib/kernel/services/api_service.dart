@@ -33,17 +33,14 @@ class ApiService {
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
-  }) async { // si segun yo es lalala si 20203tn055@ute.edu.mx
-    var x = await _dio.post(
+  }) async => await _dio.post(
     path,
     data: data,
     queryParameters: queryParameters,
     options: options,
     cancelToken: cancelToken,
     onReceiveProgress: onReceiveProgress,
-    );
-    return x as Response<T>;
-  }
+  );
 
   Future<Response<T>> put<T>(
     String path, {

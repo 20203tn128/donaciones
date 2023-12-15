@@ -1,5 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:donaciones/kernel/themes/colors_app.dart';
-import 'package:donaciones/kernel/validations/validations-app.dart';
+import 'package:donaciones/kernel/validations/validations_app.dart';
 import 'package:donaciones/modules/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -21,20 +23,20 @@ class _LoginFormextendsState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorsApp.prmaryColor,
+        color: ColorsApp.primaryColor,
         border: Border.all(
-          color: ColorsApp.prmaryColor,
+          color: ColorsApp.primaryColor,
           width: 10,
         ),
       ),
       child: Align(
         alignment: Alignment.center,
         child: Card(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             side: BorderSide(
-              color: ColorsApp.prmaryColor,
+              color: ColorsApp.primaryColor,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(22)),
+            borderRadius: BorderRadius.all(Radius.circular(22)),
           ),
           elevation: 5,
           child: SingleChildScrollView(
@@ -62,9 +64,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            decoration: const InputDecoration(
-                                icon: Icon(Icons.email),
-                                labelText: 'Correo electrónico: *'),
+                            decoration: const InputDecoration(icon: Icon(Icons.email), labelText: 'Correo electrónico: *'),
                             validator: (value) {
                               RegExp regex = RegExp(ValidationsApp.email);
                               if (value == null || value.isEmpty) {
@@ -81,9 +81,7 @@ class _LoginFormextendsState extends State<LoginForm> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            decoration: const InputDecoration(
-                                icon: Icon(Icons.lock),
-                                labelText: 'Contraseña: *'),
+                            decoration: const InputDecoration(icon: Icon(Icons.lock), labelText: 'Contraseña: *'),
                             validator: (value) {
                               RegExp regex = RegExp(ValidationsApp.password);
                               if (value == null || value.isEmpty) {
@@ -103,20 +101,31 @@ class _LoginFormextendsState extends State<LoginForm> {
                                 ? null
                                 : () async {
                                     try {
-                                      if (await _authService.login(
-                                          _email.text, _password.text)) {
-                                        Navigator.pushReplacementNamed(
-                                            context, '/menu');
+                                      if (await _authService.login(_email.text, _password.text)) {
+                                        Navigator.pushReplacementNamed(context, '/menu');
                                       }
                                     } catch (e) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Error'),
+                                            content: const Text('Usuario y/o contraseña incorrectos'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK')
+                                              )
+                                            ],
+                                          );
+                                        }
+                                      );
                                     }
                                   },
-                            child: const Text('Iniciar sesion', style: TextStyle(color: Colors.white),),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: Size(100, 50),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(22)),
-                                backgroundColor: ColorsApp.successColor),
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(100, 50), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
+                            child: const Text('Iniciar sesion'),
                           ),
                         ),
                       ],

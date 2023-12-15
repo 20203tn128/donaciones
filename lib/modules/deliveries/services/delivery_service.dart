@@ -33,15 +33,11 @@ class DeliveryService {
       params['filterBy'] = filterBy;
     }
 
-    final response =
-        await _apiService.get('/deliveries', queryParameters: params);
+    final response = await _apiService.get('/deliveries', queryParameters: params);
 
     final res = Response.fromMap(response.data);
 
-    return res.data['deliveries']!
-        .map((map) => Delivery.fromMap(map))
-        .whereType<Delivery>()
-        .toList();
+    return res.data['deliveries']!.map((map) => Delivery.fromMap(map)).whereType<Delivery>().toList();
   }
 
   Future<Delivery> getById(String id) async {
@@ -66,21 +62,19 @@ class DeliveryService {
 
   Future<bool> end(String id, List<Route> routes, DateTime dateEnd) async {
     final data = {
-      'routes': routes
-          .map((route) => {
-                '_id': route.id,
-                'name': route.name,
-                'reference': route.reference,
-                'nameLinkPerson': route.nameLinkPerson,
-                'phones': route.phones,
-                'status': route.status,
-                'annexes': {
-                  'commentary': route.annexes?.commentary!,
-                  'photos': route.annexes?.photos,
-                },
-                'dateEnd': route.dateEnd?.toIso8601String(),
-              })
-          .toList(),
+      'routes': routes .map((route) => {
+        '_id': route.id,
+        'name': route.name,
+        'reference': route.reference,
+        'nameLinkPerson': route.nameLinkPerson,
+        'phones': route.phones,
+        'status': route.status,
+        'annexes': {
+          'commentary': route.annexes?.commentary!,
+          'photos': route.annexes?.photos,
+        },
+        'dateEnd': route.dateEnd?.toIso8601String(),
+      }).toList(),
       'dateEnd': dateEnd.toIso8601String(),
     };
     final response = await _apiService.patch('/deliveries/end/$id', data: data);
@@ -91,7 +85,6 @@ class DeliveryService {
   }
 
   Future<bool> cancel(String id, Annexes generalAnnexes) async {
-    print(generalAnnexes.toMap());
     final response = await _apiService.patch('/deliveries/cancel/$id', data: {
       'generalAnnexes': {
         'commentary': generalAnnexes.commentary,
@@ -126,23 +119,16 @@ class DeliveryService {
   }
 
   Future<void> sync() async {
-    print(1);
     final delivery = await getOffline();
 
-    if (delivery == null ||
-        delivery.status == 'Pendiente' ||
-        delivery.status == 'En proceso') return;
-        print(2);
+    if (delivery == null || delivery.status == 'Pendiente' || delivery.status == 'En proceso') return;
 
     if (delivery.status == 'Finalizada') {
-      print(3);
       await end(delivery.id, delivery.routes, delivery.dateEnd!);
     } else if (delivery.status == 'Cancelada') {
-      print(4);
       await cancel(delivery.id, delivery.generalAnnexes!);
     }
-      print(5);
+
     await clearOffline();
-      print(6);
   }
 }

@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:dio/dio.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/kernel/models/route.dart' as routemodel;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RouteDetail extends StatefulWidget {
   final routemodel.Route route;
@@ -31,12 +28,12 @@ class _RouteDetailState extends State<RouteDetail> {
           child: Column(
             children: [
               const Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Card(
                   elevation: 5,
-                  color: ColorsApp.prmaryColor,
+                  color: ColorsApp.primaryColor,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         Icon(
@@ -44,13 +41,10 @@ class _RouteDetailState extends State<RouteDetail> {
                           color: Colors.white,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8),
+                          padding: EdgeInsets.only(left: 8),
                           child: Text(
                             'Comentarios de la ruta',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
                       ],
@@ -62,21 +56,20 @@ class _RouteDetailState extends State<RouteDetail> {
                 children: [
                   widget.route.annexes?.commentary != null
                       ? Container(
-                          margin: EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
                           child: Row(
                             children: [
                               SizedBox(
                                 width: 250,
                                 child: Text(
                                   widget.route.annexes!.commentary!,
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.black),
+                                  style: const TextStyle(fontSize: 15, color: Colors.black),
                                 ),
                               ),
                             ],
                           ),
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
                   Container(
                       margin: const EdgeInsets.all(8),
                       alignment: Alignment.centerLeft,
@@ -95,27 +88,23 @@ class _RouteDetailState extends State<RouteDetail> {
                                 ),
                               );
                             } catch (error) {
-                              return SizedBox.shrink();
+                              return const SizedBox.shrink();
                             }
                           }).toList(),
                         ),
                       )),
                   Container(
                     alignment: Alignment.bottomRight,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: ElevatedButton(
                       onPressed: () => {
                         Navigator.pop(context),
                       },
+                      style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), minimumSize: const Size(60, 40), backgroundColor: ColorsApp.dangerColor, foregroundColor: Colors.white),
                       child: const Text(
                         'Salir',
-                        style: TextStyle(fontSize: 12.0),
+                        style: TextStyle(fontSize: 12.0, color: Colors.white),
                       ),
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          minimumSize: Size(60, 40),
-                          backgroundColor: ColorsApp.dangerColor),
                     ),
                   ),
                 ],

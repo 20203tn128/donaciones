@@ -16,7 +16,7 @@ class Annexes {
   }
 
   Map<String, dynamic> toMap() => {
-        'commentary': commentary,
-        'photos': photos,
-      };
+    'commentary': commentary,
+    'photos': photos,
+  };
 }

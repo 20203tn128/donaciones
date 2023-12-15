@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -14,27 +16,24 @@ class DeliveryGeneralAnnexesForm extends StatefulWidget {
   const DeliveryGeneralAnnexesForm({super.key, required this.reloadParent, required this.closeFunction});
 
   @override
-  State<DeliveryGeneralAnnexesForm> createState() =>
-      _DeliveryGeneralAnnexesFormState();
+  State<DeliveryGeneralAnnexesForm> createState() => _DeliveryGeneralAnnexesFormState();
 }
 
-class _DeliveryGeneralAnnexesFormState
-    extends State<DeliveryGeneralAnnexesForm> {
+class _DeliveryGeneralAnnexesFormState extends State<DeliveryGeneralAnnexesForm> {
+  final DeliveryService _deliveryService = DeliveryService();
   final _formKey = GlobalKey<FormState>();
-  List<File> _images = [];
+  final List<File> _images = [];
   final TextEditingController _comments = TextEditingController(text: '');
   Future _getImageFromCamera() async {
     final imagePicker = ImagePicker();
-    final XFile? pickedFile =
-        await imagePicker.pickImage(source: ImageSource.camera);
+    final XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
 
     _addImage(pickedFile);
   }
 
   Future _getImageFromGallery() async {
     final imagePicker = ImagePicker();
-    final XFile? pickedFile =
-        await imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
 
     _addImage(pickedFile);
   }
@@ -49,8 +48,6 @@ class _DeliveryGeneralAnnexesFormState
 
   @override
   Widget build(BuildContext context) {
-    final DeliveryService _deliveryService = DeliveryService();
-
     return Scaffold(
       body: SingleChildScrollView(
           child: Padding(
@@ -60,23 +57,20 @@ class _DeliveryGeneralAnnexesFormState
           child: Column(
             children: [
               const Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Card(
                   elevation: 5,
                   color: Color.fromARGB(255, 245, 219, 126),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         Icon(Icons.warning_amber_outlined),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8),
+                          padding: EdgeInsets.only(left: 8),
                           child: Text(
                             'Realiza un comentario referente a el reparto',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(115, 43, 42, 42)),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color.fromARGB(115, 43, 42, 42)),
                           ),
                         ),
                       ],
@@ -90,14 +84,12 @@ class _DeliveryGeneralAnnexesFormState
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       child: TextField(
                         controller: _comments,
                         decoration: const InputDecoration(
                           labelText: 'Comentarios: *',
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1, color: ColorsApp.secondaryColor)),
+                          border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: ColorsApp.secondaryColor)),
                         ),
                         maxLines: 4,
                         keyboardType: TextInputType.multiline,
@@ -110,12 +102,12 @@ class _DeliveryGeneralAnnexesFormState
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Card(
-                                elevation: 5,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.file(image,
-                                      height: 100, width: 100),
-                                )),
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.file(image, height: 100, width: 100),
+                              )
+                            ),
                           );
                         }).toList(),
                       ),
@@ -125,25 +117,23 @@ class _DeliveryGeneralAnnexesFormState
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
                         onPressed: () => {
-                          showDialog<void>(
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: const Text('Seleccione una opción'),
-                                content: SizedBox(
+                                content: const SizedBox(
                                   width: 250,
-                                  child: const Text(
-                                    'Selecione una opción desde la cual podra subir el archivo deaseado',
+                                  child: Text(
+                                    'Selecione una opción desde la cual podra subir el archivo deseado',
                                   ),
                                 ),
                                 actions: <Widget>[
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
+                                      textStyle: Theme.of(context).textTheme.labelLarge,
                                     ),
-                                    child: const Text('Camara'),
+                                    child: const Text('Cámara'),
                                     onPressed: () {
                                       _getImageFromCamera();
                                       Navigator.pop(context);
@@ -151,11 +141,9 @@ class _DeliveryGeneralAnnexesFormState
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
+                                      textStyle: Theme.of(context).textTheme.labelLarge,
                                     ),
-                                    child: const Text('Galeria'),
+                                    child: const Text('Galería'),
                                     onPressed: () {
                                       _getImageFromGallery();
                                       Navigator.pop(context);
@@ -172,63 +160,54 @@ class _DeliveryGeneralAnnexesFormState
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                       child: Row(
                         children: [
                           ElevatedButton(
-                            onPressed: () => {
-                              Navigator.pushNamed(
-                                  context, '/home/recolections_detail')
-                            },
+                            onPressed: () => {Navigator.pushNamed(context, '/home/recolections_detail')},
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(150, 50), backgroundColor: ColorsApp.dangerColor, foregroundColor: Colors.white),
                             child: const Text('Cancelar'),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: Size(150, 50),
-                                backgroundColor: ColorsApp.dangerColor),
                           ),
                           const Spacer(),
                           ElevatedButton(
                             onPressed: () async {
-                              final delivery =
-                                  await _deliveryService.getOffline();
+                              final delivery = await _deliveryService.getOffline();
                               if (delivery != null) {
                                 delivery.generalAnnexes = Annexes(
-                                    commentary: _comments.text,
-                                    photos: _images.map((e) {
-                                      final String bytes =
-                                          base64Encode(e.readAsBytesSync());
-                                      return 'data:image/jpeg;base64,$bytes';
-                                    }).toList());
+                                  commentary: _comments.text,
+                                  photos: _images.map((e) {
+                                    final String bytes = base64Encode(e.readAsBytesSync());
+                                    return 'data:image/jpeg;base64,$bytes';
+                                  }).toList()
+                                );
                                 delivery.status = 'Cancelada';
                                 delivery.dateEnd = DateTime.now();
                                 await _deliveryService.setOffline(delivery);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Éxito'),
+                                      content: const Text('Se ha cancelado la ruta'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            widget.closeFunction();
+                                          },
+                                          child: const Text('OK')
+                                        )
+                                      ],
+                                    );
+                                  }
+                                );
                                 widget.reloadParent();
                                 if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
-                                    _deliveryService.sync();
-                                  }
-                                // ignore: use_build_context_synchronously
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Exito'),
-                                        content: const Text(
-                                            'Se ha cancelado la ruta'),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                setState(() {});
-                                                Navigator.pop(context);
-                                                widget.closeFunction();
-                                              },
-                                              child: const Text('OK'))
-                                        ],
-                                      );
-                                    });
+                                  _deliveryService.sync();
+                                }
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: Size(150, 50),
-                                backgroundColor: ColorsApp.successColor),
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(150, 50), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
                             child: const Text('Guardar'),
                           ),
                         ],

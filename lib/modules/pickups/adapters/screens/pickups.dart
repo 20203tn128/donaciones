@@ -26,8 +26,7 @@ class _PickupsState extends State<Pickups> {
       pickups.addAll(await _pickupService.get());
       final offlinePickup = await _pickupService.getOffline();
       if (offlinePickup != null) {
-        final int index =
-            pickups.indexWhere((delivery) => delivery.id == offlinePickup.id);
+        final int index = pickups.indexWhere((delivery) => delivery.id == offlinePickup.id);
         if (index != -1) pickups[index] = offlinePickup;
       }
     } else {
@@ -42,9 +41,7 @@ class _PickupsState extends State<Pickups> {
 
   @override
   void initState() {
-    _subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
+    _subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       _init(result);
     });
     super.initState();
@@ -60,11 +57,9 @@ class _PickupsState extends State<Pickups> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Recolecciones',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: ColorsApp.prmaryColor,
+        title: const Text('Recolecciones'),
+        backgroundColor: ColorsApp.primaryColor,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -85,14 +80,13 @@ class _PickupsState extends State<Pickups> {
                 ),
               ),
               Column(
-                  children: _pickups
-                      .map((pickup) => PickupCard(
-                            pickup: pickup,
-                            reload: () async {
-                              _init(await (Connectivity().checkConnectivity()));
-                            },
-                          ))
-                      .toList()),
+                children: _pickups.map((pickup) => PickupCard(
+                  pickup: pickup,
+                  reload: () async {
+                    _init(await (Connectivity().checkConnectivity()));
+                  },
+                )).toList()
+              ),
             ],
           ),
         ),

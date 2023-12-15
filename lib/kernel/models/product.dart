@@ -5,7 +5,7 @@ class Product {
   String name;
   int quantity;
   bool? recolected;
-  Annexes? annexes; 
+  Annexes? annexes;
 
   Product({
     required this.id,

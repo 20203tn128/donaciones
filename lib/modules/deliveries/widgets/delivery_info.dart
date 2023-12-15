@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:donaciones/kernel/models/delivery.dart';
-import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,7 @@ class DeliveryInfo extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: Card(
                   elevation: 5,
-                  color: ColorsApp.prmaryColor,
+                  color: ColorsApp.primaryColor,
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Row(
@@ -37,10 +36,7 @@ class DeliveryInfo extends StatelessWidget {
                           padding: EdgeInsets.only(left: 8),
                           child: Text(
                             'Detalles del reparto',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
                       ],
@@ -57,8 +53,7 @@ class DeliveryInfo extends StatelessWidget {
                             width: 250,
                             child: Text(
                               delivery.generalAnnexes!.commentary!,
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.black45),
+                              style: const TextStyle(fontSize: 12, color: Colors.black45),
                             ),
                           ),
                         )
@@ -93,9 +88,7 @@ class DeliveryInfo extends StatelessWidget {
                       onPressed: () => {
                         Navigator.pop(context),
                       },
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(150, 50),
-                          backgroundColor: ColorsApp.dangerColor),
+                      style: ElevatedButton.styleFrom(minimumSize: const Size(150, 50), backgroundColor: ColorsApp.dangerColor, foregroundColor: Colors.white),
                       child: const Text('Salir'),
                     ),
                   ),

@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/models/product.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
@@ -19,10 +21,7 @@ class ProductCard extends StatefulWidget {
     required this.product,
     required this.reloadParent,
     required this.index,
-  }) {
-    print('CONSTRUCTOR STATEFUL');
-    print(this.product.toMap());
-  }
+  });
 
   @override
   State<ProductCard> createState() => _ProductCardState(product: product);
@@ -31,12 +30,8 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   Product product;
   _ProductCardState({required this.product}) {
-    print('CONSTRUCTOR');
-    print(product.toMap());
     isChecked = product.recolected ?? false;
   }
-
-  final _formKey = GlobalKey<FormState>();
 
   late bool isChecked;
   @override
@@ -66,18 +61,10 @@ class _ProductCardState extends State<ProductCard> {
           ),
           Column(
             children: [
-              Text(widget.product.name,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: ColorsApp.secondaryColor)),
+              Text(widget.product.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor)),
               Row(
                 children: [
-                  const Text('Cantidad:',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: ColorsApp.secondaryColor)),
+                  const Text('Cantidad:', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor)),
                   const SizedBox(
                     width: 6,
                   ),
@@ -118,15 +105,14 @@ class _ProductCardState extends State<ProductCard> {
                           height: 400,
                           child: Center(
                             child: ProductAnnexesForm(
-                              closeFunction: () {
-                                Navigator.pop(context);
-                              },
+                                closeFunction: () {
+                                  Navigator.pop(context);
+                                },
                                 reloadParents: () async {
                                   final offlinePickup = await widget._pickupService.getOffline();
                                   if (offlinePickup != null) {
                                     setState(() {
-                                      product =
-                                          offlinePickup.products[widget.index];
+                                      product = offlinePickup.products[widget.index];
                                     });
                                   }
                                   widget.reloadParent();
@@ -160,7 +146,7 @@ class _ProductCardState extends State<ProductCard> {
                   },
                   icon: const Icon(
                     Icons.info_outline_rounded,
-                    color: ColorsApp.prmaryColor,
+                    color: ColorsApp.primaryColor,
                     semanticLabel: 'Detalles',
                   ))
               : const Spacer(),

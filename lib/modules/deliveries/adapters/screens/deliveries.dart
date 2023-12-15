@@ -41,9 +41,7 @@ class _DeliveriesState extends State<Deliveries> {
 
   @override
   void initState() {
-    _subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
+    _subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       _init(result);
     });
     super.initState();
@@ -59,8 +57,9 @@ class _DeliveriesState extends State<Deliveries> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Repartos', style: TextStyle(color: Colors.white),),
-        backgroundColor: ColorsApp.prmaryColor,
+        title: const Text('Repartos'),
+        backgroundColor: ColorsApp.primaryColor,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -81,14 +80,13 @@ class _DeliveriesState extends State<Deliveries> {
                 ),
               ),
               Column(
-                  children: _deliveries
-                      .map((delivery) => DeliveryCard(
-                            delivery: delivery,
-                            reload: () async {
-                              _init(await Connectivity().checkConnectivity());
-                            },
-                          ))
-                      .toList()),
+                children: _deliveries.map((delivery) => DeliveryCard(
+                  delivery: delivery,
+                  reload: () async {
+                    _init(await Connectivity().checkConnectivity());
+                  },
+                )).toList()
+              ),
             ],
           ),
         ),

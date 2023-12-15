@@ -14,7 +14,10 @@ class PickupStack extends StatelessWidget {
         '/': (context) => const Pickups(),
         '/detail': (context) {
           final dynamic args = ModalRoute.of(context)!.settings.arguments;
-          return PickupDetail(pickup: args!['pickup'],reloadParent: args!['reloadFunction'],);
+          return PickupDetail(
+            pickup: args!['pickup'],
+            reloadParent: args!['reloadFunction'],
+          );
         },
       },
     );

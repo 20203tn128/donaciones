@@ -36,7 +36,7 @@ class PickupService {
     final response = await _apiService.get('/pickups', queryParameters: params);
 
     final res = Response.fromMap(response.data);
-    
+
     return res.data['pickups']!.map((map) => Pickup.fromMap(map)).whereType<Pickup>().toList();
   }
 
@@ -44,7 +44,7 @@ class PickupService {
     final response = await _apiService.get('/pickups/$id');
 
     final res = Response.fromMap(response.data);
-    
+
     return Pickup.fromMap(res.data['pickup']!);
   }
 
@@ -52,7 +52,7 @@ class PickupService {
     final response = await _apiService.patch('/pickups/start/$id');
 
     final res = Response.fromMap(response.data);
-    
+
     if (res.statusCode != 200) return false;
 
     setOffline(await getById(id));
@@ -66,16 +66,18 @@ class PickupService {
         'id': product.id,
         'name': product.name,
         'quantity': product.quantity,
-        'annexes': product.annexes != null ? {
-          'commentary': product.annexes!.commentary,
-          'photos': product.annexes!.photos,
-        } : null,
-        'recolected': product.recolected??false,
+        'annexes': product.annexes != null
+          ? {
+              'commentary': product.annexes!.commentary,
+              'photos': product.annexes!.photos,
+            }
+          : null,
+        'recolected': product.recolected ?? false,
       }).toList()
     });
 
     final res = Response.fromMap(response.data);
-    
+
     return res.statusCode == 200;
   }
 
@@ -88,24 +90,20 @@ class PickupService {
     });
 
     final res = Response.fromMap(response.data);
-    
+
     return res.statusCode == 200;
   }
 
   Future<Pickup?> getOffline() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final json = prefs.getString('offline_pickup');
-    print('CONSULTA OFFLINE');
     if (json == null) return null;
-    print(jsonDecode(json));
     return Pickup.fromMap(jsonDecode(json));
   }
 
   Future<void> setOffline(Pickup pickup) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('SETTER OFFLINE');
     final json = jsonEncode(pickup.toMap());
-    print(pickup.toMap());
     await prefs.setString('offline_pickup', json);
   }
 

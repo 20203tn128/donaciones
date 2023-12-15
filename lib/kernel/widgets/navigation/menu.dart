@@ -26,7 +26,9 @@ class _MenuState extends State<Menu> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          Dashboard(setItem: _setItem,),
+          Dashboard(
+            setItem: _setItem,
+          ),
           const PickupStack(),
           const DeliveryStack(),
           const Profile(),

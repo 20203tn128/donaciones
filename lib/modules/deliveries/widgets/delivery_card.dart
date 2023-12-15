@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state, use_build_context_synchronously
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
@@ -39,7 +41,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
         children: [
           ExpansionTile(
             leading: CircleAvatar(
-              backgroundColor: ColorsApp.prmaryColor,
+              backgroundColor: ColorsApp.primaryColor,
               foregroundColor: Colors.white,
               child: Text(delivery.acronym),
             ),
@@ -47,10 +49,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
               children: [
                 Text(
                   delivery.name,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: ColorsApp.secondaryColor),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor),
                 ),
                 const Spacer(),
                 Text(
@@ -79,21 +78,12 @@ class _DeliveryCardState extends State<DeliveryCard> {
                           children: [
                             ElevatedButton(
                               onPressed: () async {
-                                Navigator.pushNamed(context, '/detail',
-                                    arguments: {
-                                      'delivery': delivery,
-                                      'reloadFunction': reloadIfOffline
-                                    });
+                                Navigator.pushNamed(context, '/detail', arguments: {'delivery': delivery, 'reloadFunction': reloadIfOffline});
                               },
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(30, 30),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6)),
-                                  backgroundColor: ColorsApp.prmaryColor),
+                              style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.primaryColor, foregroundColor: Colors.white),
                               child: const Text(
                                 'Ver ruta',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12.0),
+                                style: TextStyle(fontSize: 12.0),
                               ),
                             ),
                           ],
@@ -104,37 +94,29 @@ class _DeliveryCardState extends State<DeliveryCard> {
                               visible: delivery.status == 'Pendiente',
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  if (await _deliveryService
-                                      .start(delivery.id)) {
-                                    reloadIfOffline();
-                                    // ignore: use_build_context_synchronously
+                                  if (await _deliveryService.start(delivery.id)) {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: const Text('Exito'),
-                                            content: const Text(
-                                                'Se ha iniciado el reparto'),
+                                            title: const Text('Éxito'),
+                                            content: const Text('Se ha iniciado el reparto'),
                                             actions: [
                                               TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('OK'))
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'))
                                             ],
                                           );
                                         });
+                                    reloadIfOffline();
                                   }
                                 },
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(30, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: ColorsApp.successColor),
+                                style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
                                 child: const Text(
                                   'Iniciar',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12.0),
+                                  style: TextStyle(fontSize: 12.0),
                                 ),
                               ),
                             ),
@@ -152,22 +134,16 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                       return SizedBox(
                                         height: 400,
                                         child: Center(
-                                          child: DeliveryInfo(
-                                              delivery: widget.delivery),
+                                          child: DeliveryInfo(delivery: widget.delivery),
                                         ),
                                       );
                                     },
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(30, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: ColorsApp.successColor),
+                                style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
                                 child: const Text(
                                   'Ver comentarios',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12.0),
+                                  style: TextStyle(fontSize: 12.0),
                                 ),
                               ),
                             ),
@@ -182,40 +158,31 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                   delivery.status = 'Finalizada';
                                   delivery.dateEnd = DateTime.now();
                                   await _deliveryService.setOffline(delivery);
-                                  reloadIfOffline();
-                                  if (await Connectivity()
-                                          .checkConnectivity() !=
-                                      ConnectivityResult.none) {
-                                    _deliveryService.sync();
-                                  }
-                                  // ignore: use_build_context_synchronously
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          // ok
-                                          title: const Text('Exito'),
-                                          content: const Text(
-                                              'Se ha finalizado el reparto'), // no tenia internet  nell
+                                          title: const Text('Éxito'),
+                                          content: const Text('Se ha finalizado el reparto'),
                                           actions: [
                                             TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('OK'))
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK')
+                                            )
                                           ],
                                         );
                                       });
+                                  reloadIfOffline();
+                                  if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+                                    _deliveryService.sync();
+                                  }
                                 },
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(30, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: ColorsApp.successColor),
+                                style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.successColor, foregroundColor: Colors.white),
                                 child: const Text(
                                   'Finalizar',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12.0),
+                                  style: TextStyle(fontSize: 12.0),
                                 ),
                               ),
                             ),
@@ -244,15 +211,10 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                     },
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(30, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: ColorsApp.dangerColor),
+                                style: ElevatedButton.styleFrom(minimumSize: const Size(30, 30), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)), backgroundColor: ColorsApp.dangerColor, foregroundColor: Colors.white),
                                 child: const Text(
                                   'Cancelar',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12.0),
+                                  style: TextStyle(fontSize: 12.0),
                                 ),
                               ),
                             ),

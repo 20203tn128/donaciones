@@ -32,13 +32,10 @@ class ProfileService {
   }
 
   Future<bool> changePassword(String password, String passwordConfirmation) async {
-    var response = await _apiService.post(
-      '/changePassword',
-      data: {
-        'password': password,
-        'newPassword': passwordConfirmation,
-      }
-    );
+    var response = await _apiService.post('/changePassword', data: {
+      'password': password,
+      'newPassword': passwordConfirmation,
+    });
 
     var res = Response.fromMap(response.data);
 
