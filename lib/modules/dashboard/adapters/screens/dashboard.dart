@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/response.dart';
 import 'package:donaciones/kernel/services/api_service.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
@@ -25,6 +26,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void getPickups() async {
+    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) return;
     final response = await _apiService.get('/pickups/pendings');
     final res = Response.fromMap(response.data);
     setState(() {
@@ -33,6 +35,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void getDeliveries() async {
+    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) return;
     final response = await _apiService.get('/deliveries/pendings');
     final res = Response.fromMap(response.data);
     setState(() {
