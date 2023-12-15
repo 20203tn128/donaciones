@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:donaciones/kernel/models/pickup.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/pickups/services/pickup_service.dart';
+import 'package:donaciones/modules/pickups/widgets/pick_up_info.dart';
 import 'package:donaciones/modules/pickups/widgets/pickup_general_annexes_form.dart';
 import 'package:donaciones/modules/pickups/widgets/product_annexes_form.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _PickupCardState extends State<PickupCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+        elevation: 3,
         child: ExpansionTile(
             leading: CircleAvatar(
               backgroundColor: ColorsApp.prmaryColor,
@@ -73,201 +74,233 @@ class _PickupCardState extends State<PickupCard> {
               ),
             ),
             children: [
-          const Divider(
-            height: 1,
-            color: Colors.grey,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 5,
-                    child: Padding(
+              const Divider(
+                height: 1,
+                color: Colors.grey,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(children: [
-                        Padding(
+                      child: Card(
+                        elevation: 5,
+                        child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Detalles de la cadena ${pickup.chain.name}',
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: ColorsApp.secondaryColor),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            const Text(
-                              'Direccion: ',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                                width: 180,
-                                child: Text(pickup.chain.address,
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.black45))),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Text(
-                              'Enlaces: ',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                            Text(pickup.chain.nameLinkPerson,
+                          child: Column(children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Detalles de la cadena ${pickup.chain.name}',
                                 style: const TextStyle(
-                                    fontSize: 12, color: Colors.black45))
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Text(
-                              'Teléfonos: ',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorsApp.secondaryColor),
+                              ),
                             ),
                             Row(
-                              children: pickup.chain.phones
-                                  .map((e) => SizedBox(
-                                        width: 80,
-                                        child: Text(e,
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black45)),
-                                      ))
-                                  .toList(),
-                            )
-                          ],
+                              children: [
+                                const Text(
+                                  'Direccion: ',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                    width: 180,
+                                    child: Text(pickup.chain.address,
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black45))),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Enlaces: ',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(pickup.chain.nameLinkPerson,
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.black45))
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Teléfonos: ',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  children: pickup.chain.phones
+                                      .map((e) => SizedBox(
+                                            width: 80,
+                                            child: Text(e,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black45)),
+                                          ))
+                                      .toList(),
+                                )
+                              ],
+                            ),
+                          ]),
                         ),
-                      ]),
+                      ),
                     ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        Navigator.pushNamed(context, '/detail',
-                            arguments: {'pickup': pickup, 'reloadFunction': reloadIfOffline});
-                      },
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(30, 30),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          backgroundColor: ColorsApp.prmaryColor),
-                      child: const Text('Productos'),
-                    ),
-                    const Spacer(),
-                    pickup.status == 'Pendiente'
-                        ? ElevatedButton(
-                            onPressed: () async {
-                              if (await _pickupService
-                                  .start(pickup.id)) {
-                                reloadIfOffline();
-                                // ignore: use_build_context_synchronously
-                                showDialog(
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            Navigator.pushNamed(context, '/detail', arguments: {
+                              'pickup': pickup,
+                              'reloadFunction': reloadIfOffline
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(30, 30),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                              backgroundColor: ColorsApp.prmaryColor),
+                          child: const Text('Productos'),
+                        ),
+                        const Spacer(),
+                        pickup.status == 'Cancelada'
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Exito'),
-                                        content: const Text(
-                                            'Se ha iniciado la recolección'),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('OK'))
-                                        ],
+                                      return SizedBox(
+                                        height: 400,
+                                        child: Center(
+                                          child:
+                                              PickupInfo(pickup: widget.pickup),
+                                        ),
                                       );
-                                    });
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(30, 30),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6)),
-                                backgroundColor: ColorsApp.successColor),
-                            child: const Text('Iniciar '),
-                          )
-                        : const SizedBox(),
-                    const Spacer(),
-                    pickup.status == 'En proceso'
-                        ? ElevatedButton(
-                            onPressed: () async {
-                              pickup.status = 'Finalizada';
-                              await _pickupService.setOffline(pickup);
-                              reloadIfOffline();
-                              if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
-                                _pickupService.sync();
-                              }
-                              // ignore: use_build_context_synchronously
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Exito'),
-                                      content: const Text(
-                                          'Se ha finalizado la recolección'),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('OK'))
-                                      ],
-                                    );
-                                  });
-                            },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(30, 30),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6)),
-                                backgroundColor: ColorsApp.successColor),
-                            child: const Text('Finalizar'),
-                          )
-                        : const SizedBox.shrink(),
-                    const Spacer(),
-                    pickup.status == 'En proceso'
-                        ? ElevatedButton(
-                            onPressed: () async {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                    height: 400,
-                                    child: Center(
-                                      child: PickupGeneralAnnexesForm(
-                                          reloadParent: reloadIfOffline,
-                                          closeFunction: () {
-                                            Navigator.pop(context);
-                                          },
-                                          ),
-                                    ),
+                                    },
                                   );
                                 },
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(30, 30),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6)),
-                                backgroundColor: ColorsApp.dangerColor),
-                            child: const Text('Cancelar'),
-                          )
-                        : const SizedBox.shrink(),
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(30, 30),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    backgroundColor: ColorsApp.successColor),
+                                child: const Text('Ver Comentarios'),
+                              )
+                            : const SizedBox.shrink(),
+                        const Spacer(),
+                        pickup.status == 'Pendiente'
+                            ? ElevatedButton(
+                                onPressed: () async {
+                                  if (await _pickupService.start(pickup.id)) {
+                                    reloadIfOffline();
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Exito'),
+                                            content: const Text(
+                                                'Se ha iniciado la recolección'),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('OK'))
+                                            ],
+                                          );
+                                        });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(30, 30),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    backgroundColor: ColorsApp.successColor),
+                                child: const Text('Iniciar '),
+                              )
+                            : const SizedBox(),
+                        const Spacer(),
+                        pickup.status == 'En proceso'
+                            ? ElevatedButton(
+                                onPressed: () async {
+                                  pickup.status = 'Finalizada';
+                                  await _pickupService.setOffline(pickup);
+                                  reloadIfOffline();
+                                  if (await Connectivity()
+                                          .checkConnectivity() !=
+                                      ConnectivityResult.none) {
+                                    _pickupService.sync();
+                                  }
+                                  // ignore: use_build_context_synchronously
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Exito'),
+                                          content: const Text(
+                                              'Se ha finalizado la recolección'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'))
+                                          ],
+                                        );
+                                      });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(30, 30),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    backgroundColor: ColorsApp.successColor),
+                                child: const Text('Finalizar'),
+                              )
+                            : const SizedBox.shrink(),
+                        const Spacer(),
+                        pickup.status == 'En proceso'
+                            ? ElevatedButton(
+                                onPressed: () async {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                        height: 400,
+                                        child: Center(
+                                          child: PickupGeneralAnnexesForm(
+                                            reloadParent: reloadIfOffline,
+                                            closeFunction: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(30, 30),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    backgroundColor: ColorsApp.dangerColor),
+                                child: const Text('Cancelar'),
+                              )
+                            : const SizedBox.shrink(),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          )
+                ),
+              )
 
-          /* Row(
+              /* Row(
         children: [
           Column(
             children: [
@@ -341,6 +374,6 @@ class _PickupCardState extends State<PickupCard> {
           ),
         ],
       ), */
-        ]));
+            ]));
   }
 }

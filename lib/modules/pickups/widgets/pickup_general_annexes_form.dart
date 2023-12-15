@@ -70,7 +70,7 @@ class _PickupGeneralAnnexesFormState extends State<PickupGeneralAnnexesForm> {
                         Padding(
                           padding: EdgeInsets.only(left: 8),
                           child: Text(
-                            'Realiza un comentario referente a la recolección',
+                            'Realiza un comentario referente a el reparto',
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,

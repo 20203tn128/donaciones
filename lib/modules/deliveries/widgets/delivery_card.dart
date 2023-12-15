@@ -3,6 +3,7 @@ import 'package:donaciones/kernel/models/delivery.dart';
 import 'package:donaciones/kernel/themes/colors_app.dart';
 import 'package:donaciones/modules/deliveries/services/delivery_service.dart';
 import 'package:donaciones/modules/deliveries/widgets/delivery_general_annexes_form.dart';
+import 'package:donaciones/modules/deliveries/widgets/delivery_info.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryCard extends StatefulWidget {
@@ -78,10 +79,11 @@ class _DeliveryCardState extends State<DeliveryCard> {
                           children: [
                             ElevatedButton(
                               onPressed: () async {
-                                Navigator.pushNamed(context, '/detail', arguments: {
-                                  'delivery': delivery,
-                                  'reloadFunction': reloadIfOffline
-                                });
+                                Navigator.pushNamed(context, '/detail',
+                                    arguments: {
+                                      'delivery': delivery,
+                                      'reloadFunction': reloadIfOffline
+                                    });
                               },
                               style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(30, 30),
@@ -90,8 +92,8 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                   backgroundColor: ColorsApp.prmaryColor),
                               child: const Text(
                                 'Ver ruta',
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12.0),
                               ),
                             ),
                           ],
@@ -102,7 +104,8 @@ class _DeliveryCardState extends State<DeliveryCard> {
                               visible: delivery.status == 'Pendiente',
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  if (await _deliveryService.start(delivery.id)) {
+                                  if (await _deliveryService
+                                      .start(delivery.id)) {
                                     reloadIfOffline();
                                     // ignore: use_build_context_synchronously
                                     showDialog(
@@ -124,19 +127,52 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(30, 30),
+                                    minimumSize: const Size(30, 30),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6)),
                                     backgroundColor: ColorsApp.successColor),
                                 child: const Text(
                                   'Iniciar',
-                                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12.0),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      
+                        Column(
+                          children: [
+                            Visibility(
+                              visible: delivery.status == 'Cancelada',
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                        height: 400,
+                                        child: Center(
+                                          child: DeliveryInfo(
+                                              delivery: widget.delivery),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(30, 30),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    backgroundColor: ColorsApp.successColor),
+                                child: const Text(
+                                  'Ver comentarios',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         Column(
                           children: [
                             Visibility(
@@ -147,7 +183,9 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                   delivery.dateEnd = DateTime.now();
                                   await _deliveryService.setOffline(delivery);
                                   reloadIfOffline();
-                                  if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+                                  if (await Connectivity()
+                                          .checkConnectivity() !=
+                                      ConnectivityResult.none) {
                                     _deliveryService.sync();
                                   }
                                   // ignore: use_build_context_synchronously
@@ -170,13 +208,14 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                       });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(30, 30),
+                                    minimumSize: const Size(30, 30),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6)),
                                     backgroundColor: ColorsApp.successColor),
                                 child: const Text(
                                   'Finalizar',
-                                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12.0),
                                 ),
                               ),
                             ),
@@ -184,7 +223,6 @@ class _DeliveryCardState extends State<DeliveryCard> {
                         ),
                         Column(
                           children: [
-                            
                             Visibility(
                               visible: delivery.status == 'En proceso',
                               child: ElevatedButton(
@@ -196,11 +234,11 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                         height: 400,
                                         child: Center(
                                           child: DeliveryGeneralAnnexesForm(
-                                              reloadParent: reloadIfOffline,
-                                              closeFunction: () {
-                                                Navigator.pop(context);
-                                              },
-                                              ),
+                                            reloadParent: reloadIfOffline,
+                                            closeFunction: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
                                         ),
                                       );
                                     },
@@ -213,7 +251,8 @@ class _DeliveryCardState extends State<DeliveryCard> {
                                     backgroundColor: ColorsApp.dangerColor),
                                 child: const Text(
                                   'Cancelar',
-                                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12.0),
                                 ),
                               ),
                             ),
