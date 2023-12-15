@@ -61,10 +61,18 @@ class _ProductCardState extends State<ProductCard> {
           ),
           Column(
             children: [
-              Text(widget.product.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor)),
+              Text(widget.product.name,
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: ColorsApp.secondaryColor)),
               Row(
                 children: [
-                  const Text('Cantidad:', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ColorsApp.secondaryColor)),
+                  const Text('Cantidad:',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: ColorsApp.secondaryColor)),
                   const SizedBox(
                     width: 6,
                   ),
@@ -74,7 +82,8 @@ class _ProductCardState extends State<ProductCard> {
             ],
           ),
           const Spacer(),
-          widget.pickup.status == 'En proceso'
+          widget.pickup.status == 'En proceso' ||
+                  widget.pickup.status == 'Finalizada'
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Checkbox(
@@ -82,17 +91,22 @@ class _ProductCardState extends State<ProductCard> {
                     checkColor: Colors.white,
                     fillColor: MaterialStateProperty.resolveWith(getColor),
                     value: isChecked,
-                    onChanged: (bool? value) async {
-                      final offlineProduct = await widget._pickupService.getOffline();
-                      if (offlineProduct != null) {
-                        offlineProduct.products[widget.index].recolected = value;
-                        await widget._pickupService.setOffline(offlineProduct);
-                      }
-                      widget.reloadParent();
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
+                    onChanged: widget.pickup.status == 'En proceso'
+                        ? (bool? value) async {
+                            final offlineProduct =
+                                await widget._pickupService.getOffline();
+                            if (offlineProduct != null) {
+                              offlineProduct.products[widget.index].recolected =
+                                  value;
+                              await widget._pickupService
+                                  .setOffline(offlineProduct);
+                            }
+                            widget.reloadParent();
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          }
+                        : null,
                   ))
               : const SizedBox.shrink(),
           widget.pickup.status == 'En proceso'
@@ -109,10 +123,12 @@ class _ProductCardState extends State<ProductCard> {
                                   Navigator.pop(context);
                                 },
                                 reloadParents: () async {
-                                  final offlinePickup = await widget._pickupService.getOffline();
+                                  final offlinePickup =
+                                      await widget._pickupService.getOffline();
                                   if (offlinePickup != null) {
                                     setState(() {
-                                      product = offlinePickup.products[widget.index];
+                                      product =
+                                          offlinePickup.products[widget.index];
                                     });
                                   }
                                   widget.reloadParent();
